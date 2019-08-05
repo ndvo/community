@@ -1,3 +1,14 @@
+### Fork
+
+
+This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
+
+
+This effort is being done as part of an evaluation to choose the best suite to be used within SPU, a Brazilian public organization.
+
+***
+
+
 Documize is an open source modern, lightweight and comprehensive alternative to Confluence.
 
 It's built with Golang + EmberJS and compiled down to a single executable binary for Linux, Windows and macOS.
