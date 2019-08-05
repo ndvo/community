@@ -2,41 +2,39 @@
 	<div class="backup-restore">
 		<div class="backup-zone">
 			{{#if session.isGlobalAdmin}}
-				<p>
-					Documize is a multi-tenanted application enabling both "tech.mycompany.com" and "sales.mycompany.com" to run using the same executable/database.
-					As a Documize <b>Global Administrator</b>, you will be performing a complete system-wide backup across all tenants.
-					A Documize <b>Tenant Administrator</b> can login to perform a tenant-level backup (e.g. marketing.mycompany.com).
-				</p>
+				<p>O documize é uma aplicação de múltiplos inquilinos que permite que tanto "tec.companhia.com" quanto "vendas.companhia.com" usem o mesmo executável e base de dados.
+        Como um <b>Administrador Global</b> do Documize, vocẽ realizará um backup completo de todo sistema, com todos os inquilinos.
+        Um <b>Administrador Inquilino</b> pode fazer login para realizar um backup em nível de inquilino (por exemplo: marketing.companhia.com).
+        </p>
 			{{else}}
-				<p>
-					Documize is a multi-tenanted application enabling both "tech.mycompany.com" and "sales.mycompany.com" to run using the same executable/database.
-					A Documize <b>Global Administrator</b>, you will be performing a complete system-wide backup across all tenants.
-					As a Documize <b>Tenant Administrator</b> you can perform a tenant-level backup (e.g. marketing.mycompany.com).
-				</p>
+				<p>O documize é uma aplicação de múltiplos inquilinos que permite que tanto "tec.companhia.com" quanto "vendas.companhia.com" usem o mesmo executável e base de dados.
+        Um <b>Administrador Global</b> do Documize, pode fazer um backup completo de todo sistema, com todos os inquilinos.
+        Como um <b>Administrador Inquilino</b> você pode fazer realizar um backup em nível de inquilino (por exemplo: marketing.companhia.com).
+        </p>
 			{{/if}}
-			<p>Please use a Tenant Backup when migrating between self-host and Documize Cloud hosting.</p>
-			<p>It can take <b>several minutes</b> to complete the backup process &mdash; please be patient while the backup operation is in progress.</p>
+			<p>Por favor, use um Backup de inquilino ao migrar de uma hospedagem próprria para uma hospedagem em Nuvem.</p>
+			<p>Pode demorar <b>vários minutos</b> para completar o processo &mdash; por favor, seja paciente enquanto a operação de backup está em progresso.</p>
 
 			<div class="margin-top-30 margin-bottom-20">
 				{{#ui/ui-checkbox selected=backupSpec.retain}}
-					Retain backup file on server
+          Reter o backup no servidor
 				{{/ui/ui-checkbox}}
 			</div>
 
 			{{#if backupRunning}}
-				<h3 class="text-success">Backup running, please wait...</h3>
+				<h3 class="text-success">Backup em execução, favor aguardar...</h3>
 			{{else}}
-				{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Database label=(concat "BACKUP TENANT (" appMeta.appHost ")") onClick=(action "onBackup")}}
+				{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Database label=(concat "BACKUP DE INQUILINO (" appMeta.appHost ")") onClick=(action "onBackup")}}
 				{{#if session.isGlobalAdmin}}
 					{{ui/ui-button-gap}}
-					{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Database label="BACKUP SYSTEM" onClick=(action "onSystemBackup")}}
+					{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Database label="BACKUP DE SISTEMA" onClick=(action "onSystemBackup")}}
 				{{/if}}
 			{{/if}}
 			{{#if backupFailed}}
-				<div class="backup-fail">Backup failed &mdash; please check server logs</div>
+				<div class="backup-fail">O backup falhou &mdash; favor checar os logs do sistema</div>
 			{{/if}}
 			{{#if backupSuccess}}
-				<div class="backup-success">Backup successful ({{backupFilename}})</div>
+				<div class="backup-success">Backup bem sucedido ({{backupFilename}})</div>
 			{{/if}}
 		</div>
 	</div>
@@ -44,23 +42,24 @@
 	<div class="backup-restore">
 		<div class="restore-zone">
 			{{#if session.isGlobalAdmin}}
-				<p>Restore from a <b>system backup</b> should only be performed on an <b>empty Documize database.</b></p>
+				<p>Restaurar um <b>backup de sistema</b> apenas deve ser realizado em uma <b>base de dados Documize vazia.</b></p>
 			{{/if}}
-			<p>Restore operation will <b>re-create</b> users, groups, permissions, spaces, categories and content.</p>
-			<p>It can take <b>several minutes</b> to complete the restore process &mdash; please be patient while the restore operation is in progress.</p>
+			<p>A operação de restauração irá <b>re-criar</b> os usuários, grupos, permissões, espaços, categorias e conteúdo.</p>
+			<p>Pode demorar <b>vários minutos</b> para que o processo de restauração se complete &mdash; por favor, seja paciente enquanto a operação estiver em progresso.</p>
+			
 
 			<div class="margin-top-30 margin-bottom-20">
 				<div class="custom-file">
 					<input type="file" class="custom-file-input" id="restore-file" accept="application/zip" multiple="false" onchange={{action "upload"}}>
-					<label class="custom-file-label" for="restore-file">Choose backup file</label>
+					<label class="custom-file-label" for="restore-file">Escolha o arquivo de backup</label>
 				</div>
 				<div class="margin-top-20"></div>
 			</div>
 
 			{{#if restoreFailed}}
-				<div class="restore-fail">Restore failed &mdash; please check server logs</div>
+				<div class="restore-fail">A restauração falhou &mdash; favor checar os logs do servidor</div>
 			{{else if restoreSuccess}}
-				<div class="restore-success">Restore completed &mdash; restart your browser and log in</div>
+				<div class="restore-success">Restauração bem sucedida &mdash; reinicie o seu navegador e faça login</div>
 			{{else}}
 				{{#if restoreUploadReady}}
 					{{ui/ui-button color=constants.Color.Red light=false icon=constants.Icon.Database label=restoreButtonLabel onClick=(action "onShowRestoreModal")}}
@@ -73,13 +72,13 @@
 <div id="confirm-restore-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Confirm Restore</div>
+			<div class="modal-header">Confirmar a restauração</div>
 			<div class="modal-body">
 				<form onsubmit={{action "onRestore"}}>
 					<div class="form-group">
-						<label for="delete-space-name">Please type RESTORE to commence the process</label>
-						{{input type="text" id="confirm-restore" class="form-control mousetrap" placeholder="Please type RESTORE" value=confirmRestore}}
-						<small class="form-text text-muted">You should only restore to an empty Documize instance</small>
+						<label for="delete-space-name">Por favor, digite RESTORE para iniciar o processo</label>
+						{{input type="text" id="confirm-restore" class="form-control mousetrap" placeholder="Digite RESTORE" value=confirmRestore}}
+						<small class="form-text text-muted">Você deveria restaurar apenas sobre uma instância Documize vazia</small>
 					</div>
 				</form>
 			</div>

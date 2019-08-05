@@ -34,7 +34,7 @@
 {{#if canEdit}}
 	<div class="start-section">
 		<i class="dicon {{constants.Icon.Plus}}" {{action "onShowSectionWizard"}}>
-			{{#attach-tooltip showDelay=1000}}Insert section here{{/attach-tooltip}}
+			{{#attach-tooltip showDelay=1000}}Inserir seção aqui{{/attach-tooltip}}
 		</i>
 	</div>
 {{/if}}
@@ -42,14 +42,14 @@
 {{#if showLikes}}
 	<div class="vote-box no-print">
 		{{#if voteThanks}}
-			<div class="thanks">Thanks for the feedback!</div>
+			<div class="thanks">Obrigado pelo feedback!</div>
 		{{else}}
 			<div class="prompt">{{folder.likes}}</div>
 			<Ui::UiSpacer @size="200" />
 			<div class="buttons">
-				{{ui/ui-button color=constants.Color.Yellow light=true label="Yes, thanks!" onClick=(action "onVote" 1)}}
+				{{ui/ui-button color=constants.Color.Yellow light=true label="Sim, obrigado!" onClick=(action "onVote" 1)}}
 				{{ui/ui-button-gap}}
-				{{ui/ui-button color=constants.Color.Yellow light=true label="Not really" onClick=(action "onVote" 2)}}
+				{{ui/ui-button color=constants.Color.Yellow light=true label="Na verdade não" onClick=(action "onVote" 2)}}
 			</div>
 		{{/if}}
 	</div>

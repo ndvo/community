@@ -1,62 +1,62 @@
 {{#ui/ui-toolbar dark=false light=false raised=false large=false bordered=false}}
 	{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 		{{#if permissions.documentEdit}}
-			{{#ui/ui-toolbar-dropdown label="Actions" arrow=true}}
+			{{#ui/ui-toolbar-dropdown label="Ações" arrow=true}}
 				{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 					<ul class="menu">
-						<li class="item" {{action "onShowRequestContributionModal"}}>Request contribution</li>
-						<li class="item" {{action "onShowRequestFeedbackModal"}}>Request feedback</li>
-						<li class="item" {{action "onShowRequestReadModal"}}>Request read</li>
+						<li class="item" {{action "onShowRequestContributionModal"}}>Solicitar contribuição</li>
+						<li class="item" {{action "onShowRequestFeedbackModal"}}>Solicitar feedback</li>
+						<li class="item" {{action "onShowRequestReadModal"}}>Solicitar leitura</li>
 						{{#if (eq document.lifecycle constants.Lifecycle.Draft)}}
 							<li class="divider"/>
-							<li class="item" {{action "onShowPublishModal"}}>Request publication</li>
+							<li class="item" {{action "onShowPublishModal"}}>Solicitar publicação</li>
 						{{/if}}
 						<li class="divider"/>
-						<li class="item" {{action "onShareModal"}}>Share via secure external link</li>
+						<li class="item" {{action "onShareModal"}}>Compartilhar via link externo seguro</li>
 					</ul>
 				{{/attach-popover}}
 			{{/ui/ui-toolbar-dropdown}}
 		{{/if}}
 	{{/if}}
 
-	{{#ui/ui-toolbar-dropdown label="Content" arrow=true}}
+	{{#ui/ui-toolbar-dropdown label="Conteúdo" arrow=true}}
 		{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 			<ul class="menu">
 				{{#if pinState.isPinned}}
-					<li class="item" {{action "onUnpin"}}>Remove bookmark</li>
+					<li class="item" {{action "onUnpin"}}>Remover bookmark</li>
 					<li class="divider"/>
 				{{else if session.authenticated}}
 					<li class="item" {{action "onPin"}}>Bookmark</li>
 					<li class="divider"/>
 				{{/if}}
-				<li class="item" {{action "onShowPrintModal"}}>Print</li>
-				<li class="item" {{action "onExport"}}>Download</li>
+				<li class="item" {{action "onShowPrintModal"}}>Imprimir</li>
+				<li class="item" {{action "onExport"}}>Baixar</li>
 				{{#if (or permissions.documentAdd permissions.documentCopy)}}
 					<li class="divider"/>
 					{{#if permissions.documentAdd}}
-						<li class="item" {{action "onShowTemplateModal"}}>Template</li>
+						<li class="item" {{action "onShowTemplateModal"}}>Modelo</li>
 					{{/if}}
 					{{#if permissions.documentCopy}}
-						<li class="item" {{action "onShowDuplicateModal"}}>Copy</li>
+						<li class="item" {{action "onShowDuplicateModal"}}>Copiar</li>
 					{{/if}}
 				{{/if}}
 				{{#if permissions.documentDelete}}
 					<li class="divider"/>
-					<li class="item red" {{action "onShowDeleteModal"}}>Delete</li>
+					<li class="item red" {{action "onShowDeleteModal"}}>Apagar</li>
 				{{/if}}
 			</ul>
 		{{/attach-popover}}
 	{{/ui/ui-toolbar-dropdown}}
 
 	{{#if (or showActivity showRevisions)}}
-		{{#ui/ui-toolbar-dropdown label="History" arrow=true}}
+		{{#ui/ui-toolbar-dropdown label="História" arrow=true}}
 			{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 				<ul class="menu">
 					{{#if showActivity}}
-						{{#link-to "document.activity" class="item"}}Activity{{/link-to}}
+						{{#link-to "document.activity" class="item"}}Atividade{{/link-to}}
 					{{/if}}
 					{{#if showRevisions}}
-						{{#link-to "document.revisions" class="item"}}Revisions{{/link-to}}
+						{{#link-to "document.revisions" class="item"}}Revisões{{/link-to}}
 					{{/if}}
 				</ul>
 			{{/attach-popover}}
@@ -64,25 +64,25 @@
 	{{/if}}
 
 	{{#if permissions.documentEdit}}
-		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green tooltip="Rename, Categories, Tag, Status, Workflow" linkTo="document.settings"}}
+		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green tooltip="Renomear, Categorias, Etiquetas, Situação, Workflow" linkTo="document.settings"}}
 	{{/if}}
 {{/ui/ui-toolbar}}
 
 <div id="document-template-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Save as Template</div>
+			<div class="modal-header">Salvar como modelo</div>
 			<div class="modal-body">
 				<form onsubmit={{action "onSaveTemplate"}}>
 					<div class="form-group">
-						<label for="new-template-name">Name</label>
-						{{input id="new-template-name" value=saveTemplate.name type="email" class="form-control mousetrap" placeholder="Template name"}}
-						<small class="form-text text-muted">Good template name conveys document type</small>
+						<label for="new-template-name">Nome</label>
+						{{input id="new-template-name" value=saveTemplate.name type="email" class="form-control mousetrap" placeholder="Nome do template"}}
+						<small class="form-text text-muted">Um bom nome de template sugere o tipo do documento</small>
 					</div>
 					<div class="form-group">
-						<label for="new-template-desc">Description</label>
+						<label for="new-template-desc">Descrição</label>
 						{{textarea id="new-template-desc" value=saveTemplate.description class="form-control" rows="5"}}
-						<small class="form-text text-muted">Explain use case for this template</small>
+						<small class="form-text text-muted">Explique o caso de uso para este modelo</small>
 					</div>
 				</form>
 			</div>
@@ -98,9 +98,9 @@
 <div id="document-print-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Print</div>
+			<div class="modal-header">Imprimir</div>
 			<div class="modal-body">
-				<p>Print all content or select sections.</p>
+				<p>Imprimir todo conteúdo ou seções selecionadas</p>
 				{{#each pages as |item|}}
 					{{#ui/ui-checkbox selected=item.printSelected}}
 						{{item.page.numbering}}. {{item.page.title}}
@@ -119,9 +119,9 @@
 <div id="document-delete-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Delete Document</div>
+			<div class="modal-header">Apagar documento</div>
 			<div class="modal-body">
-				<p>Are you sure you want to delete this document?</p>
+				<p>Tem certeza de que quer apagar este documento?</p>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.Cancel dismiss=true}}
@@ -135,13 +135,13 @@
 <div id="document-duplicate-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Duplicate</div>
+			<div class="modal-header">Duplicar</div>
 			<div class="modal-body">
 				<form onsubmit={{action "onDuplicate"}}>
 					<div class="form-group">
-						<label for="duplicate-name">Name</label>
-						{{input id="duplicate-name" value=duplicateName type="email" class="form-control mousetrap" placeholder="Name"}}
-						<small class="form-text text-muted">Content will be duplicated within this space</small>
+						<label for="duplicate-name">Nome</label>
+						{{input id="duplicate-name" value=duplicateName type="email" class="form-control mousetrap" placeholder="Nome"}}
+						<small class="form-text text-muted">O conteúdo será duplicado neste espaço</small>
 					</div>
 				</form>
 			</div>

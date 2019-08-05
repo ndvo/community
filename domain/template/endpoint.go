@@ -302,7 +302,7 @@ func (h *Handler) Use(w http.ResponseWriter, r *http.Request) {
 	var d = doc.Document{}
 	d.Name = docTitle
 	d.Location = fmt.Sprintf("template-%s", templateID)
-	d.Excerpt = "Add detailed description for document..."
+	d.Excerpt = "Adicione uma descrição detalhada para o documento..."
 	d.Slug = stringutil.MakeSlug(d.Name)
 	d.Tags = ""
 	d.SpaceID = spaceID

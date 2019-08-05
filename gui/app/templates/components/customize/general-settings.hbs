@@ -1,32 +1,32 @@
 <div class="view-customize">
 	<div class="form-group">
-		<label for="siteTitle">Site Name</label>
+		<label for="siteTitle">Nome do site</label>
 		{{focus-input id="siteTitle" type="text" value=model.general.title class=(if hasTitleInputError "form-control is-invalid" "form-control")}}
-		<small class="form-text text-muted">Provide short title for this Documize instance</small>
+		<small class="form-text text-muted">Forneça um título curto para esta instância do Documize</small>
 	</div>
 	<div class="form-group">
-		<label id="siteMessage">Site Message</label>
+		<label id="siteMessage">Mensagem do site</label>
 		{{textarea id="siteMessage" rows="3" value=model.general.message class=(if hasMessageInputError "form-control is-invalid" "form-control")}}
-		<small class="form-text text-muted">Provide short message explaining this Documize instance</small>
+		<small class="form-text text-muted">Forneça uma breve mensagem explicando esta instância do Documize</small>
 	</div>
 	<div class="form-group">
-		<label>Site Theme</label>
+		<label>Tema do site</label>
 		{{ui/theme-picker onChange=(action "onThemeChange")}}
 	</div>
 	<div class="form-group">
-		<label>Site Logo</label>
+		<label>Logo do site</label>
 		<div>
-			{{ui/ui-button light=true color=constants.Color.Gray label="Use Default" onClick=(action "onDefaultLogo")}}
+			{{ui/ui-button light=true color=constants.Color.Gray label="Usar o padrão" onClick=(action "onDefaultLogo")}}
 			{{ui/ui-button-gap}}
-			{{ui/ui-button light=true color=constants.Color.Yellow label="Upload Custom" id="upload-logo"}}
+			{{ui/ui-button light=true color=constants.Color.Yellow label="Subir um customizado" id="upload-logo"}}
 		</div>
-		<small class="form-text text-muted">You can choose to upload a small logo (e.g. 64px x 64px)</small>
+		<small class="form-text text-muted">Você pode escolher subir um pequeno logo (i.e. 64px x 64px)</small>
 	</div>
 	{{#if (eq appMeta.location "selfhost")}}
 		<div class="form-group">
-			<label for="orgDomain">Site URL Subdomain</label>
+			<label for="orgDomain">Subdomínio da URL do site</label>
 			{{input id="orgDomain" type="text" value=domain class="form-control" placeholder="e.g. docs"}}
-			<small class="form-text text-muted">If you are hosting on "docs.example.org" then the subdomain value should be set to "docs"</small>
+			<small class="form-text text-muted">Se você está hospenando em docs.exemplo.org o valor do subdomínio deve ser "docs"</small>
 		</div>
 	{{/if}}
 

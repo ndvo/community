@@ -2,16 +2,16 @@
 
 	<div class="text-right">
 		{{#ui/ui-toolbar dark=false light=false raised=false large=false bordered=false}}
-			{{ui/ui-toolbar-icon icon=constants.Icon.Blocks color=constants.Color.Gray tooltip="Complete"
+			{{ui/ui-toolbar-icon icon=constants.Icon.Blocks color=constants.Color.Gray tooltip="Completar"
 				selected=(eq viewDensity "1") onClick=(action "onSwitchView" "1")}}
 
-			{{ui/ui-toolbar-icon icon=constants.Icon.All color=constants.Color.Gray tooltip="Comfort"
+			{{ui/ui-toolbar-icon icon=constants.Icon.All color=constants.Color.Gray tooltip="Conforto"
 				selected=(eq viewDensity "2") onClick=(action "onSwitchView" "2")}}
 
-			{{ui/ui-toolbar-label label="—"  color=constants.Color.Gray tooltip="Compact"
+			{{ui/ui-toolbar-label label="—"  color=constants.Color.Gray tooltip="Compacto"
 				selected=(eq viewDensity "3") onClick=(action "onSwitchView" "3")}}
 
-			{{#ui/ui-toolbar-icon icon=constants.Icon.Sort color=constants.Color.Gray tooltip="Sort"}}
+			{{#ui/ui-toolbar-icon icon=constants.Icon.Sort color=constants.Color.Gray tooltip="Ordenar"}}
 				{{#attach-popover class="ember-attacher-popper" hideOn="click" showOn="click" isShown=false placement="bottom-end" as |attacher|}}
 					<i class="dicon {{constants.Icon.Cross}} closer" {{action attacher.hide}}/>
 					<div class="container">
@@ -20,13 +20,13 @@
 						<div class="text-center">
 							<ul class="ui-option-picker ui-option-picker-horiz">
 								<li class="option {{if sortBy.name "selected"}}" {{action "onSetSort" "name"}}>
-									<div class="text">Name</div>
+									<div class="text">Nome</div>
 								</li>
 								<li class="option {{if sortBy.created "selected"}}" {{action "onSetSort" "created"}}>
-									<div class="text">Created date</div>
+									<div class="text">Data de crição</div>
 								</li>
 								<li class="option {{if sortBy.updated "selected"}}" {{action "onSetSort" "updated"}}>
-									<div class="text">Last updated</div>
+									<div class="text">Última atualização</div>
 								</li>
 							</ul>
 						</div>
@@ -36,10 +36,10 @@
 						<div class="text-center">
 							<ul class="ui-option-picker ui-option-picker-horiz">
 								<li class="option {{if sortBy.asc "selected"}}" {{action "onSetSort" "asc"}}>
-									<div class="text">Ascending</div>
+									<div class="text">Ascendente</div>
 								</li>
 								<li class="option {{if sortBy.desc "selected"}}" {{action "onSetSort" "desc"}}>
-									<div class="text">Descending</div>
+									<div class="text">Descendente</div>
 								</li>
 							</ul>
 						</div>
@@ -93,12 +93,12 @@
 					{{#if document.selected}}
 						<div class="actions">
 							{{#ui/ui-toolbar dark=false light=true raised=true large=false bordered=true}}
-								{{ui/ui-toolbar-icon icon=constants.Icon.Export color=constants.Color.Gray tooltip="Export content" onClick=(action "onExport")}}
+								{{ui/ui-toolbar-icon icon=constants.Icon.Export color=constants.Color.Gray tooltip="Exportar conteúdo" onClick=(action "onExport")}}
 								{{#if permissions.documentMove}}
-									{{ui/ui-toolbar-icon icon=constants.Icon.Export2 color=constants.Color.Gray tooltip="Move to another space" onClick=(action "onShowMoveDocuments")}}
+									{{ui/ui-toolbar-icon icon=constants.Icon.Export2 color=constants.Color.Gray tooltip="Mover para outro espaço" onClick=(action "onShowMoveDocuments")}}
 								{{/if}}
 								{{#if permissions.documentDelete}}
-									{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Delete" onClick=(action "onShowDeleteDocuments")}}
+									{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Apagar" onClick=(action "onShowDeleteDocuments")}}
 								{{/if}}
 							{{/ui/ui-toolbar}}
 						</div>
@@ -110,19 +110,19 @@
 	</ul>
 </div>
 
-{{#ui/ui-dialog title="Delete Documents" confirmCaption="Delete" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDeleteDocuments")}}
-	<p>Are you sure you want to delete {{selectedDocuments.length}} {{selectedCaption}}?</p>
+{{#ui/ui-dialog title="Apagar documentos" confirmCaption="Apagar" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDeleteDocuments")}}
+	<p>Tem certeza de que deseja apagar {{selectedDocuments.length}} {{selectedCaption}}?</p>
 {{/ui/ui-dialog}}
 
-{{#ui/ui-dialog title="Move Documents" confirmCaption="Move" buttonColor=constants.Color.Green show=showMoveDialog onAction=(action "onMoveDocuments")}}
-	<p>Select space for {{selectedDocuments.length}} {{selectedCaption}}</p>
+{{#ui/ui-dialog title="Mover documentos" confirmCaption="Mover" buttonColor=constants.Color.Green show=showMoveDialog onAction=(action "onMoveDocuments")}}
+	<p>Selecion espaço para {{selectedDocuments.length}} {{selectedCaption}}</p>
 	{{ui/ui-list-picker items=moveOptions nameField="name" singleSelect=true}}
 {{/ui/ui-dialog}}
 
 {{#if showAdd}}
-	{{ui/empty-state icon=constants.Icon.ArrowUp message="Add documents via + CONTENT"}}
+	{{ui/empty-state icon=constants.Icon.ArrowUp message="Adicionar documentos via + CONTENT"}}
 {{/if}}
 
 {{#if showLockout}}
-	{{ui/empty-state icon=constants.Icon.Preview message="Space permissions are preventing you from viewing and creating documents"}}
+	{{ui/empty-state icon=constants.Icon.Preview message="Permissões de espaço estão impedindo você de ver e criar documentos"}}
 {{/if}}

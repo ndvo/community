@@ -1,13 +1,13 @@
 {{layout/logo-heading
-	title="Delete Space"
-	desc="Proceed with caution as there is no undo"
+	title="Apagar espaço"
+	desc="Proceda com cautela, esta ação não pode ser desfeita"
 	icon=constants.Icon.Delete}}
 
 <form>
 	<div class="form-group">
-		<label>Please type space name to confirm</label>
-		{{focus-input id="delete-space-name" type="text" value=deleteSpaceName class="form-control mousetrap" placeholder="Space name" autocomplete="off"}}
-		<small class="form-text text-muted">This will delete all documents and templates within this space!</small>
+		<label>Por favor, digite o nome do espaço para confirmar</label>
+		{{focus-input id="delete-space-name" type="text" value=deleteSpaceName class="form-control mousetrap" placeholder="Nome do espaço" autocomplete="off"}}
+		<small class="form-text text-muted">Isto irá apagar todos os documentos e templates neste espaço!</small>
 	</div>
 </form>
 

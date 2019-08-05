@@ -4,17 +4,17 @@
 		<div id="add-user-modal" class="modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
-					<div class="modal-header">Add Users</div>
+					<div class="modal-header">Adicionar usuários</div>
 					<div class="modal-body">
 						<form onsubmit={{action "onAddUser"}}>
 							<div class="form-row">
 								<div class="col">
-									<label for="newUserFirstname">Firstname</label>
-									{{input id="newUserFirstname" type="text" class="form-control" placeholder="Firstname" value=newUser.firstname}}
+									<label for="newUserFirstname">Primeiro nome</label>
+									{{input id="newUserFirstname" type="text" class="form-control" placeholder="Primeiro nome" value=newUser.firstname}}
 								</div>
 								<div class="col">
-									<label for="newUserLastname">Lastname</label>
-									{{input id="newUserLastname" type="text" class="form-control" placeholder="Lastname" value=newUser.lastname}}
+									<label for="newUserLastname">Último nome</label>
+									{{input id="newUserLastname" type="text" class="form-control" placeholder="Último nome" value=newUser.lastname}}
 								</div>
 								<div class="col">
 									<label for="newUserEmail">Email</label>
@@ -27,9 +27,9 @@
 						</form>
 						<form onsubmit={{action "onAddUser"}}>
 							<div class="form-group">
-								<label for="edit-group-desc">Bulk Upload</label>
+								<label for="edit-group-desc">Upload em massa</label>
 								{{textarea id="bulkUsers" value=bulkUsers class="form-control" rows="5" placeholder="firstname, lastname, email"}}
-								<small class="form-text text-muted">Comma-delimited list: firstname, lastname, email</small>
+								<small class="form-text text-muted">Lista de valores separados por vírgula: primeiro nome, último nome, email</small>
 							</div>
 							{{ui/ui-button color=constants.Color.Green icon=constants.Icon.People light=true label=constants.Label.Add onClick=(action "onAddUsers")}}
 						</form>

@@ -1,12 +1,12 @@
 {{layout/logo-heading
-	title="Space Permissions"
-	desc="Assign permissions to users or groups and invite new users to this space"
+	title="Permissões do espaço"
+	desc="Atribui permissões para usuários ou grupos e convida novos usuários para este espaço"
 	icon=constants.Icon.Locked}}
 
 <div class="view-customize">
 	<div class="explain-user-perms">
 		<div class="title" {{action "toggleSpacePerms"}}>
-			Space Permissions Explained
+      Permissões de Espaço Explicadas
 			{{#if showSpacePermExplain}}
                 <i class="dicon {{constants.Icon.ArrowSmallUp}}"></i>
 			{{else}}
@@ -14,18 +14,18 @@
 			{{/if}}
 		</div>
 		<div class="perms space-perms">
-			<div class="perm-name">View</div>
-			<div class="perm-desc">See content within this space</div>
-			<div class="perm-name">Manage</div>
-			<div class="perm-desc">Manage all aspects of space except deletion</div>
-			<div class="perm-name">Owner</div>
-			<div class="perm-desc">Manage and delete space</div>
+			<div class="perm-name">Ver</div>
+			<div class="perm-desc">Ver conteúdo neste espaço</div>
+			<div class="perm-name">Gerenciar</div>
+			<div class="perm-desc">Gerenciar todos os aspectos do espaço, menos a deleção</div>
+			<div class="perm-name">Dono</div>
+			<div class="perm-desc">Gerenciar e apagar o espaço</div>
 		</div>
 
 		<Ui::UiSpacer @size="200" />
 
 		<div class="title" {{action "toggleDocumentPerms"}}>
-			Document Permissions Explained
+			Permissões de Documentos Explicadas
 			{{#if showDocumentPermExplain}}
 				<i class="dicon {{constants.Icon.ArrowSmallUp}}"></i>
 			{{else}}
@@ -33,24 +33,24 @@
 			{{/if}}
 		</div>
 		<div class="perms document-perms">
-			<div class="perm-name">Create</div>
-			<div class="perm-desc">Can create new documents in space</div>
-			<div class="perm-name">Edit</div>
-			<div class="perm-desc">Can change document contents</div>
-			<div class="perm-name">Delete</div>
-			<div class="perm-desc">Can remove documents from space</div>
-			<div class="perm-name">Move</div>
-			<div class="perm-desc">Can move documents from this space to another space</div>
-			<div class="perm-name">Copy</div>
-			<div class="perm-desc">Can duplicate documents</div>
-			<div class="perm-name">Templates</div>
-			<div class="perm-desc">Can create and publish document templates</div>
-			<div class="perm-name">Approval</div>
-			<div class="perm-desc">Can approve or reject document content changes, move drafts to live.</div>
-			<div class="perm-name">Drafts</div>
-			<div class="perm-desc">Can view and work on documents marked as draft</div>
-			<div class="perm-name">Versions</div>
-			<div class="perm-desc">Can create document version and link them together</div>
+			<div class="perm-name">Criar</div>
+			<div class="perm-desc">Pode criar novos documentos no espaço</div>
+			<div class="perm-name">Editar</div>
+			<div class="perm-desc">Pode editar o conteúdo dos documentos</div>
+			<div class="perm-name">Apagar</div>
+			<div class="perm-desc">Pode remover documentos do espaço</div>
+			<div class="perm-name">Mover</div>
+			<div class="perm-desc">Pode mover documentos deste espaço para outro espaço</div>
+			<div class="perm-name">Copiar</div>
+			<div class="perm-desc">Pode duplicar documentos</div>
+			<div class="perm-name">Modelos</div>
+			<div class="perm-desc">Pode criar e publicar modelos de documentos</div>
+			<div class="perm-name">Aprovar</div>
+			<div class="perm-desc">Pode aprovar ou rejeitar mudanças no conteúdo de documentos e mover rascunhos para produção.</div>
+			<div class="perm-name">Rascunhos</div>
+			<div class="perm-desc">Pode ver e trabalhar em documentos marcados como rascunho</div>
+			<div class="perm-name">Versões</div>
+			<div class="perm-desc">Pode criar versões de documentos e criar links entre elas</div>
 		</div>
 	</div>
 </div>
@@ -59,7 +59,7 @@
 
 <div class="text-center">
 	{{ui/ui-button color=constants.Color.Gray light=true icon=constants.Icon.Person
-		label="Add Existing User"
+		label="Adicionar novo usuário"
 		onClick=(action "onShowAddModal")}}
     {{#if isAuthProviderDocumize}}
         {{ui/ui-button-gap}}

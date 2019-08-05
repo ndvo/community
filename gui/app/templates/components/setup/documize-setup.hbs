@@ -1,25 +1,25 @@
 <div class="installer">
-	<img src="/assets/img/setup/logo-purple.png" srcset="/assets/img/setup/logo-purple@2x.png" alt="Documize Setup" style="width: 250px; height: 76px;">
+	<img src="/assets/img/setup/logo-purple.png" srcset="/assets/img/setup/logo-purple@2x.png" alt="Configuração do Documize" style="width: 250px; height: 76px;">
 	<Ui::UiSpacer @size="300" />
-	<h1 class="color-theme-700">Setup</h1>
+	<h1 class="color-theme-700">Configuração</h1>
 	<p class="color-gray-800">
-		Review the <a href="https://docs.documize.com/s/VzO9ZqMOCgABGyfW/installation-guides/d/V16L08ucxwABhZF6/installation-guide">installation instructions</a>
+		Confira as <a href="https://docs.documize.com/s/VzO9ZqMOCgABGyfW/installation-guides/d/V16L08ucxwABhZF6/installation-guide">instruções de instalação</a>
 		and recommended <a href="https://docs.documize.com/s/VzO9ZqMOCgABGyfW/installation-guides/d/V2KuM8ICcQABagM5/mysql-specific-database-tuning">database tuning guide</a>
 	</p>
 	<Ui::UiSpacer @size="300" />
 
 	<form {{action "save" on="submit"}}>
 		<div class="form-group">
-			<label>Site name</label>
+			<label>Nome do site</label>
 			{{focus-input id="setup-title" type="text" value=model.title class=(if hasTitleError "form-control is-invalid" "form-control")}}
-			<small class="form-text text-muted">Usually your company or team name</small>
+			<small class="form-text text-muted">Normalmente é o nome da empresa ou da equipe</small>
 		</div>
 		<div class="form-group">
-			<label for="setup-firstname">Firstname</label>
+			<label for="setup-firstname">Primeiro nome</label>
 			{{input id="setup-firstname" type="text" value=model.firstname class=(if hasFirstnameError "form-control is-invalid" "form-control")}}
 		</div>
 		<div class="form-group">
-			<label for="setup-lastname">Lastname</label>
+			<label for="setup-lastname">Último nome</label>
 			{{input id="setup-lastname" type="text" value=model.lastname class=(if hasLastnameError "form-control is-invalid" "form-control")}}
 		</div>
 		<div class="form-group">
@@ -27,15 +27,15 @@
 			{{input id="setup-email" type="email" value=model.email class=(if hasEmailError "form-control is-invalid" "form-control")}}
 		</div>
 		<div class="form-group">
-			<label for="new-password">Password</label>
+			<label for="new-password">Senha</label>
 			{{input id="new-password" type="password" value=model.password class=(if hasPasswordError "form-control is-invalid" "form-control")}}
-			<small class="form-text text-muted">Pick something strong and unique that you don't use anywhere else</small>
+			<small class="form-text text-muted">Escolha uma senha forte e única que você não usa em nenhum outro lugar</small>
 		</div>
 		{{#if (eq model.edition constants.Product.EnterpriseEdition)}}
 			<div class="form-group">
-				<label for="activation-key">Activation Key</label>
+				<label for="activation-key">Chave de ativação</label>
 				{{textarea id="activation-key" value=model.activationKey rows="5" class=(if hasKeyError "form-control is-invalid" "form-control")}}
-				<small class="form-text text-muted">You can get it from <a href="https://www.documize.com/downloads" target="_blank">https://www.documize.com/downloads</a></small>
+				<small class="form-text text-muted">Você pode obter uma em <a href="https://www.documize.com/downloads" target="_blank">https://www.documize.com/downloads</a></small>
 			</div>
 		{{/if}}
 		{{ui/ui-button submit=true color=constants.Color.Green light=true label=buttonLabel onClick=(action "save")}}

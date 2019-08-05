@@ -1,6 +1,6 @@
 {{layout/logo-heading
-	title="Content Blocks"
-	desc="Content blocks provide re-usable content that can be inserted into any document"
+	title="Blocos de condeúdo"
+	desc="Blocos de conteúdo fornecem conteúdo reutilizável que pode ser inserido em qualquer documento"
 	icon=constants.Icon.Blocks}}
 
 <div class="space-admin">
@@ -10,8 +10,8 @@
 				<div class="name">{{block.title}}</div>
 				<div class="desc">{{block.excerpt}}</div>
 				{{#ui/ui-toolbar dark=false light=true raised=true large=false bordered=true}}
-					{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray tooltip="Edit block" onClick=(action "onEdit" block.id)}}
-					{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Delete block" onClick=(action "onShowDeleteDialog" block.id)}}
+					{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray tooltip="Editar bloco" onClick=(action "onEdit" block.id)}}
+					{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Apagar bloco" onClick=(action "onShowDeleteDialog" block.id)}}
 				{{/ui/ui-toolbar}}
 			</div>
 		{{/each}}
@@ -19,7 +19,7 @@
 </div>
 
 {{#if isSpaceAdmin}}
-    {{#ui/ui-dialog title="Delete Content Block" confirmCaption="Delete" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDeleteBlock")}}
-        <p>Are you sure you want to delete this re-usable content block?</p>
+    {{#ui/ui-dialog title="Apagar conteúdo do bloco" confirmCaption="Apagar" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDeleteBlock")}}
+        <p>Tem certeza de que quer apagar este conteúdo reutilizável?</p>
     {{/ui/ui-dialog}}
 {{/if}}

@@ -1,28 +1,28 @@
 <div class="document-meta non-printable">
-	<div class="title">STATUS</div>
+	<div class="title">SITUAÇÃO</div>
 	<div class="{{if (eq document.lifecycle constants.Lifecycle.Draft) "label-draft"}}
 		{{if (eq document.lifecycle constants.Lifecycle.Live) "label-live"}}
 		{{if (eq document.lifecycle constants.Lifecycle.Archived) "label-archived"}}">
 		{{document.lifecycleLabel}}
-		{{#attach-tooltip showDelay=1000}}Lifecycle: Draft &middot; Live &middot; Archived{{/attach-tooltip}}
+		{{#attach-tooltip showDelay=1000}}Ciclo de vida: Rascunho &middot; Produção &middot; Arquivado{{/attach-tooltip}}
 	</div>
 
 	{{#if (eq document.protection constants.ProtectionType.None)}}
 		<div class="label-open">
 			OPEN
-			{{#attach-tooltip showDelay=1000}}Change Control: Open &middot; Protected &middot; Locked{{/attach-tooltip}}
+			{{#attach-tooltip showDelay=1000}}Controle de mudança: Aberto &middot; Protegido &middot; Trancado{{/attach-tooltip}}
 		</div>
 	{{/if}}
 	{{#if (eq document.protection constants.ProtectionType.Review)}}
 		<div class="label-protected">
-			PROTECTED
-			{{#attach-tooltip showDelay=1000}}Change Control: Open &middot; Protected &middot; Locked{{/attach-tooltip}}
+			PROTEGIDO
+			{{#attach-tooltip showDelay=1000}}Controle de mudança: Aberto &middot; Protegido &middot; Trancado{{/attach-tooltip}}
 		</div>
 	{{/if}}
 	{{#if (eq document.protection constants.ProtectionType.Lock)}}
 		<div class="label-locked">
-			LOCKED
-			{{#attach-tooltip showDelay=1000}}Change Control: Open &middot; Protected &middot; Locked{{/attach-tooltip}}
+			TRANCADO
+			{{#attach-tooltip showDelay=1000}}Controle de mudança: Aberto &middot; Protegido &middot; Trancado{{/attach-tooltip}}
 		</div>
 	{{/if}}
 
@@ -41,32 +41,32 @@
 	{{#if document.template}}
 			<div class="label-template non-printable">
 			Template
-			{{#attach-tooltip showDelay=1000}}This is a template{{/attach-tooltip}}
+			{{#attach-tooltip showDelay=1000}}Este é um template{{/attach-tooltip}}
 		</div>
 	{{/if}}
 
 	<Ui::UiSpacer @size="200" />
 
-	<div class="title">CATEGORY / TAG</div>
+	<div class="title">CATEGORIA / ETIQUETA</div>
 	{{#each selectedCategories as |cat|}}
 		<div class="meta-label">
 			<i class="dicon {{constants.Icon.Category}}"/>
 			{{cat.category}}
-			{{#attach-tooltip showDelay=1000}}Category{{/attach-tooltip}}
+			{{#attach-tooltip showDelay=1000}}CATEGORIA{{/attach-tooltip}}
 		</div>
 	{{/each}}
 	{{#each tagz as |t|}}
 		<div class="meta-label">
 			<i class="dicon {{constants.Icon.Tag}}"/>
 			{{t}}
-			{{#attach-tooltip showDelay=1000}}Tag{{/attach-tooltip}}
+			{{#attach-tooltip showDelay=1000}}ETIQUETA{{/attach-tooltip}}
 		</div>
 	{{/each}}
 	{{#if unassigned}}
 		{{#if permissions.spaceManage}}
-			<div class="empty cursor-pointer" {{action "onEditCategory"}}>Unassigned</div>
+			<div class="empty cursor-pointer" {{action "onEditCategory"}}>Não atribuído</div>
 		{{else}}
-			<div class="empty">Unassigned</div>
+			<div class="empty">Não atribuído</div>
 		{{/if}}
 	{{/if}}
 </div>

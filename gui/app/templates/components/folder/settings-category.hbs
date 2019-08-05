@@ -1,13 +1,13 @@
 {{layout/logo-heading
-	title="Categories"
-	desc="Assign categories to documents and decide who can view them"
+	title="Categorias"
+	desc="Atribuir categorias aos documentos e decidir quem pode visualizá-los"
 	icon=constants.Icon.Category}}
 
 <div class="space-admin">
 	<div class="categories">
 		<form class="form" onsubmit={{action "onAdd"}}>
 			<div class="form-group">
-				{{focus-input id="new-category-name" type="text" class="form-control mousetrap" placeholder="Category name" value=newCategory}}
+				{{focus-input id="new-category-name" type="text" class="form-control mousetrap" placeholder="Nome da categoria" value=newCategory}}
 			</div>
 			{{ui/ui-button color=constants.Color.Green light=true
 				label=constants.Label.Add icon=constants.Icon.Category
@@ -29,17 +29,17 @@
 						and viewable by {{cat.users}} users/groups
 					</div>
 					{{#unless cat.access}}
-						<p class="color-red-600 bold-500">You have no view permission for this category</p>
+						<p class="color-red-600 bold-500">Você não tem permissão de visualização nesta categoria</p>
 					{{/unless}}
 				</div>
 				<div class="actions">
 					{{#ui/ui-toolbar dark=false light=true raised=true large=false bordered=true}}
 						{{ui/ui-toolbar-icon icon=constants.Icon.Locked color=constants.Color.Gray
-							tooltip="Set view permissions" onClick=(action "onShowAccessPicker" cat.id)}}
+							tooltip="Definir permissões de visualização" onClick=(action "onShowAccessPicker" cat.id)}}
 						{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray
-							tooltip="Edit category" onClick=(action "onShowEdit" cat.id)}}
+							tooltip="Editar categoria" onClick=(action "onShowEdit" cat.id)}}
 						{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red
-							tooltip="Delete category" onClick=(action "onShowDelete" cat.id)}}
+							tooltip="Apagar categoria" onClick=(action "onShowDelete" cat.id)}}
 					{{/ui/ui-toolbar}}
 				</div>
 			</div>
@@ -50,10 +50,10 @@
 <div id="category-edit-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Edit Category</div>
+			<div class="modal-header">Editar categoria</div>
 			<div class="modal-body">
 				<div class="form-group">
-					{{focus-input id="edit-category-name" type="text" class="form-control mousetrap" placeholder="Category name" value=editName}}
+					{{focus-input id="edit-category-name" type="text" class="form-control mousetrap" placeholder="Nome da categoria" value=editName}}
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -68,9 +68,9 @@
 <div id="category-delete-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Delete Category</div>
+			<div class="modal-header">Apagar categoria</div>
 			<div class="modal-body">
-				<p>Are you sure you want to delete this category?</p>
+				<p>Tem certeza de que quer apagar esta categoria?</p>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.Close dismiss=true}}
@@ -81,15 +81,15 @@
 	</div>
 </div>
 
-{{#ui/ui-dialog title="Set Category Access" confirmCaption="Save" buttonColor=constants.Color.Green show=showCategoryAccess onAction=(action "onGrantAccess")}}
-	<p>Select who can view documents within category</p>
+{{#ui/ui-dialog title="Definir acessos da categoria" confirmCaption="Salvar" buttonColor=constants.Color.Green show=showCategoryAccess onAction=(action "onGrantAccess")}}
+	<p>Escolha quem pode ver documentos nesta categoria</p>
 	<div class="widget-list-picker">
 		<ul class="options">
 			{{#each categoryPermissions as |permission|}}
 				<li class="option {{if permission.selected "selected"}}" {{action "onToggle" permission}}>
 					{{permission.name}}
 					{{#if (eq permission.whoId session.user.id)}}
-						<small class="form-text text-muted d-inline-block">(you)</small>
+						<small class="form-text text-muted d-inline-block">(você)</small>
 					{{/if}}
 					{{#if permission.selected}}
 						<i class="dicon {{constants.Icon.Tick}}"/>

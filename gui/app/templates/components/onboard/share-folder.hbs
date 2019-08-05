@@ -1,11 +1,11 @@
 <div class="onboarding-container">
 	<div class="stage-1">
 		<div class="form-group">
-			<label for="stage-1-firstname">First name</label>
+			<label for="stage-1-firstname">Primeiro nome</label>
 			<input id="stage-1-firstname" type="text" value="" class="form-control form-control-lg">
 		</div>
 		<div class="form-group">
-			<label for="stage-1-lastname">Last name</label>
+			<label for="stage-1-lastname">Último nome</label>
 			<input id="stage-1-lastname" type="text" value="" class="form-control form-control-lg">
 		</div>
 		<Ui::UiSpacer @size="300" />
@@ -14,22 +14,22 @@
 
 	<div class="stage-2">
 		<div class="form-group">
-			<label for="stage-2-password">Choose Password</label>
+			<label for="stage-2-password">Escolha uma senha</label>
 			<input id="stage-2-password" type="password" value="" class="form-control form-control-lg">
-			<small class="form-text text-muted">Between 6 and 50 characters</small>
+			<small class="form-text text-muted">Entre 6 e 50 caracteres</small>
 
 		</div>
 		<div class="form-group">
-			<label for="stage-2-password-confirm">Confirm Password</label>
+			<label for="stage-2-password-confirm">Confirmar a senha</label>
 			<input id="stage-2-password-confirm" type="password" value="" class="form-control form-control-lg">
-			<small class="form-text text-muted">Re-type your chosen password</small>
+			<small class="form-text text-muted">Re-digite a senha escolhida</small>
 		</div>
 		<Ui::UiSpacer @size="300" />
 		{{ui/ui-button id="stage-2-next" color=constants.Color.Green light=true icon=constants.Icon.ArrowRight label=constants.Label.SignIn}}
 	</div>
 
 	<div class="stage-3">
-		<p class="wait">Please wait...</p>
+		<p class="wait">Por favor, aguarde...</p>
 	</div>
 </div>
 
