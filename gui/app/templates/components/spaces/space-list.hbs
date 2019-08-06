@@ -2,11 +2,11 @@
 
 	<div class="text-right">
 		{{#ui/ui-toolbar dark=false light=false raised=false large=false bordered=false}}
-			{{ui/ui-toolbar-icon icon=constants.Icon.Blocks color=constants.Color.Gray tooltip="Complete"
+			{{ui/ui-toolbar-icon icon=constants.Icon.Blocks color=constants.Color.Gray tooltip="Completo"
 				selected=(eq viewDensity "1") onClick=(action "onSwitchView" "1")}}
-			{{ui/ui-toolbar-icon icon=constants.Icon.All color=constants.Color.Gray tooltip="Comfort"
+			{{ui/ui-toolbar-icon icon=constants.Icon.All color=constants.Color.Gray tooltip="Conforto"
 				selected=(eq viewDensity "2") onClick=(action "onSwitchView" "2")}}
-			{{ui/ui-toolbar-label label="—"  color=constants.Color.Gray tooltip="Compact"
+			{{ui/ui-toolbar-label label="—"  color=constants.Color.Gray tooltip="Compacto"
 				selected=(eq viewDensity "3") onClick=(action "onSwitchView" "3")}}
 		{{/ui/ui-toolbar}}
 	</div>
@@ -33,17 +33,17 @@
 							<div class="meta">
 								{{!-- {{#if (eq space.spaceType constants.SpaceType.Public)}}
 									<i class={{concat "dicon " constants.Icon.World}}>
-										{{#attach-tooltip showDelay=1000}}Public space{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Espaço Público{{/attach-tooltip}}
 									</i>
 								{{/if}}
 								{{#if (eq space.spaceType constants.SpaceType.Protected)}}
 									<i class={{concat "dicon " constants.Icon.People}}>
-										{{#attach-tooltip showDelay=1000}}Protected space{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Espaço protegido{{/attach-tooltip}}
 									</i>
 								{{/if}}
 								{{#if (eq space.spaceType constants.SpaceType.Private)}}
 									<i class={{concat "dicon " constants.Icon.Person}}>
-										{{#attach-tooltip showDelay=1000}}Personal space{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Espaço pessoal{{/attach-tooltip}}
 									</i>
 								{{/if}} --}}
 								{{#if space.labelId}}
@@ -60,7 +60,7 @@
 							</div>
 							<div class="stat">
 								<div class="number">{{space.countCategory}}</div>
-								<div class="label">categories</div>
+								<div class="label">categorias</div>
 							</div>
 						</div>
 					{{/if}}

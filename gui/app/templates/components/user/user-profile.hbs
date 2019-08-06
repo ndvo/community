@@ -1,10 +1,10 @@
 <div class="view-profile">
     <div class="form-group">
-        <label for="firstname">Firstname</label>
+        <label for="firstname">Primeiro nome</label>
         {{focus-input id="firstname" type="text" value=model.firstname class=(if hasFirstnameError "form-control is-invalid" "form-control")}}
     </div>
     <div class="form-group">
-        <label for="lastname">Lastname</label>
+        <label for="lastname">Último nome</label>
         {{input id="lastname" type="text" value=model.lastname class=(if hasLastnameError "form-control is-invalid" "form-control")}}
     </div>
     <div class="form-group">
@@ -13,11 +13,11 @@
     </div>
     {{#if isAuthProviderDocumize}}
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Senha</label>
             {{input id="password" type="password" value=password.password class=(if hasPasswordError "form-control is-invalid" "form-control")}}
         </div>
         <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+            <label for="confirmPassword">Confirmar senha</label>
             {{input id="confirmPassword" type="password" value=password.confirmation class=(if hasConfirmPasswordError "form-control is-invalid" "form-control")}}
         </div>
     {{/if}}
