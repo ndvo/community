@@ -1,30 +1,30 @@
 <div class="view-customize">
 	{{#if (eq subscription.status 0)}}
-		<h3 class="color-red-600">Enjoy the Documize free plan!</h3>
+		<h3 class="color-red-600">Aproveite o plano gratuito da Documize!</h3>
 		<a href="https://www.documize.com/checkout?ref=app&l={{appMeta.location}}&id={{subscription.id}}&o={{appMeta.orgId}}&u={{subscription.seats}}&a={{subscription.activeUsers}}&e={{subscription.email}}">
-			{{ui/ui-button color=constants.Color.Yellow light=true label="Upgrade Now"}}
+			{{ui/ui-button color=constants.Color.Yellow light=true label="Atualizar agora"}}
 		</a>
 	{{/if}}
 	{{#if (eq subscription.status 1)}}
-		<h3 class="color-green-600">Nice, you have an active product subscription!</h3>
+		<h3 class="color-green-600">Ótimo, você tem um assinatura de produto ativa!</h3>
 		<a href="https://www.documize.com/checkout?ref=app&l={{appMeta.location}}&id={{subscription.id}}&o={{appMeta.orgId}}&u={{subscription.seats}}&a={{subscription.activeUsers}}&e={{subscription.email}}">
-			{{ui/ui-button color=constants.Color.Yellow light=true label="Change Plan"}}
+			{{ui/ui-button color=constants.Color.Yellow light=true label="Alterar o plano"}}
 		</a>
 	{{/if}}
 	{{#if (eq subscription.status 2)}}
-		<h3 class="color-red-600">Hmm, your product subscription has expired</h3>
+		<h3 class="color-red-600">Hmm, a sua assinatura expirou</h3>
 		<a href="https://www.documize.com/checkout?ref=app&l={{appMeta.location}}&id={{subscription.id}}&o={{appMeta.orgId}}&u={{subscription.seats}}&a={{subscription.activeUsers}}&e={{subscription.email}}">
-			{{ui/ui-button color=constants.Color.Yellow light=true label="Renew"}}
+			{{ui/ui-button color=constants.Color.Yellow light=true label="Renovar"}}
 		</a>
 	{{/if}}
 	{{#if (eq subscription.status 3)}}
-		<h3 class="color-red-600">Hmm, {{subscription.activeUsers}} active user count exceeds permitted {{subscription.seats}} user limit</h3>
+		<h3 class="color-red-600">Hmm, {{subscription.activeUsers}} usuários ativos ultrapassa o limite de {{subscription.seats}} permitidos</h3>
 		<a href="https://www.documize.com/checkout?ref=app&l={{appMeta.location}}&id={{subscription.id}}&o={{appMeta.orgId}}&u={{subscription.seats}}&a={{subscription.activeUsers}}&e={{subscription.email}}">
 			{{ui/ui-button color=constants.Color.Yellow light=true label="Upgrade"}}
 		</a>
 	{{/if}}
 	{{#if (eq subscription.status 4)}}
-		<h3 class="color-red-600">Hmm, your product subscription is not valid</h3>
+		<h3 class="color-red-600">Hmm, a sua assinatura de produto não é válida</h3>
 		<a href="https://www.documize.com/pricing?ref=app">
 			{{ui/ui-button color=constants.Color.Yellow light=true label="Upgrade"}}
 		</a>
@@ -33,69 +33,69 @@
 
 	<form>
 		<div class="form-group">
-			<label for="sub-id">Customer ID</label>
+			<label for="sub-id">ID de cliente</label>
 			{{input id="sub-id" type="text" value=subscription.id class="form-control" readonly=true}}
-			<small class="form-text text-muted">Quote this ID when contacting us</small>
+			<small class="form-text text-muted">Utilize esta ID ao entrar em contato conosco</small>
 		</div>
 		<div class="form-group">
-			<label for="sub-name">Customer Name</label>
+			<label for="sub-name">Nome de cliente</label>
 			{{input id="sub-name" type="text" value=subscription.name class="form-control" readonly=true}}
-			<small class="form-text text-muted">The business or personal name of our customer</small>
+			<small class="form-text text-muted">O nome do negócio ou da pessoa que é nosso cliente</small>
 		</div>
 		<div class="form-group">
-			<label for="sub-email">Contact Email</label>
+			<label for="sub-email">Email de contato</label>
 			{{input id="sub-email" type="email" value=subscription.email class="form-control" readonly=true}}
-			<small class="form-text text-muted">Where we will send product update and billing notices</small>
+			<small class="form-text text-muted">Para onde vamos enviar atualizações do produto e notificações de cobrança</small>
 		</div>
 		<div class="form-group">
-			<label for="sub-seats">Maximum Users</label>
+			<label for="sub-seats">Máximo de usuários</label>
 			{{input id="sub-seats" type="number" value=subscription.seats class="form-control" readonly=true}}
-			<small class="form-text text-muted">Your user pack size &mdash; you have {{subscription.activeUsers}} active users at the moment</small>
+			<small class="form-text text-muted">A sua quantidade de usuários &mdash; você tem {{subscription.activeUsers}} usuários ativos no momento</small>
 		</div>
 
 		{{#if (eq appMeta.location "selfhost")}}
 			<div class="form-group">
-				<label for="sub-start">Start Date</label>
+				<label for="sub-start">Data de início</label>
 				{{input id="sub-start" type="text" value=(formatted-date subscription.start) class="form-control" readonly=true}}
-				<small class="form-text text-muted">When you (re)signed up</small>
+				<small class="form-text text-muted">Quando você (re)assinou</small>
 			</div>
 			<div class="form-group">
-				<label for="sub-end">Renewal Date</label>
+				<label for="sub-end">Data de renovação</label>
 				{{input id="sub-end" type="text" value=(formatted-date subscription.end) class="form-control" readonly=true}}
-				<small class="form-text text-muted">The renewal date of your annual subscription</small>
+				<small class="form-text text-muted">A data de renovação de sua assinatura anual</small>
 			</div>
 			<div class="form-group">
-				<label for="sub-price">Annual Billing</label>
+				<label for="sub-price">Faturamento anual</label>
 				{{input id="sub-price" type="text" value=(formatted-price subscription.price) class="form-control" readonly=true}}
-				<small class="form-text text-muted">What you pay each year</small>
+				<small class="form-text text-muted">O que você paga anualmente</small>
 			</div>
 		{{else}}
 			<div class="form-group">
-				<label for="sub-start">Start of Billing</label>
+				<label for="sub-start">Início do faturamento</label>
 				{{input id="sub-start" type="text" value=(formatted-date subscription.start) class="form-control" readonly=true}}
-				<small class="form-text text-muted">When we first charged your credit card &mdash; charged every 30 days thereafter</small>
+				<small class="form-text text-muted">Quando cobramos o seu cartão de crédito pela primeira vez &mdash; em seguida cobrado a cada 30 dias</small>
 			</div>
 			<div class="form-group">
-				<label for="sub-price">Monthly Amount</label>
+				<label for="sub-price">Valor mensal</label>
 				{{input id="sub-price" type="text" value=(formatted-price subscription.price) class="form-control" readonly=true}}
-				<small class="form-text text-muted">What you pay us each month</small>
+				<small class="form-text text-muted">O que você nos paga mensalmente</small>
 			</div>
 		{{/if}}
 
 		{{#if subscription.trial}}
 			<div class="form-group">
-				<label for="sub-trial">Trial?</label>
+				<label for="sub-trial">Experimentando?</label>
 				{{input id="sub-trial" type="text" value="Yes" class="form-control" readonly=true}}
 			</div>
 		{{/if}}
 		{{#if (eq appMeta.location "selfhost")}}
 			<div class="form-group">
-				<label for="sub-license">Activation Key</label>
+				<label for="sub-license">Chave de ativação</label>
 				{{textarea id="sub-license" value=license rows="10" class=(if licenseError "form-control is-invalid" "form-control")}}
-				<small class="form-text text-muted">The activation key you received after sign-up</small>
+				<small class="form-text text-muted">A chave de ativação que você recebe após assinar</small>
 			</div>
 		{{/if}}
-		{{ui/ui-button color=constants.Color.Green light=true label="Activate" onClick=(action "saveLicense")}}
+		{{ui/ui-button color=constants.Color.Green light=true label="Ativar" onClick=(action "saveLicense")}}
 	</form>
 </div>
 
@@ -104,15 +104,15 @@
 		<Ui::UiSpacer @size="400" />
 		<div class="view-customize">
 			<div class="deactivation-zone">
-				<p>Let us know if you would like to close your account or cancel your subscription.</p>
-				<p>Requests can take up to 24 hours to process.</p>
-				<p><span class="bold-700">WARNING: </span>All data will be deleted so please download a complete backup of all your data.</p>
+				<p>Conte-nos por que você gostaria de encerrar sua conta ou cancelar sua assinatura.</p>
+				<p>Os pedidos podem levar até 24 horas para serem processados.</p>
+				<p><span class="bold-700">AVISO: </span>Todos os dados serão perdidos, por favor, baixe um backup completo de todos os seus dados.</p>
 
 				{{#link-to "customize.backup"}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Run Backup"}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Executar Backup"}}
 				{{/link-to}}
 				{{ui/ui-button-gap}}
-				{{ui/ui-button color=constants.Color.Red light=true label="Close Account" onClick=(action "onRequestClosure")}}
+				{{ui/ui-button color=constants.Color.Red light=true label="Encerrar conta" onClick=(action "onRequestClosure")}}
 			</div>
 		</div>
 	{{/if}}
@@ -121,20 +121,20 @@
 <div id="deactivation-request-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Request Account Closure</div>
+			<div class="modal-header">Solicitar encerramento da conta</div>
 			<div class="modal-body">
                 <form {{action "onEditComment" on="submit"}}>
                     <div class="form-group">
-                        <label for="the-comment">Comment</label>
+                        <label for="the-comment">Comentário</label>
                         {{focus-textarea id="close-comment" class="form-control" rows="5" value=comment}}
-                        <small class="form-text text-muted">We always welcome product feedback</small>
+                        <small class="form-text text-muted">Sempre gostamos de feedback sobre o produto</small>
                     </div>
                 </form>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.Cancel dismiss=true}}
 				{{ui/ui-button-gap}}
-				{{ui/ui-button color=constants.Color.Red light=true label="Close Account" onClick=(action "onDeactivate")}}
+				{{ui/ui-button color=constants.Color.Red light=true label="Encerrar conta" onClick=(action "onDeactivate")}}
 			</div>
 		</div>
 	</div>
@@ -143,10 +143,10 @@
 <div id="deactivation-confirmation-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Deactivation Requested</div>
+			<div class="modal-header">Desativação solicitada</div>
 			<div class="modal-body">
-				<p>Your request has been sent and will be processed shortly.</p>
-				<p>If you haven"t already, please run a backup to download all your data.</p>
+				<p>Seu pedido foi solicitado e será processado em breve.</p>
+				<p>Caso você ainda não tenha feito um backup, execute um backup para baixar todos os seus dados.</p>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.OK dismiss=true}}

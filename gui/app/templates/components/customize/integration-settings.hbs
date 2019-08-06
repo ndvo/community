@@ -1,30 +1,30 @@
 <div class="view-customize">
 	<form>
 		<h2>Jira</h2>
-		<p>Displays issues within documentation</p>
+		<p>Mostrar itens (issues) na documentação</p>
 		<div class="form-group">
 			<label for="jira-url">URL</label>
 			{{focus-input id="jira-url" type="text" value=jiraCreds.url class="form-control"}}
-			<small class="form-text text-muted">Fully qualified domain name for your Jira instance e.g. http://jira.example.org</small>
+			<small class="form-text text-muted">Nome completamente qualificado para sua instância Jira, por exemplo http://jira.exemplo.org</small>
 		</div>
 		<div class="form-group">
-			<label for="jira-username">Username</label>
+			<label for="jira-username">Nome de usuário</label>
 			{{input id="jira-username" type="text" value=jiraCreds.username class="form-control"}}
-			<small class="form-text text-muted">Your Jira login username/email</small>
+			<small class="form-text text-muted">Seu login Jira nome de usuário/email</small>
 		</div>
 		<div class="form-group">
-			<label for="jira-secret">Password</label>
+			<label for="jira-secret">Senha</label>
 			{{input id="jira-secret" type="password" value=jiraCreds.secret class="form-control"}}
-			<small class="form-text text-muted">Provide API Token if using Atlassian Cloud or Password when self-hosting Jira</small>
+			<small class="form-text text-muted">Forneça o Token de API se estiver usando a Nuvem Atrassian ou a Senha se estiver hospedando o Jira</small>
 		</div>
 
 		{{#if session.isGlobalAdmin}}
 			<h2>Trello</h2>
-			<p>Displays boards within documentation</p>
+			<p>Mostrar os quadros na documentação</p>
 			<div class="form-group">
-				<label for="trello-key">App Key</label>
+				<label for="trello-key">Chave da API</label>
 					{{input id="trello-key" type="text" value=trelloCreds.appKey class="form-control"}}
-				<small class="form-text text-muted">See <a href="https://trello.com/app-key">https://trello.com/app-key</a></small>
+				<small class="form-text text-muted">Veja <a href="https://trello.com/app-key">https://trello.com/app-key</a></small>
 			</div>
 		{{/if}}
 

@@ -2,25 +2,25 @@
 	{{#if isAuthProviderKeycloak}}
 		<Ui::UiSpacer @size="300" />
 		{{#if syncInProgress}}
-			{{ui/ui-button color=constants.Color.Gray light=true icon=constants.Icon.Locked label="Keycloak user sync running..."}}
+			{{ui/ui-button color=constants.Color.Gray light=true icon=constants.Icon.Locked label="Sincronização de usuários Keycloak em execução..."}}
 		{{else}}
-			{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Locked label="Sync with Keycloak" onClick=(action "onSyncKeycloak")}}
+			{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Locked label="Sincronizar com Keycloak" onClick=(action "onSyncKeycloak")}}
 		{{/if}}
 	{{/if}}
 
 	{{#if (or isAuthProviderLDAP c)}}
 		<Ui::UiSpacer @size="300" />
 		{{#if syncInProgress}}
-			{{ui/ui-button color=constants.Color.Gray light=true icon=constants.Icon.Locked label="LDAP user sync running..."}}
+			{{ui/ui-button color=constants.Color.Gray light=true icon=constants.Icon.Locked label="Sincronização com LDAP em execução..."}}
 		{{else}}
-			{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Locked label="Sync with LDAP" onClick=(action "onSyncLDAP")}}
+			{{ui/ui-button color=constants.Color.Yellow light=true icon=constants.Icon.Locked label="Sincronizar com LDAP" onClick=(action "onSyncLDAP")}}
 		{{/if}}
 	{{/if}}
 
 	<Ui::UiSpacer @size="300" />
 	<div class="explain-user-perms">
 		<div class="title" {{action "togglePerms"}}>
-			Permissions Explained
+			Permissões Explicadas
 			{{#if showPermExplain}}
 				<i class="dicon {{constants.Icon.ArrowSmallUp}}" />
 			{{else}}
@@ -48,7 +48,7 @@
 	</div>
 
 	<div class="text-center">
-		{{#ui/ui-toolbar dark=false light=false raised=false large=true bordered=false tooltip="Maximum users to display"}}
+		{{#ui/ui-toolbar dark=false light=false raised=false large=true bordered=false tooltip="Máximo de usuários a exibir"}}
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="5" selected=(eq userLimit 5) onClick=(action "onLimit" 5)}}
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="10" selected=(eq userLimit 10) onClick=(action "onLimit" 10)}}
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="25" selected=(eq userLimit 25) onClick=(action "onLimit" 25)}}
@@ -57,7 +57,7 @@
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="250" selected=(eq userLimit 250) onClick=(action "onLimit" 250)}}
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="500" selected=(eq userLimit 500) onClick=(action "onLimit" 500)}}
 			{{ui/ui-toolbar-label color=constants.Color.Gray label="1,000" selected=(eq userLimit 1000) onClick=(action "onLimit" 1000)}}
-			{{ui/ui-toolbar-label color=constants.Color.Gray label="ALL" selected=(eq userLimit 99999) onClick=(action "onLimit" 99999)}}
+			{{ui/ui-toolbar-label color=constants.Color.Gray label="TODOS" selected=(eq userLimit 99999) onClick=(action "onLimit" 99999)}}
 		{{/ui/ui-toolbar}}
 	</div>
 
@@ -72,15 +72,15 @@
 							color=constants.Color.Red
 							light=false
 							icon=constants.Icon.Delete
-							label="Delete selected users"
+							label="Apagar usuários selecionados"
 							onClick=(action "onShowDeleteBulk")}}
 					{{/if}}
 				</th>
-				<th class="no-width">Spaces</th>
-				<th class="no-width">Visible</th>
-				<th class="no-width">Analytics</th>
+				<th class="no-width">Espaços</th>
+				<th class="no-width">Visível</th>
+				<th class="no-width">Analíticos</th>
 				<th class="no-width">Admin</th>
-				<th class="no-width">Active</th>
+				<th class="no-width">Ativos</th>
 				<th class="no-width"></th>
 			</tr>
 		</thead>
@@ -152,10 +152,10 @@
 					</td>
 					<td class="no-width text-center align-middle">
 						{{#ui/ui-toolbar dark=false light=true raised=true large=false bordered=true}}
-							{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray tooltip="Edit user" onClick=(action "onShowEdit" user.id)}}
-							{{ui/ui-toolbar-icon icon=constants.Icon.AddUser color=constants.Color.Gray tooltip="Assign user groups" onClick=(action "onShowGroupsModal" user.id)}}
+							{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray tooltip="Editar usuário" onClick=(action "onShowEdit" user.id)}}
+							{{ui/ui-toolbar-icon icon=constants.Icon.AddUser color=constants.Color.Gray tooltip="Atribuir grupos de usuários" onClick=(action "onShowGroupsModal" user.id)}}
 							{{#unless user.me}}
-								{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Delete user" onClick=(action "onShowDelete" user.id)}}
+								{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Apagar usuário" onClick=(action "onShowDelete" user.id)}}
 							{{/unless}}
 						{{/ui/ui-toolbar}}
 					</td>
@@ -165,22 +165,22 @@
 	</table>
 </div>
 
-{{#ui/ui-dialog title="Delete User" confirmCaption="Delete" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDelete")}}
-	<p>Are you sure you want to delete {{deleteUser.fullname}}?</p>
+{{#ui/ui-dialog title="Apagar usuário" confirmCaption="Apagar" buttonColor=constants.Color.Red show=showDeleteDialog onAction=(action "onDelete")}}
+	<p>Tem certeza de que quer apagar {{deleteUser.fullname}}?</p>
 {{/ui/ui-dialog}}
 
 <div id="edit-user-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">User {{editUser.firstname}} {{editUser.lastname}}</div>
+			<div class="modal-header">Usuário {{editUser.firstname}} {{editUser.lastname}}</div>
 			<div class="modal-body">
 				<form>
 					<div class="form-group">
-						<label for="edit-firstname">Firstname</label>
+						<label for="edit-firstname">Primeiro nome</label>
 						{{input id="edit-firstname" class="form-control" type="text" value=editUser.firstname}}
 					</div>
 					<div class="form-group">
-						<label for="edit-lastname">Lastname</label>
+						<label for="edit-lastname">Último nome</label>
 						{{input id="edit-lastname" type="text" class="form-control" value=editUser.lastname}}
 					</div>
 					<div class="form-group">
@@ -189,14 +189,14 @@
 					</div>
 					{{#if (or isAuthProviderDocumize isDualAuth)}}
 						<div class="form-group">
-							<label for="edit-password">Password</label>
+							<label for="edit-password">Senha</label>
 							{{input id="edit-password" type="password" class="form-control" value=password.password}}
-							<small class="form-text text-muted">Optional new password</small>
+							<small class="form-text text-muted">Nova senha opcional</small>
 						</div>
 						<div class="form-group">
-							<label for="edit-confirmPassword">Confirm Password</label>
+							<label for="edit-confirmPassword">Confirmar senha</label>
 							{{input id="edit-confirmPassword" type="password" class="form-control" value=password.confirmation}}
-							<small class="form-text text-muted">Confirm new password</small>
+							<small class="form-text text-muted">Confirmar nova senha</small>
 						</div>
 					{{/if}}
 				</form>
@@ -213,9 +213,9 @@
 <div id="admin-user-delete-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Delete Users</div>
+			<div class="modal-header">Apagar usuários</div>
 			<div class="modal-body">
-				<p>Are you sure you want to delete selected users?</p>
+				<p>Tem certeza de que quer apagar os usuários selecionados?</p>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.Close dismiss=true}}

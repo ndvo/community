@@ -31,12 +31,12 @@
 	{{/if}}
 
 	<div class="form-group">
-		<label>Public Spaces Viewable By Anonymous Users</label>
+		<label>Espaços Públicos Visíveis por Usuários Anônimos</label>
 		{{x-toggle value=model.general.allowAnonymousAccess size="medium" theme="light" onToggle=(action (mut model.general.allowAnonymousAccess))}}
-		<small class="form-text text-muted">Share content with unauthenticated site visitors</small>
+		<small class="form-text text-muted">Compartilhar conteúdo com visitantes não autenticados</small>
 	</div>
 	<div class="form-group">
-		<label for="conversionEndpoint">Conversion Service URL</label>
+		<label for="conversionEndpoint">Serviço de Conversão de URL</label>
 		{{input id="conversionEndpoint" type="text" value=model.general.conversionEndpoint class=(if hasConversionEndpointInputError "form-control is-invalid" "form-control")}}
 		<small class="form-text text-muted">
 			Endpoint for handling import/export (e.g. https://api.documize.com,
@@ -44,7 +44,7 @@
 		</small>
 	</div>
 	<div class="form-group">
-		<label for="maxTags">Maximum Tags Per Document</label>
+		<label for="maxTags">Máximo de Tags por Documento</label>
 		<select class="form-control" id="maxTags" {{action "change" on="change"}}>
 			<option selected={{is-equal 3 maxTags}} value="3">3</option>
 			<option selected={{is-equal 4 maxTags}} value="4">4</option>
@@ -55,7 +55,7 @@
 			<option selected={{is-equal 9 maxTags}} value="9">9</option>
 			<option selected={{is-equal 10 maxTags}} value="10">10</option>
 		</select>
-		<small class="form-text text-muted">How many tags can be assigned to a document (between 3 and 10 tags)</small>
+		<small class="form-text text-muted">Quantas tags podem ser atribuídas a um documento (entre 3 e 10 tags)</small>
 	</div>
 
 	{{ui/ui-button color=constants.Color.Green light=true icon=constants.Icon.Settings label=constants.Label.Save onClick=(action "save")}}
