@@ -115,7 +115,7 @@
 {{/ui/ui-dialog}}
 
 {{#ui/ui-dialog title="Mover documentos" confirmCaption="Mover" buttonColor=constants.Color.Green show=showMoveDialog onAction=(action "onMoveDocuments")}}
-	<p>Selecion espaço para {{selectedDocuments.length}} {{selectedCaption}}</p>
+	<p>Selecionar espaço para {{selectedDocuments.length}} {{selectedCaption}}</p>
 	{{ui/ui-list-picker items=moveOptions nameField="name" singleSelect=true}}
 {{/ui/ui-dialog}}
 

@@ -1,15 +1,15 @@
 {{#ui/ui-toolbar dark=false light=false raised=false large=false bordered=false}}
 	{{#if (or hasDocuments pinState.isPinned session.authenticated)}}
-		{{#ui/ui-toolbar-dropdown label="Content" arrow=true}}
+		{{#ui/ui-toolbar-dropdown label="Conteúdo" arrow=true}}
 			{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 				<div class="menu">
 					{{#if pinState.isPinned}}
-						<li class="item" {{action "onUnpin"}}>Remove bookmark</li>
+						<li class="item" {{action "onUnpin"}}>Remover marcação</li>
 					{{else if session.authenticated}}
-						<li class="item" {{action "onPin"}}>Bookmark</li>
+						<li class="item" {{action "onPin"}}>Marcar</li>
 					{{/if}}
 					{{#if hasDocuments}}
-						<li class="item" {{action "onShowExport"}}>Download</li>
+						<li class="item" {{action "onShowExport"}}>Baixar</li>
 					{{/if}}
 				</div>
 			{{/attach-popover}}
@@ -17,14 +17,14 @@
 	{{/if}}
 
 	{{#if permissions.documentAdd}}
-		{{#ui/ui-toolbar-dropdown label="New" arrow=true}}
+		{{#ui/ui-toolbar-dropdown label="Novo" arrow=true}}
 			{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 				<div class="menu">
-					<li class="item" {{action "onShowEmptyDocModal"}}>Blank canvas</li>
+					<li class="item" {{action "onShowEmptyDocModal"}}>Em branco</li>
 					{{#if hasTemplates}}
-						<li class="item" {{action "onShowTemplateDocModal"}}>From template</li>
+						<li class="item" {{action "onShowTemplateDocModal"}}>A partir de um modelo</li>
 					{{/if}}
-					<li class="item" {{action "onShowImportDocModal"}}>Import files</li>
+					<li class="item" {{action "onShowImportDocModal"}}>Importar arquivos</li>
 				</div>
 			{{/attach-popover}}
 		{{/ui/ui-toolbar-dropdown}}
@@ -32,19 +32,19 @@
 
 	{{#if (or permissions.spaceOwner permissions.spaceManage)}}
 		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green
-			tooltip="Space settings" linkTo="folder.settings"}}
+			tooltip="Configurações de espaço" linkTo="folder.settings"}}
 	{{/if}}
 {{/ui/ui-toolbar}}
 
 <div id="empty-doc-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Blank Canvas</div>
+			<div class="modal-header">Em branco</div>
 			<div class="modal-body">
 				<form onsubmit={{action "onAddEmptyDoc"}}>
 					<div class="form-group">
-						<label for="empty-doc-name">Document Name</label>
-						{{input id="empty-doc-name" type="text" value=emptyDocName placeholder="Enter name" class=(if emptyDocNameError "form-control mousetrap is-invalid" "form-control mousetrap") autocomplete="off"}}
+						<label for="empty-doc-name">Nome do documento</label>
+						{{input id="empty-doc-name" type="text" value=emptyDocName placeholder="Insira o nome" class=(if emptyDocNameError "form-control mousetrap is-invalid" "form-control mousetrap") autocomplete="off"}}
 					</div>
 				</form>
 			</div>
@@ -59,12 +59,12 @@
 <div id="template-doc-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">From Template</div>
+			<div class="modal-header">A partir de um modelo</div>
 			<div class="modal-body">
 				<form onsubmit={{action "onAddTemplateDoc"}}>
 					<div class="form-group">
-						<label for="template-doc-name">Document Name</label>
-						{{input id="template-doc-name" type="text" value=templateDocName placeholder="Enter name" class=(if templateDocNameError "form-control mousetrap is-invalid" "form-control mousetrap") autocomplete="off"}}
+						<label for="template-doc-name">Nome do documento</label>
+						{{input id="template-doc-name" type="text" value=templateDocName placeholder="Insira um nome" class=(if templateDocNameError "form-control mousetrap is-invalid" "form-control mousetrap") autocomplete="off"}}
 					</div>
 					<div class="widget-list-picker">
 						<ul class="options">
@@ -93,7 +93,7 @@
 <div id="import-doc-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Import Files</div>
+			<div class="modal-header">Importar arquivos</div>
 			<div class="modal-body">
 				<div class="import-zone">
 					<button id="import-document-button" type="button" class="dmz-button-yellow-light text-center">
@@ -120,15 +120,15 @@
 <div id="space-export-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Export as HTML</div>
+			<div class="modal-header">Exportar como HTML</div>
 			<div class="modal-body">
 				{{#if hasCategories}}
-					<p>Export all space content as HTML or select categories.</p>
+					<p>Exportar todo conteúdo do espaço, ou categorias selecionadas, como HTML.</p>
 					{{#each categories as |cat|}}
 						{{#ui/ui-checkbox selected=cat.exportSelected}}{{cat.category}}{{/ui/ui-checkbox}}
 					{{/each}}
 				{{else}}
-					<p>All space content will be exported as a single self-enclosed HTML file.</p>
+					<p>Todo o conteúdo do espaço será exportado como um único arquivo HTML.</p>
 				{{/if}}
 			</div>
 			<div class="modal-footer">
