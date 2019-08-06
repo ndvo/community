@@ -1,6 +1,6 @@
 {{layout/logo-heading
 	title="PlantUML"
-	desc="Create UML diagrams from a plain text language (http://plantuml.com)"
+	desc="Crie diagramas UML a partir de uma linguagem em texto puro (http://plantuml.com)"
 	icon=constants.Icon.Integrations}}
 
 {{#section/base-editor document=document folder=folder page=page busy=waiting
@@ -8,18 +8,18 @@
 
 	<div class="section-plantuml-diagram">
 		<div class="form-group">
-			<label><a href="http://plantuml.com/" target="_blank">PlantUML Diagram</a></label>
+			<label><a href="http://plantuml.com/" target="_blank">Diagrama PlantUML</a></label>
 			<Ui::UiSpacer @size="200" />
 			<div>
-				<p>Insert sample diagrams:</p>
+				<p>Inserir diagramas de exemplo:</p>
 				<p>
-					{{ui/ui-button color=constants.Color.Gray light=true label="Sequence" onClick=(action "onInsertSequence")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Use Case" onClick=(action "onInsertUseCase")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Class" onClick=(action "onInsertClass")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Activity" onClick=(action "onInsertActivity")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Activity (new syntax)" onClick=(action "onInsertActivityNew")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Component" onClick=(action "onInsertComponent")}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="State" onClick=(action "onInsertState")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Sequência" onClick=(action "onInsertSequence")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Caso de uso" onClick=(action "onInsertUseCase")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Classe" onClick=(action "onInsertClass")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Atividade" onClick=(action "onInsertActivity")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Atividade (nova sintaxe)" onClick=(action "onInsertActivityNew")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Componente" onClick=(action "onInsertComponent")}}
+					{{ui/ui-button color=constants.Color.Gray light=true label="Estado" onClick=(action "onInsertState")}}
 				</p>
 			</div>
 			{{focus-textarea value=diagramText rows=30 id=editorId class="diagram-editor form-control mousetrap"}}

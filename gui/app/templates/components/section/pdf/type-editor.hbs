@@ -1,37 +1,37 @@
-{{#section/base-editor-inline document=document folder=folder page=page tip="Select PDF to render" isDirty=(action "isDirty") onCancel=(action "onCancel") onAction=(action "onAction")}}
+{{#section/base-editor-inline document=document folder=folder page=page tip="Selecione o PDF a ser renderizado" isDirty=(action "isDirty") onCancel=(action "onCancel") onAction=(action "onAction")}}
 
     <div class="form-group">
         <label for="new-space-name">PDF</label>
         {{input type="text" class="form-control mousetrap" placeholder="click upload button below" value=pdfName readonly=true}}
-        <small class="form-text text-muted">First PDF uploaded will be used</small>
+        <small class="form-text text-muted">O primeiro PDF carregado será utilizado</small>
     </div>
 
     <div class="form-group">
-        <label for="new-space-name">Preview Height</label>
+        <label for="new-space-name">Tamanho do preview</label>
         {{input type="number" class="form-control mousetrap" placeholder="e.g. 700" value=pdfOption.height}}
-        <small class="form-text text-muted">How tall is the PDF preview?</small>
+        <small class="form-text text-muted">Quão alto é o preview do PDF?</small>
     </div>
 
     <div class="form-group">
-        <label for="new-space-name">Start Page</label>
+        <label for="new-space-name">Página inicial</label>
         {{input type="number" class="form-control mousetrap" placeholder="e.g. 1" value=pdfOption.startPage}}
-        <small class="form-text text-muted">The first page to display</small>
+        <small class="form-text text-muted">A primeira página a ser exibida</small>
     </div>
 
     <div class="form-group">
-        <label for="new-space-name">Sidebar</label>
+        <label for="new-space-name">Barra lateral</label>
         <select onchange={{action "onSetSidebar" value="target.value"}} class="form-control">
             <option value="none" selected={{is-equal pdfOption.sidebar "none"}}>
-                None
+                Nada
             </option>
             <option value="bookmarks" selected={{is-equal pdfOption.sidebar "bookmarks"}}>
-                Bookmarks
+                Marcações
             </option>
             <option value="thumbs" selected={{is-equal pdfOption.sidebar "thumbs"}}>
-                Thumbnails
+                Miniaturas
             </option>
         </select>
-        <small class="form-text text-muted">Optionally, set sidebar content</small>
+        <small class="form-text text-muted">Opcionalmente, defina o conteúdo da barra lateral</small>
     </div>
 
 {{/section/base-editor-inline}}

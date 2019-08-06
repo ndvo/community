@@ -1,6 +1,6 @@
 {{layout/logo-heading
 	title="Papertrail"
-	desc="Display your cloud-based logs (https://papertrailapp.com)"
+	desc="Mostra seus logs em nuvem (https://papertrailapp.com)"
 	icon=constants.Icon.Integrations}}
 
 {{#section/base-editor document=document folder=folder page=page busy=waiting
@@ -10,9 +10,9 @@
 		<div class="grid-cell-1">
 			<form {{action "auth" on="submit"}} >
 				<div class="form-group">
-					<label>Papertrail API Key</label>
+					<label>Chave de API do Papertrail</label>
 					{{focus-input id="papertrail-apitoken" type="password" value=config.APIToken class="form-control"}}
-					<small class="form-text text-muted">API Token (from your profile)</small>
+					<small class="form-text text-muted">Token da API (do seu perfil)</small>
 				</div>
 				{{ui/ui-button color=constants.Color.Green light=true label=constants.Label.Authenticate onClick=(action "auth")}}
 			</form>
@@ -21,19 +21,19 @@
 			{{#if authenticated}}
 				<form {{action "onAction" on="submit"}}>
 					<div class="form-group">
-						<label for="papertrail-query">Search query</label>
+						<label for="papertrail-query">Texto da busca</label>
 						{{input id="papertrail-query" type="text" class="form-control mousetrap" value=config.query}}
-						<small class="form-text text-muted">Determine which log entries you want to display e.g. bob OR ("some phrase" AND sally)</small>
+						<small class="form-text text-muted">Determine que entradas de log você quer mostrar, por exemplo, bob OR ("alguma frase" AND sally)</small>
 					</div>
 					<div class="form-group">
-						<label for="papertrail-max">Maximum results</label>
+						<label for="papertrail-max">Máximo de resultados</label>
 						{{input id="papertrail-max" type="number" class="form-control mousetrap" value=config.max}}
-						<small class="form-text text-muted">How many log entries do you want?</small>
+						<small class="form-text text-muted">Quantas entradas de log você quer?</small>
 					</div>
 					<div class="form-group">
-						<label for="group-dropdown">Group</label>
+						<label for="group-dropdown">Grupo</label>
 						{{ui/ui-select id="group-dropdown" prompt="<group>" content=options.groups action=(action "onGroupsChange") optionValuePath="id" optionLabelPath="name" selection=config.group}}
-						<small class="form-text text-muted">Optional Papertrail group</small>
+						<small class="form-text text-muted">Grupo Opcional do Papertrail</small>
 					</div>
 				</form>
 			{{/if}}

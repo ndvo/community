@@ -3,7 +3,7 @@
 	{{#if documents}}
 		<div class="text-right">
 			{{#ui/ui-toolbar dark=false light=false raised=false large=false bordered=false}}
-				{{#ui/ui-toolbar-icon icon=constants.Icon.Sort color=constants.Color.Gray tooltip="Sort"}}
+				{{#ui/ui-toolbar-icon icon=constants.Icon.Sort color=constants.Color.Gray tooltip="Ordenar"}}
 					{{#attach-popover class="ember-attacher-popper" hideOn="click" showOn="click" isShown=false placement="bottom-end" as |attacher|}}
 						<i class="dicon {{constants.Icon.Cross}} closer" {{action attacher.hide}}/>
 						<div class="container">
@@ -12,13 +12,13 @@
 							<div class="text-center">
 								<ul class="ui-option-picker ui-option-picker-horiz">
 									<li class="option {{if sortBy.name "selected"}}" {{action "onSetSort" "name"}}>
-										<div class="text">Name</div>
+										<div class="text">Nome</div>
 									</li>
 									<li class="option {{if sortBy.created "selected"}}" {{action "onSetSort" "created"}}>
-										<div class="text">Created date</div>
+										<div class="text">Data de criação</div>
 									</li>
 									<li class="option {{if sortBy.updated "selected"}}" {{action "onSetSort" "updated"}}>
-										<div class="text">Last updated</div>
+										<div class="text">Última atualização</div>
 									</li>
 								</ul>
 							</div>
@@ -28,10 +28,10 @@
 							<div class="text-center">
 								<ul class="ui-option-picker ui-option-picker-horiz">
 									<li class="option {{if sortBy.asc "selected"}}" {{action "onSetSort" "asc"}}>
-										<div class="text">Ascending</div>
+										<div class="text">Ascendente</div>
 									</li>
 									<li class="option {{if sortBy.desc "selected"}}" {{action "onSetSort" "desc"}}>
-										<div class="text">Descending</div>
+										<div class="text">Descendentes</div>
 									</li>
 								</ul>
 							</div>
@@ -66,7 +66,7 @@
 					<div class="space">{{result.space}}</div>
 					<div class="snippet">{{result.excerpt}}</div>
 					{{#if result.template}}
-						<div class="template">Template</div>
+						<div class="template">Modelo</div>
 					{{/if}}
 					{{folder/document-tags documentTags=result.tags}}
 				{{/link-to}}

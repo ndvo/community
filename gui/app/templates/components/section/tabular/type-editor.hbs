@@ -13,7 +13,7 @@
 		{{ui/ui-button
 			color=constants.Color.Yellow
 			light=true
-			label="IMPORT CSV"
+			label="IMPORTAR CSV"
 			onClick=(action "onShowImportModal")}}
 	</div>
 
@@ -26,18 +26,18 @@
 	<div id={{modalId}} class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">CSV To Table</div>
+				<div class="modal-header">CSV para Tabela</div>
 				<div class="modal-body">
-					<p class="color-yellow-700">Note: existing table data will be replaced</p>
+					<p class="color-yellow-700">Nota: os dados que atualmente estão na tabela serão substituídos</p>
 					<div class="form-group">
-						<label for="csv-data">Paste CSV Data</label>
+						<label for="csv-data">Colar dados CSV</label>
 						{{textarea id="csv-data" value=importData class="form-control" rows="10"}}
-						<small class="form-text text-muted">Common delimiters are supported</small>
+						<small class="form-text text-muted">Delimitadores comuns são suportados</small>
 					</div>
 					<div class="form-group">
-						<label>First Row Header</label>
+						<label>Primeira linha como cabeçalho</label>
 						{{x-toggle value=importOption.headers size="medium" theme="light" onToggle=(action (mut importOption.headers))}}
-						<small class="form-text text-muted">Enable if first row contains headers</small>
+						<small class="form-text text-muted">Marque se a primeira linha contém cabeçalhos</small>
 					</div>
 				</div>
 				<div class="modal-footer">

@@ -57,13 +57,13 @@
 							{{#attach-popover class="ember-attacher-popper" hideOn="clickout click" showOn="click" isShown=false}}
 								<div class="menu">
 									{{#if hasSpacePins}}
-										<li class="item header">Spaces</li>
+										<li class="item header">Espaços</li>
 										{{#each spacePins as |pin|}}
 											<a class="item" href="#" {{action "jumpToPin" pin}} data-id= {{pin.id}} id="pin-{{pin.id}}">{{pin.pin}}</a>
 										{{/each}}
 									{{/if}}
 									{{#if hasDocumentPins}}
-										<li class="item header">Content</li>
+										<li class="item header">Conteúdo</li>
 										{{#each documentPins as |pin|}}
 											<a class="item" href="#" {{action "jumpToPin" pin}} data-id= {{pin.id}} id="pin-{{pin.id}}">{{pin.pin}}</a>
 										{{/each}}

@@ -1,23 +1,23 @@
 {{layout/logo-heading
 	title="Jira Software"
-	desc="Jira provides issue tracking and agile software"
+	desc="O Jira é um software para acompanhamento de projetos ágeis"
 	icon=constants.Icon.Integrations}}
 
 {{#section/base-editor document=document folder=folder page=page busy=waiting isDirty=(action "isDirty") onCancel=(action "onCancel") onAction=(action "onAction")}}
 	{{#if session.isAdmin}}
 		{{#link-to "customize.integrations"}}
-			{{ui/ui-button color=constants.Color.Green light=true label="Configure Jira Connector"}}
+			{{ui/ui-button color=constants.Color.Green light=true label="Configure o conector Jira"}}
 		{{/link-to}}
 		<Ui::UiSpacer @size="300" />
 	{{else}}
 		{{#unless authenticated}}
-			<p class="color-green-600">Your Documize administrator needs to provide Jira connection details before usage.</p>
+			<p class="color-green-600">O seu administrador Documize precisa prover detalhes da coneção do Jira antes do uso.</p>
 		{{/unless}}
 	{{/if}}
 	{{#if authenticated}}
 		<form {{action "onPreview"}}>
 			<div class="form-group">
-				<label for="jira-jql">Jira Query Language</label>
+				<label for="jira-jql">Linguagem de Busca do Jira</label>
 				{{focus-input id="jira-jql" type="text" value=config.jql class="form-control" placeholder="e.g. (status = resolved AND project = SysAdmin) OR assignee = bobsmith"}}
 			</div>
 			{{ui/ui-button color=constants.Color.Yellow light=true label=constants.Label.Preview submit=true onClick=(action "onPreview")}}
@@ -27,6 +27,6 @@
 		{{{issuesGrid}}}
 	{{else}}
 		<Ui::UiSpacer @size="300" />
-		<p class="color-gray-700">Jira connector not authenticated</p>
+		<p class="color-gray-700">O conector Jira não foi autenticado</p>
 	{{/if}}
 {{/section/base-editor}}
