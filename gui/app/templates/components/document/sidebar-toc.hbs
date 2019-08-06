@@ -30,12 +30,12 @@
 					<span class="numbering">{{item.page.numbering}}</span>
 					{{#if (or item.userHasChangePending userHasNewPagePending)}}
 						<span class="color-red-600">[*]&nbsp;</span>
-						{{#attach-tooltip showDelay=1000}}Pending changes{{/attach-tooltip}}
+						{{#attach-tooltip showDelay=1000}}Mudanças pendentes{{/attach-tooltip}}
 					{{/if}}
 					{{#if (or permissions.documentApprove roles.documentApprove)}}
 						{{#if item.changeAwaitingReview}}
 							<span class="color-green-700">[*]&nbsp;</span>
-							{{#attach-tooltip showDelay=1000}}Awaiting approval{{/attach-tooltip}}
+							{{#attach-tooltip showDelay=1000}}Aguardando aprovação{{/attach-tooltip}}
 						{{/if}}
 					{{/if}}
 					{{item.page.title}}
