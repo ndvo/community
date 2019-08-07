@@ -42,7 +42,7 @@
 
 	<Layout::Grid::Content>
 		{{#if (eq model.folder.labelId "")}}
-			<div class="space-label">Unclassified</div>
+			<div class="space-label">Não classificado</div>
 		{{else}}
 			<div class="space-label" style={{{model.label.bgColor}}}>{{model.label.name}}</div>
 			{{#if (gt model.labelSpaces.length 1)}}

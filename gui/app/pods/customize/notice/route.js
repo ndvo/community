@@ -28,6 +28,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Notices');
+		this.get('browser').setTitle('Informações');
 	}
 });

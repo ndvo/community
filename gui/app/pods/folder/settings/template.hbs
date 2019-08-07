@@ -12,7 +12,7 @@
 	<Layout::Grid::Sidebar>
 		<div class="sidebar-content">
 			<div class="section">
-				<div class="title">space management</div>
+				<div class="title">Gerenciamento de espaço</div>
 				<div class="list">
 					<div class="item {{if (eq tab "general") "selected"}}" {{action "onTab" "general"}}>
 						<i class={{concat "dicon " constants.Icon.Settings}} />
@@ -20,26 +20,26 @@
 					</div>
 					<div class="item {{if (eq tab "categories") "selected"}}" {{action "onTab" "categories"}}>
 						<i class={{concat "dicon " constants.Icon.Category}} />
-						<div class="name">Categories</div>
+						<div class="name">Categorias</div>
 					</div>
 					<div class="item {{if (eq tab "permissions") "selected"}}" {{action "onTab" "permissions"}}>
 						<i class={{concat "dicon " constants.Icon.Locked}} />
-						<div class="name">Permissions</div>
+						<div class="name">Permissões</div>
 					</div>
 					<div class="item {{if (eq tab "blocks") "selected"}}" {{action "onTab" "blocks"}}>
 						<i class={{concat "dicon " constants.Icon.Blocks}} />
-						<div class="name">Content Blocks</div>
+						<div class="name">Blocos de Conteúdo</div>
 					</div>
 					{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 						<div class="item {{if (eq tab "archived") "selected"}}" {{action "onTab" "archived"}}>
 							<i class={{concat "dicon " constants.Icon.Archive}} />
-							<div class="name">Archived Content</div>
+							<div class="name">Conteúdo Arquivado</div>
 						</div>
 					{{/if}}
 					{{#if model.permissions.spaceOwner}}
 						<div class="item {{if (eq tab "deletion") "selected"}}" {{action "onTab" "deletion"}}>
 							<i class={{concat "dicon " constants.Icon.Delete}} />
-							<div class="name">Deletion</div>
+							<div class="name">Remoção</div>
 						</div>
 					{{/if}}
 				</div>

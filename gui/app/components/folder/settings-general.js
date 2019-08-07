@@ -51,9 +51,9 @@ export default Component.extend(AuthMixin, Notifier, {
 		let folder = this.get('space');
 
 		let spaceTypeOptions = A([]);
-		spaceTypeOptions.pushObject({id: constants.SpaceType.Private, label: 'Private - viewable only by me'});
-		spaceTypeOptions.pushObject({id: constants.SpaceType.Protected, label: 'Protected - access is restricted to selected users'});
-		spaceTypeOptions.pushObject({id: constants.SpaceType.Public, label: 'Public - can be seen by everyone'});
+		spaceTypeOptions.pushObject({id: constants.SpaceType.Private, label: 'Privado - visível apenas por mim'});
+		spaceTypeOptions.pushObject({id: constants.SpaceType.Protected, label: 'Protegido - acesso é restrito a usuários selecionados'});
+		spaceTypeOptions.pushObject({id: constants.SpaceType.Public, label: 'Público - pode ser visto por qualquer um'});
 		this.set('spaceTypeOptions', spaceTypeOptions);
 		this.set('spaceType', spaceTypeOptions.findBy('id', folder.get('spaceType')));
 

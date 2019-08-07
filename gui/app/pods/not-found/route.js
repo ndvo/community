@@ -19,6 +19,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
 	activate: function () {
 		this._super(...arguments);
-		this.browser.setTitleWithoutSuffix('Aw, Snap!');
+		this.browser.setTitleWithoutSuffix('Ah, não!');
 	}
 });

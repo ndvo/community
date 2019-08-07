@@ -1,13 +1,13 @@
 {{#if (is-equal model.mode "login")}}
     <div class="sso-box">
-        <p>Authenticating with Keycloak...</p>
+        <p>Autenticando-se com Keycloak...</p>
         <img src="/assets/img/busy-gray.gif">
     </div>
 {{/if}}
 
 {{#if (is-equal model.mode "reject")}}
     <div class="sso-box">
-        <p>Keycloak authentication failure</p>
+        <p>Falha na autenticação do Keycloak</p>
         <p>{{model.message}}</p>
     </div>
 {{/if}}

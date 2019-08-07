@@ -28,6 +28,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Product Changelog');
+		this.get('browser').setTitle('Registro das mudanças do produto');
 	}
 });

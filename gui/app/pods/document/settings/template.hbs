@@ -14,31 +14,31 @@
 	<Layout::Grid::Sidebar>
 		<div class="sidebar-content">
 			<div class="section">
-				<div class="title">Options</div>
+				<div class="title">Opções</div>
 				<div class="list">
 					<div class="item {{if (eq tab "general") "selected"}}" {{action "onTab" "general"}}>
 						<i class={{concat "dicon " constants.Icon.Settings}} />
-						<div class="name">Content Settings</div>
+						<div class="name">Configurações de conteúdo</div>
 					</div>
 					<div class="item {{if (eq tab "category") "selected"}}" {{action "onTab" "category"}}>
 						<i class={{concat "dicon " constants.Icon.Category}} />
-						<div class="name">Categories</div>
+						<div class="name">Categorias</div>
 					</div>
 					<div class="item {{if (eq tab "tag") "selected"}}" {{action "onTab" "tag"}}>
 						<i class={{concat "dicon " constants.Icon.Tag}} />
-						<div class="name">Tags</div>
+						<div class="name">Etiquetas</div>
 					</div>
 					{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 						{{#if model.permissions.documentApprove}}
 							<div class="item {{if (eq tab "protection") "selected"}}" {{action "onTab" "protection"}}>
 								<i class={{concat "dicon " constants.Icon.Locked}} />
-								<div class="name">Change Control</div>
+								<div class="name">Controle de mudanças</div>
 							</div>
 						{{/if}}
 						{{#if model.permissions.documentVersion}}
 							<div class="item {{if (eq tab "versions") "selected"}}" {{action "onTab" "versions"}}>
 								<i class={{concat "dicon " constants.Icon.Copy}} />
-								<div class="name">Versions</div>
+								<div class="name">Versões</div>
 							</div>
 						{{/if}}
 					{{/if}}

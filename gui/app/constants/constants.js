@@ -66,9 +66,9 @@ let constants = EmberObject.extend({
 		Lock: 1,
 		Review: 2,
 
-		NoneLabel: 'Changes permitted without approval',
-		LockLabel: 'Locked, changes not permitted',
-		ReviewLabel: 'Changes require approval before publication'
+		NoneLabel: 'Mudanças permitidas sem aprovação',
+		LockLabel: 'Trancado, mudanças não permitidas',
+		ReviewLabel: 'Mudanças necessitam aprovação antes da publicação'
 	},
 
 	// Document
@@ -78,9 +78,9 @@ let constants = EmberObject.extend({
 		Majority: 2,
 		Unanimous: 3,
 
-		AnybodyLabel: 'Approval required from any approver',
-		MajorityLabel: 'Majority approval required from approvers',
-		UnanimousLabel: 'Unanimous approval required from all approvers'
+		AnybodyLabel: 'Aprovação necessária por qualquer aprovador',
+		MajorityLabel: 'Aprovação necessária pela maioria dos aprovadores',
+		UnanimousLabel: 'Aprovação unânime necessária de todos os aprovadores'
 	},
 
 	// Section
@@ -105,7 +105,7 @@ let constants = EmberObject.extend({
 	},
 
 	EveryoneUserId: '0',
-	EveryoneUserName: "Everyone",
+	EveryoneUserName: "Todos",
 
 	// Document
 	Lifecycle: { // eslint-disable-line ember/avoid-leaking-state-in-ember-objects
@@ -113,9 +113,9 @@ let constants = EmberObject.extend({
 		Live: 1,
 		Archived: 2,
 
-		DraftLabel: 'Draft',
-		LiveLabel: 'Live',
-		ArchivedLabel: 'Archived',
+		DraftLabel: 'Rascunho',
+		LiveLabel: 'Produção',
+		ArchivedLabel: 'Arquivado',
 	},
 
 	// Document Version -- document.groupId links different versions of documents together
@@ -149,7 +149,7 @@ let constants = EmberObject.extend({
 	// and the revenue-generating proprietary edition.
 	Product: { // eslint-disable-line ember/avoid-leaking-state-in-ember-objects
 		// CommunityEdition is AGPL licensed open core of product.
-		CommunityEdition: 'Community',
+		CommunityEdition: 'Comunidade',
 
 		// EnterpriseEdition is proprietary closed-source product.
 		EnterpriseEdition: 'Enterprise',
@@ -329,48 +329,48 @@ let constants = EmberObject.extend({
 	},
 
 	Label: { // eslint-disable-line ember/avoid-leaking-state-in-ember-objects
-		Add: 'Add',
-		Activate: "Activate",
-		Approve: 'Approve',
-		Authenticate: 'Authenticate',
-		Cancel: 'Cancel',
-		Close: 'Close',
-		Copy: 'Copy',
-		Delete: 'Delete',
-		Duplicate: 'Duplicate',
-		Edit: 'Edit',
-		Export: 'Export',
-		File: 'File',
-		Import: 'Import',
-		Insert: 'Insert',
-		Invite: 'Invite',
-		Join: 'Join',
-		Leave: 'Leave',
+		Add: 'Adicionar',
+		Activate: "Ativar",
+		Approve: 'Aprovar',
+		Authenticate: 'Autenticar',
+		Cancel: 'Cancelar',
+		Close: 'Fechar',
+		Copy: 'Copiar',
+		Delete: 'Apagar',
+		Duplicate: 'Duplicar',
+		Edit: 'Editar',
+		Export: 'Exportar',
+		File: 'Arquivo',
+		Import: 'Importar',
+		Insert: 'Inserir',
+		Invite: 'Convite',
+		Join: 'Ingressar',
+		Leave: 'Sair',
 		Login: 'Login',
-		Move: 'Move',
-		Next: 'Next',
+		Move: 'Mover',
+		Next: 'Próximo',
 		OK: 'OK',
-		Preview: 'Preview',
-		Print: 'Print',
-		Publish: 'Publish',
-		Reject: 'Reject',
-		Remove: 'Remove',
-		Reply: 'Reply',
-		Reset: 'Reset',
-		Restore: 'Restore',
-		Request: 'Request',
-		Save: 'Save',
-		Search: 'Search',
-		Send: 'Send',
-		Share: 'Share',
-		SignIn: 'Sign In',
-		Sort: 'Sort',
-		Space: 'Space',
-		Spaces: 'Spaces',
-		Unassigned: 'Unassigned',
-		Update: 'Update',
-		Upload: 'Upload',
-		Version: 'Version'
+		Preview: 'Prever',
+		Print: 'Imprimir',
+		Publish: 'Publicar',
+		Reject: 'Rejeitar',
+		Remove: 'Remover',
+		Reply: 'Responder',
+		Reset: 'Reiniciar',
+		Restore: 'Restaurar',
+		Request: 'Solicitar',
+		Save: 'Salvar',
+		Search: 'Buscar',
+		Send: 'Enviar',
+		Share: 'Compartilhar',
+		SignIn: 'Autenticar-se',
+		Sort: 'Ordenar',
+		Space: 'Espaço',
+		Spaces: 'Espaços',
+		Unassigned: 'Não atribuído',
+		Update: 'Atualizar',
+		Upload: 'Carregar',
+		Version: 'Versão'
 	}
 });
 

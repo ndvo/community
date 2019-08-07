@@ -20,6 +20,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Groups');
+		this.get('browser').setTitle('Grupos');
 	}
 });

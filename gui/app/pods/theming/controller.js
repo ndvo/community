@@ -16,19 +16,19 @@ export default Controller.extend(Notifier, {
 
 	actions: {
 		onSuccess() {
-			this.notifySuccess('Saved');
+			this.notifySuccess('Salvo');
 		},
 
 		onInfo() {
-			this.notifyInfo('Working');
+			this.notifyInfo('Trabalhando');
 		},
 
 		onWarn() {
-			this.notifyWarn('Failed to get');
+			this.notifyWarn('Falha ao buscar');
 		},
 
 		onError() {
-			this.notifyError('Unable to save changes');
+			this.notifyError('Não foi possível salvar as mudanças');
 		},
 
 		onButtonClick(v) {

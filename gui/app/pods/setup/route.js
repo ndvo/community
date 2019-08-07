@@ -28,7 +28,7 @@ export default Route.extend({
 			dbname: document.head.querySelector("[property=dbname]").content,
 			dbhash: pwd,
 			title: "",
-			message: "This Documize instance contains all our team documentation",
+			message: "Esta instância do documize conctém toda a documentação da nossa equipe",
 			allowAnonymousAccess: false,
 			firstname: "",
 			lastname: "",
@@ -41,7 +41,7 @@ export default Route.extend({
 
 	activate() {
 		$('body').addClass('background-color-theme-100');
-		document.title = "Welcome to the Documize installer";
+		document.title = "Bem-vindo ao instalador do Documize";
 	},
 
 	deactivate() {

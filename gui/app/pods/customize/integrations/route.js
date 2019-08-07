@@ -42,6 +42,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Integrations');
+		this.get('browser').setTitle('Integrações');
 	}
 });

@@ -29,6 +29,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Space Labels');
+		this.get('browser').setTitle('Rótulos de espaço');
 	}
 });

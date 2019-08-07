@@ -34,6 +34,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('General Settings');
+		this.get('browser').setTitle('Configurações gerais');
 	}
 });

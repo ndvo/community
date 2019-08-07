@@ -32,6 +32,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('SMTP Settings');
+		this.get('browser').setTitle('Configurações do SMTP');
 	}
 });

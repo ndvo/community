@@ -12,7 +12,7 @@
 				{{/if}}
 				{{#if session.isAdmin}}
 					{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green
-						tooltip="Space settings" linkTo="customize"}}
+						tooltip="Configurações de espaço" linkTo="customize"}}
 				{{/if}}
 			{{/ui/ui-toolbar}}
 		{{/if}}
@@ -23,24 +23,24 @@
 	<Layout::Grid::Sidebar>
 		<div class="sidebar-content">
 			<div class="section">
-				<div class="title">filter</div>
+				<div class="title">filtro</div>
 				<div class="list">
 					<div class="item {{if (eq selectedView "all") "selected"}}" {{action "onSelect" "all"}}>
 						<i class={{concat "dicon " constants.Icon.All}} />
-						<div class="name">All ({{model.spaces.length}})</div>
+						<div class="name">Todos ({{model.spaces.length}})</div>
 					</div>
 					<div class="item {{if (eq selectedView "public") "selected"}}" {{action "onSelect" "public"}}>
 						<i class={{concat "dicon " constants.Icon.World}} />
-						<div class="name">Public ({{publicSpaces.length}})</div>
+						<div class="name">Público ({{publicSpaces.length}})</div>
 					</div>
 					{{#if session.authenticated}}
 						<div class="item {{if (eq selectedView "protected") "selected"}}" {{action "onSelect" "protected"}}>
 							<i class={{concat "dicon " constants.Icon.People}} />
-							<div class="name">Protected ({{protectedSpaces.length}})</div>
+							<div class="name">Protegido ({{protectedSpaces.length}})</div>
 						</div>
 						<div class="item {{if (eq selectedView "personal") "selected"}}" {{action "onSelect" "personal"}}>
 							<i class={{concat "dicon " constants.Icon.Person}} />
-							<div class="name">Personal ({{personalSpaces.length}})</div>
+							<div class="name">Pessoal ({{personalSpaces.length}})</div>
 						</div>
 					{{/if}}
 				</div>
@@ -49,7 +49,7 @@
 			<Ui::UiSpacer @size="300" />
 
 			<div class="section">
-				<div class="title">label</div>
+				<div class="title">Rótulo</div>
 				{{#if labels}}
 					<div class="list">
 						{{#each labels as |label|}}
@@ -62,7 +62,7 @@
 						{{/each}}
 					</div>
 				{{else}}
-					<div class="empty">No labels</div>
+					<div class="empty">Sem rótulos</div>
 				{{/if}}
 			</div>
 		</div>
@@ -76,22 +76,22 @@
 		<div class="modal" tabindex="-1" role="dialog" id="add-space-modal">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
-					<div class="modal-header">New Space</div>
+					<div class="modal-header">Novo espaço</div>
 					<div class="modal-body">
 						<form onsubmit={{action "onAddSpace"}}>
 							<div class="form-group">
-								<label for="new-space-name">Name</label>
-								{{input type="text" id="new-space-name" class="form-control mousetrap" placeholder="Space name" value=spaceName}}
-								<small class="form-text text-muted">Characters and numbers only</small>
+								<label for="new-space-name">Nome</label>
+								{{input type="text" id="new-space-name" class="form-control mousetrap" placeholder="Nome do espaço" value=spaceName}}
+								<small class="form-text text-muted">Apenas caracteres e números</small>
 							</div>
 
 							<div class="form-group">
-								<label>Description</label>
-								{{focus-input id="space-desc" type="text" value=spaceDesc class="form-control" placeholder="Space description" autocomplete="off"}}
+								<label>Descrição</label>
+								{{focus-input id="space-desc" type="text" value=spaceDesc class="form-control" placeholder="Descrição de espaço" autocomplete="off"}}
 							</div>
 
 							<div class="form-group">
-								<label>Icon</label>
+								<label>Ícone</label>
 								<div class="ui-icon-picker">
 									<ul class="list">
 										{{#each iconList as |icon|}}
@@ -104,9 +104,9 @@
 							</div>
 
 							<div class="form-group">
-								<label>Label</label>
+								<label>Rótulo</label>
 								<ul class="space-label-picker">
-									<li class="label none {{if (eq spaceLabel "") "selected"}}" {{action "onSetLabel" ""}}>None</li>
+									<li class="label none {{if (eq spaceLabel "") "selected"}}" {{action "onSetLabel" ""}}>Nenhum</li>
 									{{#each labels as |label|}}
 										<li class="label {{if (eq spaceLabel label.id) "selected"}}"
 											style={{label.bgColor}}
@@ -118,14 +118,14 @@
 							</div>
 
 							<div class="form-group">
-								<label for="clone-space-dropdown">Clone Space</label>
+								<label for="clone-space-dropdown">Clonar espaço</label>
 								{{ui/ui-select id="clone-space-dropdown" content=spaces prompt="select space" action=(action "onCloneSpaceSelect") optionValuePath="id" optionLabelPath="name" selection=clonedSpace}}
-								<small id="emailHelp" class="form-text text-muted">Copy templates, permissions, documents from existing space</small>
+								<small id="emailHelp" class="form-text text-muted">Copiar modelos, permissões e documentos de um espaço existente</small>
 								<div class="margin-top-10" />
 								{{#if hasClone}}
-									{{#ui/ui-checkbox selected=copyTemplate}}Copy templates{{/ui/ui-checkbox}}
-									{{#ui/ui-checkbox selected=copyPermission}}Copy permissions{{/ui/ui-checkbox}}
-									{{#ui/ui-checkbox selected=copyDocument}}Copy documents{{/ui/ui-checkbox}}
+									{{#ui/ui-checkbox selected=copyTemplate}}Copiar modelos{{/ui/ui-checkbox}}
+									{{#ui/ui-checkbox selected=copyPermission}}Copiar permissões{{/ui/ui-checkbox}}
+									{{#ui/ui-checkbox selected=copyDocument}}Copiar documentos{{/ui/ui-checkbox}}
 								{{/if}}
 							</div>
 						</form>

@@ -33,6 +33,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Users');
+		this.get('browser').setTitle('Usuários');
 	}
 });

@@ -20,6 +20,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Manage Spaces');
+		this.get('browser').setTitle('Gerenciar Espaços');
 	}
 });
