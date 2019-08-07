@@ -1,5 +1,17 @@
 ### Fork
 
+Esta é uma versão em Português do Brasil do Documize.
+
+Não há nenhuma funcionalidade adicional. O objetivo é possibilitar a avaliação
+e uso da ferramenta por falantes da língua portuguesa até que o suporte a
+múltiplos idiomas seja implementado no Documize.
+
+Contribuições para a tradução são bem-vindas.
+
+A tradução é feita diretamente no código-fonte e, por isso, os tradutores precisam ter noções de:
+- Go
+- Javascript
+- Ember.js
 
 This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
 
