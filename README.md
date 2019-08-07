@@ -1,10 +1,19 @@
-### Fork
+## Translation Branch - PT-BR
 
-Esta é uma versão em Português do Brasil do Documize.
+This branch has no additional functionality, it only offers a translation of the master branch into Brazilian Portuguese.
 
-Não há nenhuma funcionalidade adicional. O objetivo é possibilitar a avaliação
-e uso da ferramenta por falantes da língua portuguesa até que o suporte a
-múltiplos idiomas seja implementado no Documize.
+This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
+
+This effort is being done as part of an evaluation to choose the best suite to be used within SPU, a Brazilian public organization.
+
+### Brazilian Portuguese - Português do Brasil
+
+Esta é uma tradução para o Português do Brasil do Documize.
+
+Este ramo não propõe qualquer funcionalidade adicional.
+O único propósito é oferecer a aplicação em português brasileiro.
+
+O objetivo é possibilitar a avaliação e uso da ferramenta por falantes da língua portuguesa até que o suporte a múltiplos idiomas seja implementado no Documize.
 
 Contribuições para a tradução são bem-vindas.
 
@@ -13,10 +22,6 @@ A tradução é feita diretamente no código-fonte e, por isso, os tradutores pr
 - Javascript
 - Ember.js
 
-This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
-
-
-This effort is being done as part of an evaluation to choose the best suite to be used within SPU, a Brazilian public organization.
 
 ***
 
