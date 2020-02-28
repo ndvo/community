@@ -44,8 +44,13 @@ export default Component.extend(Notifier, ModalMixin, {
 		let authenticated = this.get('session.authenticated');
 		let notEmpty = this.get('pages.length') > 0;
 
-		if (notEmpty && authenticated && permissions.get('documentEdit') && this.get('document.protection') === constants.ProtectionType.None) return true;
-		if (notEmpty && authenticated && permissions.get('documentApprove') && this.get('document.protection') === constants.ProtectionType.Review) return true;
+		if (notEmpty && authenticated && permissions.get('documentEdit')
+			&& (this.get('document.protection') !== constants.ProtectionType.Lock)) {
+				return true;
+		}
+
+		// if (notEmpty && authenticated && permissions.get('documentEdit') && this.get('document.protection') === constants.ProtectionType.None) return true;
+		// if (notEmpty && authenticated && permissions.get('documentApprove') && this.get('document.protection') === constants.ProtectionType.Review) return true;
 
 		return false;
 	}),
@@ -74,7 +79,7 @@ export default Component.extend(Notifier, ModalMixin, {
 		this._super(...arguments);
 
 		let pageId = this.get('page.id');
-		let url = this.get('appMeta.appHost') +
+		let url = window.location.protocol + '//' + this.get('appMeta.appHost') +
 			this.get('router').generate('document.index', {queryParams: {currentPageId: pageId}});
 		let self = this;
 

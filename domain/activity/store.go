@@ -29,16 +29,16 @@ type Store struct {
 }
 
 // RecordUserActivity logs user initiated data changes.
-func (s Store) RecordUserActivity(ctx domain.RequestContext, activity activity.UserActivity) (err error) {
+func (s Store) RecordUserActivity(ctx domain.RequestContext, activity activity.UserActivity) {
 	activity.OrgID = ctx.OrgID
 	activity.UserID = ctx.UserID
 	activity.Created = time.Now().UTC()
 
-	_, err = ctx.Transaction.Exec(s.Bind("INSERT INTO dmz_user_activity (c_orgid, c_userid, c_spaceid, c_docid, c_sectionid, c_sourcetype, c_activitytype, c_metadata, c_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+	_, err := ctx.Transaction.Exec(s.Bind("INSERT INTO dmz_user_activity (c_orgid, c_userid, c_spaceid, c_docid, c_sectionid, c_sourcetype, c_activitytype, c_metadata, c_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
 		activity.OrgID, activity.UserID, activity.SpaceID, activity.DocumentID, activity.SectionID, activity.SourceType, activity.ActivityType, activity.Metadata, activity.Created)
 
 	if err != nil {
-		err = errors.Wrap(err, "execute record user activity")
+		s.Runtime.Log.Error("execute record user activity", err)
 	}
 
 	return
@@ -46,7 +46,7 @@ func (s Store) RecordUserActivity(ctx domain.RequestContext, activity activity.U
 
 // GetDocumentActivity returns the metadata for a specified document.
 func (s Store) GetDocumentActivity(ctx domain.RequestContext, id string) (a []activity.DocumentActivity, err error) {
-	qry := s.Bind(`SELECT a.id, DATE(a.c_created) AS created, a.c_orgid AS orgid,
+	qry := s.Bind(`SELECT a.id, a.c_created AS created, a.c_orgid AS orgid,
         COALESCE(a.c_userid, '') AS userid, a.c_spaceid AS spaceid,
         a.c_docid AS documentid, a.c_sectionid AS sectionid, a.c_activitytype AS activitytype,
         a.c_metadata AS metadata,

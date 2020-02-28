@@ -138,14 +138,10 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 		SpaceID:      sp.RefID,
 		SourceType:   activity.SourceTypeSpace,
 		ActivityType: activity.TypeCreated})
-	if err != nil {
-		ctx.Transaction.Rollback()
-		h.Runtime.Log.Error(method, err)
-	}
 
 	ctx.Transaction.Commit()
 
@@ -444,15 +440,10 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 		SpaceID:      sp.RefID,
 		SourceType:   activity.SourceTypeSpace,
 		ActivityType: activity.TypeRead})
-
-	if err != nil {
-		ctx.Transaction.Rollback()
-		h.Runtime.Log.Error(method, err)
-	}
 
 	ctx.Transaction.Commit()
 
@@ -487,11 +478,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	method := "space.update"
 	ctx := domain.GetRequestContext(r)
 
-	if !ctx.Editor {
-		response.WriteForbiddenError(w)
-		return
-	}
-
 	spaceID := request.Param(r, "spaceID")
 	if len(spaceID) == 0 {
 		response.WriteMissingDataError(w, method, "spaceID")
@@ -521,6 +507,13 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sp.RefID = spaceID
+
+	// Check permissions (either Documize admin OR space owner/manager).
+	canManage := perm.CanManageSpace(ctx, *h.Store, spaceID)
+	if !canManage && !ctx.Administrator {
+		response.WriteForbiddenError(w)
+		return
+	}
 
 	// Retreive previous record for comparison later.
 	prev, err := h.Store.Space.Get(ctx, spaceID)
@@ -655,14 +648,10 @@ func (h *Handler) Remove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 		SpaceID:      id,
 		SourceType:   activity.SourceTypeSpace,
 		ActivityType: activity.TypeDeleted})
-	if err != nil {
-		ctx.Transaction.Rollback()
-		h.Runtime.Log.Error(method, err)
-	}
 
 	ctx.Transaction.Commit()
 
@@ -762,14 +751,10 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 		SpaceID:      id,
 		SourceType:   activity.SourceTypeSpace,
 		ActivityType: activity.TypeDeleted})
-	if err != nil {
-		h.Runtime.Rollback(ctx.Transaction)
-		response.WriteServerError(w, method, err)
-	}
 
 	h.Runtime.Commit(ctx.Transaction)
 

@@ -23,6 +23,7 @@ export default Component.extend({
 		let page = this.get('page');
 		return `wysiwyg-editor-${page.id}`;
 	}),
+	scrollFix: false,
 
 	didReceiveAttrs() {
 		this._super(...arguments);
@@ -32,13 +33,20 @@ export default Component.extend({
 	didInsertElement() {
 		this._super(...arguments);
 
+		if ($('html').css('overflow-y') === 'scroll') {
+			this.set('scrollFix', true);
+			$('html').css('overflow-y', 'unset');
+		} else {
+			this.set('scrollFix', false);
+		}
+
 		schedule('afterRender', () => {
 			let options = {
-				cache_suffix: '?v=505',
+				cache_suffix: '?v=513',
 				selector: '#' + this.get('editorId'),
 				relative_urls: false,
 				browser_spellcheck: true,
-				gecko_spellcheck: false,
+				contextmenu: false,
 				statusbar: false,
 				inline: false,
 				paste_data_images: true,
@@ -75,6 +83,7 @@ export default Component.extend({
 					{ text: 'Fsharp', value: 'fsharp' },
 					{ text: 'Git', value: 'git' },
 					{ text: 'Go', value: 'go' },
+					{ text: 'GraphQL', value: 'graphql' },
 					{ text: 'Haskell', value: 'haskell' },
 					{ text: 'HTML', value: 'markup' },
 					{ text: 'HTTP', value: 'http' },
@@ -93,6 +102,7 @@ export default Component.extend({
 					{ text: 'Ruby', value: 'ruby' },
 					{ text: 'Rust', value: 'rust' },
 					{ text: 'Sass SCSS', value: 'scss' },
+					{ text: 'Shell', value: 'bash' },
 					{ text: 'SQL', value: 'sql' },
 					{ text: 'Swift', value: 'swift' },
 					{ text: 'TypeScript', value: 'typescript' },
@@ -100,7 +110,7 @@ export default Component.extend({
 					{ text: 'YAML', value: 'yaml' }
 				],
 				plugins: [
-					'advlist autolink autoresize lists link image charmap print hr anchor pagebreak',
+					'advlist autolink autoresize lists link image charmap print hr pagebreak',
 					'searchreplace wordcount visualblocks visualchars code codesample fullscreen',
 					'insertdatetime media nonbreaking save table directionality',
 					'template paste textpattern imagetools'
@@ -111,13 +121,14 @@ export default Component.extend({
 					'formatselect fontsizeselect | bold italic underline strikethrough superscript subscript blockquote | forecolor backcolor link unlink',
 					'outdent indent bullist numlist | alignleft aligncenter alignright alignjustify | table uploadimage image media codesample'
 				],
+				toolbar_sticky: true,
 				save_onsavecallback: function () {
 					Mousetrap.trigger('ctrl+s');
 				}
 			};
 
 			if (typeof tinymce === 'undefined') {
-				$.getScript('/tinymce/tinymce.min.js?v=505', function () {
+				$.getScript('/tinymce/tinymce.min.js?v=513', function () {
 					window.tinymce.dom.Event.domLoaded = true;
 					tinymce.baseURL = '//' + window.location.host + '/tinymce';
 					tinymce.suffix = '.min';
@@ -133,6 +144,11 @@ export default Component.extend({
 		this._super(...arguments);
 
 		tinymce.EditorManager.execCommand('mceRemoveEditor', true, this.get('editorId'));
+
+		if (this.get('scrollFix')) {
+			this.set('scrollFix', false);
+			$('html').css('overflow-y', 'scroll');
+		}
 	},
 
 	actions: {

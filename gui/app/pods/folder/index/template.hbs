@@ -66,12 +66,17 @@
 			meta=model.folder.icon}}
 
 		{{folder/documents-list
+                numDocuments=model.documents.length
 			documents=filteredDocs
 			spaces=model.folders
 			space=model.folder
 			templates=model.templates
 			permissions=model.permissions
+			categoryFilter=category
 			sortBy=sortBy
+			onPin=(action "onPin")
+			onUnpin=(action "onUnpin")
+            onPinSequence=(action "onPinSequence")
 			onFiltered=(action "onFiltered")
 			onExportDocument=(action "onExportDocument")
 			onDeleteDocument=(action "onDeleteDocument")

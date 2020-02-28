@@ -34,6 +34,7 @@ import (
 	"github.com/documize/community/domain/store"
 	"github.com/documize/community/model/attachment"
 	"github.com/documize/community/model/audit"
+	cm "github.com/documize/community/model/category"
 	"github.com/documize/community/model/doc"
 	"github.com/documize/community/model/page"
 	pm "github.com/documize/community/model/permission"
@@ -247,17 +248,10 @@ func (h *Handler) SaveAs(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = h.Store.Space.IncrementContentCount(ctx, doc.SpaceID)
-	if err != nil {
-		ctx.Transaction.Rollback()
-		response.WriteServerError(w, method, err)
-		h.Runtime.Log.Error(method, err)
-		return
-	}
-
 	// Commit and return new document template
 	ctx.Transaction.Commit()
 
+	h.Store.Space.SetStats(ctx, doc.SpaceID)
 	h.Store.Audit.Record(ctx, audit.EventTypeTemplateAdd)
 
 	doc, err = h.Store.Document.Get(ctx, docID)
@@ -434,16 +428,33 @@ func (h *Handler) Use(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = h.Store.Space.IncrementContentCount(ctx, d.SpaceID)
-	if err != nil {
-		ctx.Transaction.Rollback()
-		response.WriteServerError(w, method, err)
-		h.Runtime.Log.Error(method, err)
-		return
+	// If document has no categories then we use
+	// default categories for the space.
+	if len(cats) == 0 {
+		cats, err = h.Store.Category.GetBySpace(ctx, d.SpaceID)
+		if err != nil {
+			h.Runtime.Log.Error("fetch default categories for new document", err)
+		}
+		for ic := range cats {
+			if cats[ic].IsDefault {
+				c := cm.Member{}
+				c.OrgID = ctx.OrgID
+				c.SpaceID = d.SpaceID
+				c.RefID = uniqueid.Generate()
+				c.DocumentID = d.RefID
+				c.CategoryID = cats[ic].RefID
+
+				err = h.Store.Category.AssociateDocument(ctx, c)
+				if err != nil {
+					h.Runtime.Log.Error("apply default category to new document", err)
+				}
+			}
+		}
 	}
 
 	ctx.Transaction.Commit()
 
+	h.Store.Space.SetStats(ctx, d.SpaceID)
 	h.Store.Audit.Record(ctx, audit.EventTypeTemplateUse)
 
 	nd, err := h.Store.Document.Get(ctx, documentID)

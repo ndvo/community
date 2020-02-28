@@ -14,6 +14,7 @@ package document
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"sort"
@@ -33,6 +34,7 @@ import (
 	"github.com/documize/community/model/activity"
 	"github.com/documize/community/model/attachment"
 	"github.com/documize/community/model/audit"
+	"github.com/documize/community/model/category"
 	"github.com/documize/community/model/doc"
 	"github.com/documize/community/model/link"
 	"github.com/documize/community/model/page"
@@ -87,17 +89,11 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+		h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 			SpaceID:      document.SpaceID,
 			DocumentID:   document.RefID,
 			SourceType:   activity.SourceTypeDocument,
 			ActivityType: activity.TypeRead})
-
-		if err != nil {
-			ctx.Transaction.Rollback()
-			h.Runtime.Log.Error(method, err)
-			return
-		}
 
 		ctx.Transaction.Commit()
 	}
@@ -189,10 +185,26 @@ func (h *Handler) BySpace(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Sort document list by title.
-	sort.Sort(doc.ByName(filtered))
+	sortedDocs := doc.SortedDocs{}
 
-	response.WriteJSON(w, filtered)
+	for j := range filtered {
+		if filtered[j].Sequence == doc.Unsequenced {
+			sortedDocs.Unpinned = append(sortedDocs.Unpinned, filtered[j])
+		} else {
+			sortedDocs.Pinned = append(sortedDocs.Pinned, filtered[j])
+		}
+	}
+
+	// Sort document list by title.
+	sort.Sort(doc.ByName(sortedDocs.Unpinned))
+
+	// Sort document list by sequence.
+	sort.Sort(doc.BySeq(sortedDocs.Pinned))
+
+	final := sortedDocs.Pinned
+	final = append(final, sortedDocs.Unpinned...)
+
+	response.WriteJSON(w, final)
 }
 
 // Update updates an existing document using the format described
@@ -230,27 +242,28 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	d.RefID = documentID
 
-	ctx.Transaction, err = h.Runtime.Db.Beginx()
-	if err != nil {
+	var ok bool
+	ctx.Transaction, ok = h.Runtime.StartTx(sql.LevelReadUncommitted)
+	if !ok {
+		h.Runtime.Log.Info("unable to start transaction " + method)
 		response.WriteServerError(w, method, err)
-		h.Runtime.Log.Error(method, err)
 		return
 	}
 
 	// If space changed for document, remove document categories.
 	oldDoc, err := h.Store.Document.Get(ctx, documentID)
 	if err != nil {
-		ctx.Transaction.Rollback()
+		h.Runtime.Rollback(ctx.Transaction)
 		response.WriteServerError(w, method, err)
 		h.Runtime.Log.Error(method, err)
 		return
 	}
 
 	if oldDoc.SpaceID != d.SpaceID {
-		h.Store.Category.RemoveDocumentCategories(ctx, d.RefID)
+		_, _ = h.Store.Category.RemoveDocumentCategories(ctx, d.RefID)
 		err = h.Store.Document.MoveActivity(ctx, documentID, oldDoc.SpaceID, d.SpaceID)
 		if err != nil {
-			ctx.Transaction.Rollback()
+			h.Runtime.Rollback(ctx.Transaction)
 			response.WriteServerError(w, method, err)
 			h.Runtime.Log.Error(method, err)
 			return
@@ -259,7 +272,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	err = h.Store.Document.Update(ctx, d)
 	if err != nil {
-		ctx.Transaction.Rollback()
+		h.Runtime.Rollback(ctx.Transaction)
 		response.WriteServerError(w, method, err)
 		h.Runtime.Log.Error(method, err)
 		return
@@ -271,7 +284,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	if len(d.GroupID) > 0 {
 		err = h.Store.Document.UpdateGroup(ctx, d)
 		if err != nil {
-			ctx.Transaction.Rollback()
+			h.Runtime.Rollback(ctx.Transaction)
 			response.WriteServerError(w, method, err)
 			h.Runtime.Log.Error(method, err)
 			return
@@ -308,7 +321,12 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	ctx.Transaction.Commit()
+	h.Runtime.Commit(ctx.Transaction)
+
+	_ = h.Store.Space.SetStats(ctx, d.SpaceID)
+	if oldDoc.SpaceID != d.SpaceID {
+		_ = h.Store.Space.SetStats(ctx, oldDoc.SpaceID)
+	}
 
 	h.Store.Audit.Record(ctx, audit.EventTypeDocumentUpdate)
 
@@ -410,16 +428,9 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 			ActivityType: activity.TypeDeleted})
 	}
 
-	err = h.Store.Space.DecrementContentCount(ctx, doc.SpaceID)
-	if err != nil {
-		ctx.Transaction.Rollback()
-		response.WriteServerError(w, method, err)
-		h.Runtime.Log.Error(method, err)
-		return
-	}
-
 	ctx.Transaction.Commit()
 
+	h.Store.Space.SetStats(ctx, doc.SpaceID)
 	h.Store.Audit.Record(ctx, audit.EventTypeDocumentDelete)
 
 	go h.Indexer.DeleteDocument(ctx, documentID)
@@ -480,17 +491,12 @@ func (h *Handler) SearchDocuments(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+			h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 				SpaceID:      "",
 				DocumentID:   "",
 				Metadata:     options.Keywords,
 				SourceType:   activity.SourceTypeSearch,
 				ActivityType: activity.TypeSearched})
-
-			if err != nil {
-				ctx.Transaction.Rollback()
-				h.Runtime.Log.Error(method, err)
-			}
 
 			ctx.Transaction.Commit()
 		}
@@ -526,17 +532,12 @@ func (h *Handler) recordSearchActivity(ctx domain.RequestContext, q []search.Que
 		}
 
 		if _, isExisting := prev[q[i].DocumentID]; !isExisting {
-			err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+			h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 				SpaceID:      q[i].SpaceID,
 				DocumentID:   q[i].DocumentID,
 				Metadata:     keywords,
 				SourceType:   activity.SourceTypeSearch,
 				ActivityType: activity.TypeSearched})
-
-			if err != nil {
-				ctx.Transaction.Rollback()
-				h.Runtime.Log.Error(method, err)
-			}
 
 			prev[q[i].DocumentID] = true
 		}
@@ -556,7 +557,6 @@ func (h *Handler) FetchDocumentData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// document
 	document, err := h.Store.Document.Get(ctx, id)
 	if err == sql.ErrNoRows {
 		response.WriteNotFoundError(w, method, id)
@@ -573,7 +573,7 @@ func (h *Handler) FetchDocumentData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Don't serve archived document
+	// Don't serve archived document.
 	if document.Lifecycle == workflow.LifecycleArchived {
 		response.WriteForbiddenError(w)
 		return
@@ -581,6 +581,37 @@ func (h *Handler) FetchDocumentData(w http.ResponseWriter, r *http.Request) {
 
 	// Check if draft document can been seen by user.
 	if document.Lifecycle == workflow.LifecycleDraft && !permission.CanViewDrafts(ctx, *h.Store, document.SpaceID) {
+		response.WriteForbiddenError(w)
+		return
+	}
+
+	// If document has been assigned one or more categories,
+	// we check to see if user can view this document.
+	cat, err := h.Store.Category.GetDocumentCategoryMembership(ctx, document.RefID)
+	if err != nil && err != sql.ErrNoRows {
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+	perm, err := h.Store.Permission.GetUserCategoryPermissions(ctx, ctx.UserID)
+	if err != nil && err != sql.ErrNoRows {
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+	see := []category.Category{}
+	for _, c := range cat {
+		for _, p := range perm {
+			if p.RefID == c.RefID {
+				see = append(see, c)
+				break
+			}
+		}
+	}
+
+	// User cannot view document if document has categories assigned
+	// but user cannot see any of them.
+	if len(cat) > 0 && len(see) == 0 {
 		response.WriteForbiddenError(w)
 		return
 	}
@@ -683,16 +714,11 @@ func (h *Handler) FetchDocumentData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if document.Lifecycle == workflow.LifecycleLive {
-		err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+		h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 			SpaceID:      document.SpaceID,
 			DocumentID:   document.RefID,
 			SourceType:   activity.SourceTypeDocument,
 			ActivityType: activity.TypeRead})
-
-		if err != nil {
-			ctx.Transaction.Rollback()
-			h.Runtime.Log.Error(method, err)
-		}
 	}
 
 	ctx.Transaction.Commit()
@@ -756,7 +782,7 @@ func (h *Handler) Export(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(export))
+	_, _ = w.Write([]byte(export))
 }
 
 // Duplicate makes a copy of a document.
@@ -981,6 +1007,228 @@ func (h *Handler) Duplicate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		go h.Indexer.DeleteDocument(ctx, d.RefID)
 	}
+
+	response.WriteEmpty(w)
+}
+
+// Pin marks existing document with sequence number so that it
+// appears at the top-most space view.
+func (h *Handler) Pin(w http.ResponseWriter, r *http.Request) {
+	method := "document.Pin"
+	ctx := domain.GetRequestContext(r)
+
+	documentID := request.Param(r, "documentID")
+	if len(documentID) == 0 {
+		response.WriteMissingDataError(w, method, "documentID")
+		return
+	}
+
+	var ok bool
+	ctx.Transaction, ok = h.Runtime.StartTx(sql.LevelReadUncommitted)
+	if !ok {
+		h.Runtime.Log.Info("unable to start transaction " + method)
+		response.WriteServerError(w, method, errors.New("unable to start transaction"))
+		return
+	}
+
+	d, err := h.Store.Document.Get(ctx, documentID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+
+	if !permission.CanManageSpace(ctx, *h.Store, d.SpaceID) {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteForbiddenError(w)
+		return
+	}
+
+	// Calculate the next sequence number for this newly pinned document.
+	seq, err := h.Store.Document.PinSequence(ctx, d.SpaceID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		h.Runtime.Log.Error(method, err)
+		response.WriteServerError(w, method, err)
+		return
+	}
+
+	err = h.Store.Document.Pin(ctx, documentID, seq+1)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+		SpaceID:      d.SpaceID,
+		DocumentID:   documentID,
+		SourceType:   activity.SourceTypeDocument,
+		ActivityType: activity.TypePinned})
+
+	h.Runtime.Commit(ctx.Transaction)
+
+	h.Store.Audit.Record(ctx, audit.EventTypeDocPinAdd)
+
+	response.WriteEmpty(w)
+}
+
+// Unpin removes an existing document from the space pinned list.
+func (h *Handler) Unpin(w http.ResponseWriter, r *http.Request) {
+	method := "document.Unpin"
+	ctx := domain.GetRequestContext(r)
+
+	documentID := request.Param(r, "documentID")
+	if len(documentID) == 0 {
+		response.WriteMissingDataError(w, method, "documentID")
+		return
+	}
+
+	var ok bool
+	ctx.Transaction, ok = h.Runtime.StartTx(sql.LevelReadUncommitted)
+	if !ok {
+		h.Runtime.Log.Info("unable to start transaction " + method)
+		response.WriteServerError(w, method, errors.New("unable to start transaction"))
+		return
+	}
+
+	d, err := h.Store.Document.Get(ctx, documentID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+
+	if !permission.CanManageSpace(ctx, *h.Store, d.SpaceID) {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteForbiddenError(w)
+		return
+	}
+
+	err = h.Store.Document.Unpin(ctx, documentID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+		SpaceID:      d.SpaceID,
+		DocumentID:   documentID,
+		SourceType:   activity.SourceTypeDocument,
+		ActivityType: activity.TypeUnpinned})
+
+	h.Runtime.Commit(ctx.Transaction)
+
+	h.Store.Audit.Record(ctx, audit.EventTypeDocPinRemove)
+
+	response.WriteEmpty(w)
+}
+
+// PinMove moves pinned document up or down in the sequence.
+func (h *Handler) PinMove(w http.ResponseWriter, r *http.Request) {
+	method := "document.PinMove"
+	ctx := domain.GetRequestContext(r)
+
+	documentID := request.Param(r, "documentID")
+	if len(documentID) == 0 {
+		response.WriteMissingDataError(w, method, "documentID")
+		return
+	}
+
+	direction := request.Query(r, "direction")
+	if len(direction) == 0 {
+		response.WriteMissingDataError(w, method, "direction")
+		return
+	}
+
+	var ok bool
+	ctx.Transaction, ok = h.Runtime.StartTx(sql.LevelReadUncommitted)
+	if !ok {
+		h.Runtime.Log.Info("unable to start transaction " + method)
+		response.WriteServerError(w, method, errors.New("unable to start transaction"))
+		return
+	}
+
+	d, err := h.Store.Document.Get(ctx, documentID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteServerError(w, method, err)
+		h.Runtime.Log.Error(method, err)
+		return
+	}
+
+	if !permission.CanManageSpace(ctx, *h.Store, d.SpaceID) {
+		h.Runtime.Rollback(ctx.Transaction)
+		response.WriteForbiddenError(w)
+		return
+	}
+
+	// Get all pinned documents in the space.
+	pinnedDocs, err := h.Store.Document.Pinned(ctx, d.SpaceID)
+	if err != nil {
+		h.Runtime.Rollback(ctx.Transaction)
+		h.Runtime.Log.Error(method, err)
+		response.WriteServerError(w, method, err)
+		return
+	}
+
+	// Sort document list by sequence.
+	sort.Sort(doc.BySeq(pinnedDocs))
+
+	// Resequence the documents.
+	for i := range pinnedDocs {
+		if pinnedDocs[i].RefID == documentID {
+			if direction == "u" {
+				if i-1 >= 0 {
+					me := pinnedDocs[i].Sequence
+					target := pinnedDocs[i-1].Sequence
+
+					pinnedDocs[i-1].Sequence = me
+					pinnedDocs[i].Sequence = target
+				}
+			}
+			if direction == "d" {
+				if i+1 < len(pinnedDocs) {
+					me := pinnedDocs[i].Sequence
+					target := pinnedDocs[i+1].Sequence
+
+					pinnedDocs[i+1].Sequence = me
+					pinnedDocs[i].Sequence = target
+				}
+			}
+
+			break
+		}
+	}
+
+	// Sort document list by sequence.
+	sort.Sort(doc.BySeq(pinnedDocs))
+
+	// Save the resequenced documents.
+	for i := range pinnedDocs {
+		err = h.Store.Document.Pin(ctx, pinnedDocs[i].RefID, i+1)
+		if err != nil {
+			h.Runtime.Rollback(ctx.Transaction)
+			response.WriteServerError(w, method, err)
+			h.Runtime.Log.Error(method, err)
+			return
+		}
+	}
+
+	h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+		SpaceID:      d.SpaceID,
+		DocumentID:   documentID,
+		SourceType:   activity.SourceTypeDocument,
+		ActivityType: activity.TypePinSequence})
+
+	h.Store.Audit.Record(ctx, audit.EventTypeDocPinChange)
+
+	h.Runtime.Commit(ctx.Transaction)
 
 	response.WriteEmpty(w)
 }

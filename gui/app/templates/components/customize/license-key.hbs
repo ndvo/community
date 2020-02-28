@@ -95,7 +95,7 @@
 				<small class="form-text text-muted">A chave de ativação que você recebe após assinar</small>
 			</div>
 		{{/if}}
-		{{ui/ui-button color=constants.Color.Green light=true label="Ativar" onClick=(action "saveLicense")}}
+		{{ui/ui-button color=constants.Color.Green light=true label="Activate" onClick=(action "saveLicense")}}
 	</form>
 </div>
 
@@ -106,13 +106,7 @@
 			<div class="deactivation-zone">
 				<p>Conte-nos por que você gostaria de encerrar sua conta ou cancelar sua assinatura.</p>
 				<p>Os pedidos podem levar até 24 horas para serem processados.</p>
-				<p><span class="bold-700">AVISO: </span>Todos os dados serão perdidos, por favor, baixe um backup completo de todos os seus dados.</p>
-
-				{{#link-to "customize.backup"}}
-					{{ui/ui-button color=constants.Color.Gray light=true label="Executar Backup"}}
-				{{/link-to}}
-				{{ui/ui-button-gap}}
-				{{ui/ui-button color=constants.Color.Red light=true label="Encerrar conta" onClick=(action "onRequestClosure")}}
+				{{ui/ui-button color=constants.Color.Red light=true label="Close Account" onClick=(action "onRequestClosure")}}
 			</div>
 		</div>
 	{{/if}}

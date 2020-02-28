@@ -21,7 +21,7 @@ This effort is being done as part of an evaluation to choose the best suite to b
 ***
 
 
-Documize is an open source modern, lightweight and comprehensive alternative to Confluence.
+Documize is an open source modern, lightweight and comprehensive alternative to Confluence and other such solutions.
 
 It's built with Golang + EmberJS and compiled down to a single executable binary for Linux, Windows and macOS.
 
@@ -36,9 +36,9 @@ All you need to provide is PostgreSQL, Microsoft SQL Server or any MySQL variant
 
 ## Latest Release
 
-[Community Edition: v3.1.0](https://github.com/documize/community/releases)
+[Community Edition: v3.7.0](https://github.com/documize/community/releases)
 
-[Enterprise Edition: v3.1.0](https://www.documize.com/downloads)
+[Enterprise Edition: v3.7.0](https://www.documize.com/downloads)
 
 > *We provide frequent product updates for both cloud and self-hosted customers.*
 >
@@ -53,8 +53,10 @@ All you need to provide is PostgreSQL, Microsoft SQL Server or any MySQL variant
 
 ## Database Support
 
+For all database types, Full-Text Search support (FTS) is mandatory.
+
 - PostgreSQL (v9.6+)
-- Microsoft SQL Server (2016+)
+- Microsoft SQL Server (2016+ with FTS)
 - MySQL (v5.7.10+ and v8.0.12+)
 - Percona (v5.7.16-10+)
 - MariaDB (10.3.0+)
@@ -71,14 +73,19 @@ All you need to provide is PostgreSQL, Microsoft SQL Server or any MySQL variant
 
 ## Technology Stack
 
-- Go (v1.12.6)
-- Ember JS (v3.10.0)
+- Go (v1.13.4)
+- Ember JS (v3.12.0)
 
 ## Authentication Options
 
-Besides email/password login, you can also connect to LDAP/Active Directory or Red Hat Keycloak server.
+Besides email/password login, you can also authenticate via:
 
-Dual authentication of LDAP and email/password is also supported.
+* LDAP
+* Active Directory
+* Red Hat Keycloak
+* Central Authentication Service (CAS)
+
+When using LDAP/Active Directory, you can enable dual-authentication with email/password.
 
 ## The Legal Bit
 

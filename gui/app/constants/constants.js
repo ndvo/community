@@ -15,6 +15,8 @@ import EmberObject from "@ember/object";
 // let constants = this.get('constants');
 
 let constants = EmberObject.extend({
+	Unsequenced: 99999,
+
     SpaceType: { // eslint-disable-line ember/avoid-leaking-state-in-ember-objects
         Public: 1,
         Private: 2,
@@ -25,6 +27,7 @@ let constants = EmberObject.extend({
         Documize: 'documize',
 		Keycloak: 'keycloak',
 		LDAP: 'ldap',
+		CAS: 'cas',
 		ServerTypeLDAP: 'ldap',
 		ServerTypeAD: 'ad',
 		EncryptionTypeNone: 'none',

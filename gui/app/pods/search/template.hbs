@@ -56,10 +56,24 @@
 							<div class="example">maçã !macintosh</div>
 							<div class="explain">Mostra resultados que contenham a palavra "apple" mas não "macintosh"</div>
 							<div class="example">google & (apple | microsoft) & !ibm</div>
-							<div class="explain">Mostra resultados que tenham "google", mais "apple" ou "microsoft", mas não "ibm"</div>
+							<div class="explain">Mostra resultados que tem "google" e "apple" ou "microsoft", mas não "ibm"</div>
+							<div class="example">maçã:*</div>
+							<div class="explain">Mostra resultados que contém palavras que começam com "maçã", como "maçãs"</div>
 						</div>
 					{{/if}}
 					{{#if (eq appMeta.storageProvider constants.StoreProvider.SQLServer)}}
+						<div class="syntax">
+							<div class="example">apple OR banana</div>
+							<div class="explain">Mostra resultados que contêm qualquer das palavras</div>
+							<div class="example">apple AND banana</div>
+							<div class="explain">Mostra resultados que contêm ambas as palavras</div>
+							<div class="example">apple AND NOT macintosh</div>
+							<div class="explain">Mostra resultados que contêm a palavra "apple", mas não "macintosh"</div>
+							<div class="example">"apple*"</div>
+							<div class="explain">Mostra resultados que contém palavras como "apple", "apples", ou "applet"</div>
+							<div class="example">"algumas palavras"</div>
+							<div class="explain">Mostra resultados que contêm a frase exata "algumas palavras" (por examplo, linhas que contenham "algumas palavras de sabedoria", mas não not "algumas grandes palavras")</div>
+						</div>
 					{{/if}}
 				</div>
 			</div>

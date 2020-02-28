@@ -172,9 +172,9 @@ func executeGroupFilter(c lm.LDAPConfig) (u []lm.LDAPUser, err error) {
 			continue
 		}
 
+		// Get CN element from DN.
 		for _, entry := range rawMembers {
-			// get CN element from DN
-			parts := strings.Split(entry, ",")
+			parts := splitDN(entry)
 			if len(parts) == 0 {
 				continue
 			}
@@ -202,6 +202,44 @@ func executeGroupFilter(c lm.LDAPConfig) (u []lm.LDAPUser, err error) {
 	}
 
 	return
+}
+
+// splitDN handles splitting of DN string whilst respecting
+// escaped comma characters.
+//
+// DN values can contain escaped commas like in two ways:
+//
+// 		\,
+// 		\5c,
+//
+// Relevant notes:
+
+// 		https://docs.oracle.com/cd/E19424-01/820-4811/gdxpo/index.html#6ng8i269q
+// 		https://devblogs.microsoft.com/scripting/how-can-i-work-with-a-cn-that-has-a-comma-in-it/
+//
+// Example:
+
+//		CN=Surname\, Name,OU=Something,OU=AD-Example,OU=Examaple,DC=example,DC=example,DC=com
+//
+// When we split on comma, here is our logic:
+//
+// 1. Replace any escaped comma values with a special character sequence.
+// 2. Split string on comma as per usual.
+// 3. Put back the original escaped comma values.
+func splitDN(dn string) []string {
+	dn = strings.ReplaceAll(dn, `\5c,`, "!!1!!")
+	dn = strings.ReplaceAll(dn, `\,`, "!!2!!")
+
+	sp := strings.Split(dn, ",")
+
+	for i := range sp {
+		val := sp[i]
+		val = strings.ReplaceAll(val, "!!1!!", `\5c,`)
+		val = strings.ReplaceAll(val, "!!2!!", `\,`)
+		sp[i] = val
+	}
+
+	return sp
 }
 
 // extractUser build user record from LDAP result attributes.

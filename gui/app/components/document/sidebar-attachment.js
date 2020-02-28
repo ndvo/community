@@ -23,8 +23,14 @@ export default Component.extend(Modals, Notifier, {
 	appMeta: service(),
 	session: service(),
 	hasAttachments: notEmpty('files'),
-	canEdit: computed('permissions.documentEdit', 'document.protection', function() {
-		return this.get('document.protection') !== this.get('constants').ProtectionType.Lock && this.get('permissions.documentEdit');
+	canEdit: computed('permissions.{documentApprove,documentEdit}', 'document.protection', function() {
+		// Check to see if specific scenarios prevent us from changing doc level attachments.
+		if (this.get('document.protection') === this.get('constants').ProtectionType.Lock) return false;
+		if (!this.get('permissions.documentEdit')) return false;
+		if (this.get('document.protection') === this.get('constants').ProtectionType.Review && !this.get('permissions.documentApprove')) return false;
+
+		// By default, we can edit/upload attachments that sit at the document level.
+		return true;
 	}),
 	showDialog: false,
 	downloadQuery: '',
@@ -56,6 +62,9 @@ export default Component.extend(Modals, Notifier, {
 		let uploadUrl = `${url}/documents/${documentId}/attachments`;
 
 		// Handle upload clicks on button and anything inside that button.
+		// But only if user can edit this document.
+		if (!this.get('canEdit')) return;
+
 		let sel = ['#upload-document-files ', '#upload-document-files  > i'];
 		for (var i=0; i < 2; i++) {
 			let dzone = new Dropzone(sel[i], {

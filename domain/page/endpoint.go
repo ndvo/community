@@ -1334,6 +1334,7 @@ func (h *Handler) FetchPages(w http.ResponseWriter, r *http.Request) {
 	documentID := request.Param(r, "documentID")
 	if len(documentID) == 0 {
 		response.WriteMissingDataError(w, method, "documentID")
+		h.Runtime.Log.Infof("Document ID missing for org %s", ctx.OrgID)
 		return
 	}
 
@@ -1343,7 +1344,7 @@ func (h *Handler) FetchPages(w http.ResponseWriter, r *http.Request) {
 	doc, err := h.Store.Document.Get(ctx, documentID)
 	if err != nil {
 		response.WriteServerError(w, method, err)
-		h.Runtime.Log.Error(method, err)
+		h.Runtime.Log.Infof("Document not found %s", documentID)
 		return
 	}
 
@@ -1503,17 +1504,12 @@ func (h *Handler) FetchPages(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			h.Runtime.Log.Error(method, err)
 		} else {
-			err = h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
+			h.Store.Activity.RecordUserActivity(ctx, activity.UserActivity{
 				SpaceID:      doc.SpaceID,
 				DocumentID:   doc.RefID,
 				Metadata:     source,                    // deliberate
 				SourceType:   activity.SourceTypeSearch, // deliberate
 				ActivityType: activity.TypeRead})
-
-			if err != nil {
-				ctx.Transaction.Rollback()
-				h.Runtime.Log.Error(method, err)
-			}
 
 			ctx.Transaction.Commit()
 		}

@@ -48,10 +48,12 @@
 							<i class={{concat "dicon " constants.Icon.Locked}} />
 							<div class="name">Autenticação</div>
 						{{/link-to}}
-						{{#link-to "customize.search" activeClass="selected" class="item" tagName="div"}}
-							<i class={{concat "dicon " constants.Icon.Search}} />
-							<div class="name">Busca</div>
-						{{/link-to}}
+						{{#unless (eq appMeta.storageProvider constants.StoreProvider.SQLServer)}}
+							{{#link-to "customize.search" activeClass="selected" class="item" tagName="div"}}
+								<i class={{concat "dicon " constants.Icon.Search}} />
+								<div class="name">Busca</div>
+							{{/link-to}}
+						{{/unless}}
 						{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 							{{#link-to "customize.audit" activeClass="selected" class="item" tagName="div"}}
 								<i class={{concat "dicon " constants.Icon.ButtonAction}} />
@@ -59,10 +61,12 @@
 							{{/link-to}}
 						{{/if}}
 					{{/if}}
-					{{#link-to "customize.backup" activeClass="selected" class="item" tagName="div"}}
-						<i class={{concat "dicon " constants.Icon.Database}} />
-						<div class="name">Cópia de segurança & Restauração</div>
-					{{/link-to}}
+					{{#if (eq appMeta.location "selfhost")}}
+						{{#link-to "customize.backup" activeClass="selected" class="item" tagName="div"}}
+							<i class={{concat "dicon " constants.Icon.Database}} />
+							<div class="name">Cópia de Segurança & Restauração</div>
+						{{/link-to}}
+					{{/if}}
 					{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 						{{#link-to "customize.billing" activeClass="selected" class="item" tagName="div"}}
 							<i class={{concat "dicon " constants.Icon.Handshake}} />

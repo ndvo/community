@@ -40,12 +40,14 @@ func main() {
 	// Specify the product edition.
 	rt.Product = domain.Product{}
 	rt.Product.Major = "3"
-	rt.Product.Minor = "1"
-	rt.Product.Patch = "1"
-	rt.Product.Revision = "190718095543"
+	rt.Product.Minor = "7"
+	rt.Product.Patch = "0"
+	rt.Product.Revision = "200204130935"
 	rt.Product.Version = fmt.Sprintf("%s.%s.%s", rt.Product.Major, rt.Product.Minor, rt.Product.Patch)
 	rt.Product.Edition = domain.CommunityEdition
 	rt.Product.Title = fmt.Sprintf("%s Edition", rt.Product.Edition)
+
+	rt.Log.Info(fmt.Sprintf("Product: %s version %s (build %s)", rt.Product.Title, rt.Product.Version, rt.Product.Revision))
 
 	// Setup data store.
 	s := store.Store{}
@@ -56,7 +58,7 @@ func main() {
 	if !flagsOK {
 		os.Exit(0)
 	}
-	rt.Log.Info("Configuration source: " + rt.Flags.ConfigSource)
+	rt.Log.Info("Configuration: " + rt.Flags.ConfigSource)
 
 	// Start database init.
 	bootOK := boot.InitRuntime(&rt, &s)

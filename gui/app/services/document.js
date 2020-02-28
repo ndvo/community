@@ -412,7 +412,7 @@ export default Service.extend({
 
 	// fetchXXX represents UI specific bulk data loading designed to
 	// reduce network traffic and boost app performance.
-	// This method that returns:
+	// This method returns:
 	// 1. getUserVisible()
 	// 2. getSummary()
 	// 3. getSpaceCategoryMembership()
@@ -567,7 +567,37 @@ export default Service.extend({
 		}).catch((error) => {
 			return error;
 		});
-	}
+	},
+
+    //**************************************************
+    // Pinning documents inside spaces.
+    //**************************************************
+
+	// Pin document
+    pin(documentId) {
+        return this.get('ajax').request(`document/pin/${documentId}`, {
+            method: 'POST'
+        }).then((response) => {
+            return response;
+        });
+    },
+
+    // Unpin document
+    unpin(documentId) {
+        return this.get('ajax').request(`document/unpin/${documentId}`, {
+            method: 'DELETE'
+        }).then((response) => {
+            return response;
+        });
+    },
+
+    onPinSequence(documentId, direction) {
+        return this.get('ajax').request(`document/pinmove/${documentId}?direction=${direction}`, {
+            method: 'POST'
+        }).then((response) => {
+            return response;
+        });
+    }
 });
 
 function isObject(a) {
