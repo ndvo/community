@@ -33,7 +33,7 @@ export default Component.extend({
 
 		let docs = this.get('results');
 		let duped = [];
-		let phrase = 'Nothing found';
+		let phrase = 'Nenhum resultado encontrado';
 
 		if (docs.length > 0) {
 			duped = _.uniqBy(docs, function(item) {

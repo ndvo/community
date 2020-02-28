@@ -131,7 +131,7 @@ export default Component.extend(AuthMixin, Notifier, {
 		if (this.get('allowLikes')) {
 			this.set('likes', folder.get('likes'));
 		} else {
-			this.set('likes', 'Did this help you?');
+			this.set('likes', 'Isto foi útil?');
 		}
 
 		this.set('spaceName', this.get('space.name'));
