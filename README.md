@@ -1,22 +1,19 @@
 ### Fork
 
-Esta é uma versão em Português do Brasil do Documize.
+Esta é uma customização da versão em Português do Brasil do Documize, para 
+atender a necessidades da SPU.
 
-Não há nenhuma funcionalidade adicional. O objetivo é possibilitar a avaliação
-e uso da ferramenta por falantes da língua portuguesa até que o suporte a
-múltiplos idiomas seja implementado no Documize.
-
-Contribuições para a tradução são bem-vindas.
-
-A tradução é feita diretamente no código-fonte e, por isso, os tradutores precisam ter noções de:
-- Go
-- Javascript
-- Ember.js
-
-This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
+O objetivo é tornar a ferramenta mais amigável e direta para gerir documentos
+internos produzidos e consumidos pela SPU.
 
 
-This effort is being done as part of an evaluation to choose the best suite to be used within SPU, a Brazilian public organization.
+As poucas funcionalidades adicionais são de baixa complexidade, em geral apenas
+na interface, de modo a não inviabilizar a mescla de atualizações feitas na
+ferramenta.
+
+
+Segue abaixo o README do Documize.
+
 
 ***
 
