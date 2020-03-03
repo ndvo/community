@@ -29,6 +29,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Departamentos de espaço');
+		this.get('browser').setTitle('Departamentos de Coordenação Geral');
 	}
 });

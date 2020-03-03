@@ -4,7 +4,7 @@
 			<div class="options">
 				{{#link-to "folders" class=(if (eq selectedItem "spaces") "option selected" "option")}}
 					<i class={{concat "dicon " constants.Icon.Grid}}>
-						{{#attach-tooltip showDelay=1000}}Espaços{{/attach-tooltip}}
+						{{#attach-tooltip showDelay=1000}}Coordenações Gerais{{/attach-tooltip}}
 					</i>
 				{{/link-to}}
 				{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
@@ -57,7 +57,7 @@
 							{{#attach-popover class="ember-attacher-popper" hideOn="clickout click" showOn="click" isShown=false}}
 								<div class="menu">
 									{{#if hasSpacePins}}
-										<li class="item header">Espaços</li>
+										<li class="item header">Coordenações Gerais</li>
 										{{#each spacePins as |pin|}}
 											<a class="item" href="#" {{action "jumpToPin" pin}} data-id= {{pin.id}} id="pin-{{pin.id}}">{{pin.pin}}</a>
 										{{/each}}
