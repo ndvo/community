@@ -368,7 +368,7 @@ let constants = EmberObject.extend({
 		Share: 'Compartilhar',
 		SignIn: 'Autenticar-se',
 		Sort: 'Ordenar',
-		Space: 'Coordenação Geral',
+		Space: 'Coordenação-Geral',
 		Spaces: 'Coordenações Gerais',
 		Unassigned: 'Não atribuído',
 		Update: 'Atualizar',

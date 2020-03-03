@@ -32,7 +32,7 @@
 
 	{{#if (or permissions.spaceOwner permissions.spaceManage)}}
 		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green
-			tooltip="Configurações de Coordenação Geral" linkTo="folder.settings"}}
+			tooltip="Configurações de Coordenação-Geral" linkTo="folder.settings"}}
 	{{/if}}
 {{/ui/ui-toolbar}}
 
@@ -123,12 +123,12 @@
 			<div class="modal-header">Exportar como HTML</div>
 			<div class="modal-body">
 				{{#if hasCategories}}
-					<p>Exportar todo conteúdo da Coordenação Geral, ou categorias selecionadas, como HTML.</p>
+					<p>Exportar todo conteúdo da Coordenação-Geral, ou Palavra-chaves selecionadas, como HTML.</p>
 					{{#each categories as |cat|}}
 						{{#ui/ui-checkbox selected=cat.exportSelected}}{{cat.category}}{{/ui/ui-checkbox}}
 					{{/each}}
 				{{else}}
-					<p>Todo o conteúdo da Coordenação Geral será exportado como um único arquivo HTML.</p>
+					<p>Todo o conteúdo da Coordenação-Geral será exportado como um único arquivo HTML.</p>
 				{{/if}}
 			</div>
 			<div class="modal-footer">
