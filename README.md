@@ -1,3 +1,47 @@
+# SINSPU
+
+O Sistema Interno de Normas da SPU é construído a partir do Documize.
+
+- Utiliza-se uma versão customizada, traduzida para o português do Brasil
+- A partir desta versão, são implementadas customizações
+- Com novas versões do Documize ou da tradução faz-se o merge com o SINSPU
+
+## Ambiente
+
+O Documize está rodando na máquina 10.209.2.64
+
+Para acessar a máquina utilize o usuário **spu**
+
+`ssh spu@10.209.2.64`
+
+O documize está rodando como um serviço
+
+- Para iniciar o serviço use `sudo service documize start`
+- Para parar o serviço use `sudo service documize stop`
+- Para reiniciar o serviço use `sudo service documize restart`
+- O script que executa o serviço está na pasta /etc/init.d/documize.sh e seu 
+conteúdo está disponível em https://git.economia.gov.br/spu/sinspu/snippets/3
+
+## Deploy
+
+O build do go gera os arquivos binários para os sistemas operacionais Linux, 
+Windows e Mac.
+
+Atualmente o deploy está sendo feito com as seguintes etapas:
+1. copie o arquivo binário para o ambiente de alvo
+2. substitua o arquivo disponível em /opt/documize
+3. reinicie o serviço
+
+****ATENÇÃO**: dado o escopo do projeto, em que a princípio não devem existir
+alterações substanciais na ferramenta, não se utiliza qualquer mecanismo para
+manter as versões da estrutura de banco de dados. Caso as evoluções na 
+ferramenta se tornem substanciais, deve-se repensar o modelo de desenvolvimento
+usado até agora.**
+
+
+ ~ * ~ * ~ * ~ * ~ * ~
+
+
 ### Fork
 
 Esta é uma customização da versão em Português do Brasil do Documize, para 
