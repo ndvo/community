@@ -21,11 +21,11 @@
 				</div>
 			{{/if}}
 			{{#if permissions.documentLifecycle}}
-				<div class="item {{if (eq selectedFilter "draft") "selected"}}" {{action "onDocumentFilter" "draft" space.id}}>
+				<div class="lifecycle item {{if (eq selectedFilter "draft") "selected"}}" {{action "onDocumentFilter" "draft" space.id}}>
 					<i class={{concat "dicon " constants.Icon.Filter}} />
 					<div class="name">Rascunhos ({{documentsDraft.length}})</div>
 				</div>
-				<div class="item {{if (eq selectedFilter "live") "selected"}}" {{action "onDocumentFilter" "live" space.id}}>
+				<div class="lifecycle item {{if (eq selectedFilter "live") "selected"}}" {{action "onDocumentFilter" "live" space.id}}>
 					<i class={{concat "dicon " constants.Icon.Filter}} />
 					<div class="name">Produção ({{documentsLive.length}})</div>
 				</div>
