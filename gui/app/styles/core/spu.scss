@@ -1,0 +1,28 @@
+.container .options {
+  display: flex;
+  align-items: center;
+}
+
+.links-customizados-spu a {
+  color: white;
+  margin: 0 5px;
+}
+
+.master-content .ember-view {
+  position: relative;
+}
+
+.dicon.dicon-enlarge.expand::after {
+    content: "📂";
+    display: block;
+    position: absolute;
+    left: 0;
+    font-size: 17px;
+    padding: 8px;
+    margin-top: 10px;
+    text-align: center;
+    opacity: .3;
+    border-radius: 50%;
+    box-shadow: 2px 2px 2px silver;
+    border: solid thin silver;
+}
