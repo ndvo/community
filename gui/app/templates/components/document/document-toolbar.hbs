@@ -23,10 +23,10 @@
 		{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 			<ul class="menu">
 				{{#if pinState.isPinned}}
-					<li class="item" {{action "onUnpin"}}>Remover bookmark</li>
+					<li class="item" {{action "onUnpin"}}>Desmarcar página</li>
 					<li class="divider"/>
 				{{else if session.authenticated}}
-					<li class="item" {{action "onPin"}}>Bookmark</li>
+					<li class="item" {{action "onPin"}}>Marcar página</li>
 					<li class="divider"/>
 				{{/if}}
 				<li class="item" {{action "onShowPrintModal"}}>Imprimir</li>
