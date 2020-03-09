@@ -119,7 +119,7 @@
 
 							<div class="form-group">
 								<label for="clone-space-dropdown">Clonar Coordenação-Geral</label>
-								{{ui/ui-select id="clone-space-dropdown" content=spaces prompt="select space" action=(action "onCloneSpaceSelect") optionValuePath="id" optionLabelPath="name" selection=clonedSpace}}
+								{{ui/ui-select id="clone-space-dropdown" content=spaces prompt="selecionar coordenação" action=(action "onCloneSpaceSelect") optionValuePath="id" optionLabelPath="name" selection=clonedSpace}}
 								<small id="emailHelp" class="form-text text-muted">Copiar modelos, permissões e documentos de um Coordenação-Geral existente</small>
 								<div class="margin-top-10" />
 								{{#if hasClone}}
