@@ -369,7 +369,7 @@ let constants = EmberObject.extend({
 		SignIn: 'Autenticar-se',
 		Sort: 'Ordenar',
 		Space: 'Processo',
-		Spaces: 'Coordenações Gerais',
+		Spaces: 'Processos',
 		Unassigned: 'Não atribuído',
 		Update: 'Atualizar',
 		Upload: 'Carregar',
