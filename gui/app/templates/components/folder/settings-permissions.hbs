@@ -1,12 +1,12 @@
 {{layout/logo-heading
-	title="Permissões da Coordenação-Geral"
-	desc="Atribui permissões para usuários ou grupos e convida novos usuários para esta Coordenação-Geral"
+	title="Permissões da Processo"
+	desc="Atribui permissões para usuários ou grupos e convida novos usuários para esta Processo"
 	icon=constants.Icon.Locked}}
 
 <div class="view-customize">
 	<div class="explain-user-perms">
 		<div class="title" {{action "toggleSpacePerms"}}>
-      Permissões de Coordenação-Geral Explicadas
+      Permissões de Processo Explicadas
 			{{#if showSpacePermExplain}}
                 <i class="dicon {{constants.Icon.ArrowSmallUp}}"></i>
 			{{else}}
@@ -15,11 +15,11 @@
 		</div>
 		<div class="perms space-perms">
 			<div class="perm-name">Ver</div>
-			<div class="perm-desc">Ver conteúdo nesta Coordenação-Geral</div>
+			<div class="perm-desc">Ver conteúdo nesta Processo</div>
 			<div class="perm-name">Gerenciar</div>
-			<div class="perm-desc">Gerenciar todos os aspectos da Coordenação-Geral, menos a deleção</div>
+			<div class="perm-desc">Gerenciar todos os aspectos da Processo, menos a deleção</div>
 			<div class="perm-name">Dono</div>
-			<div class="perm-desc">Gerenciar e apagar a Coordenação-Geral</div>
+			<div class="perm-desc">Gerenciar e apagar a Processo</div>
 		</div>
 
 		<Ui::UiSpacer @size="200" />
@@ -34,13 +34,13 @@
 		</div>
 		<div class="perms document-perms">
 			<div class="perm-name">Criar</div>
-			<div class="perm-desc">Pode criar novos documentos na Coordenação-Geral</div>
+			<div class="perm-desc">Pode criar novos documentos na Processo</div>
 			<div class="perm-name">Editar</div>
 			<div class="perm-desc">Pode editar o conteúdo dos documentos</div>
 			<div class="perm-name">Apagar</div>
-			<div class="perm-desc">Pode remover documentos da Coordenação-Geral</div>
+			<div class="perm-desc">Pode remover documentos da Processo</div>
 			<div class="perm-name">Mover</div>
-			<div class="perm-desc">Pode mover documentos desta Coordenação-Geral para outra Coordenação-Geral</div>
+			<div class="perm-desc">Pode mover documentos desta Processo para outra Processo</div>
 			<div class="perm-name">Copiar</div>
 			<div class="perm-desc">Pode duplicar documentos</div>
 			<div class="perm-name">Modelos</div>
@@ -149,7 +149,7 @@
 <div id="space-add-user-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Adicionar usuários a esta Coordenação-Geral</div>
+			<div class="modal-header">Adicionar usuários a esta Processo</div>
 			<div class="modal-body">
 				{{input id="user-search" type="text" class="form-control mousetrap" placeholder="Buscar por usuários por primeiro nome, último nome, email" value=searchText key-up=(action "onSearch")}}
 				<Ui::UiSpacer @size="200" />
@@ -183,7 +183,7 @@
 <div id="space-invite-user-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Convidar usuários para esta Coordenação-Geral</div>
+			<div class="modal-header">Convidar usuários para esta Processo</div>
 			<div class="modal-body">
 				<p>Convites por email levam a um processo de ingresso tranquilo</p>
 				<form onsubmit={{action "onSpaceInvite"}}>
