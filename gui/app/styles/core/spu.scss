@@ -1,3 +1,11 @@
+:root{
+  --cor-viva: #4caf50;
+  --cor-clara: #bcf2bc;
+  --cor-escura: #374140;
+  --cor-principal: #2a2c2b;
+  --cor-invertida: #bdc3c7;
+}
+
 .container .options {
   display: flex;
   align-items: center;
@@ -36,4 +44,36 @@
 }
 .document-meta .document-status {
   display: none;
+}
+.master-sidebar .sidebar-content {
+  background: var(--cor-invertida);
+}
+
+.view-space ul.documents li.document,
+.master-content .view-spaces ul.list .item{
+  background: var(--cor-clara);
+  color: var(--cor-escura);
+}
+
+.view-space ul.documents li.document:hover,
+.master-content .view-spaces ul.list .item:hover{
+  background: var(--cor-invertida);
+}
+
+.master-content .view-spaces ul.list .item .info a .name .icon{
+  color: var(--cor-invertida);
+}
+
+.view-spaces > .list > .item > a > .stats > .stat > .label,
+.view-spaces > .list > .item > a > .stats > .stat > .number,
+.master-content .view-spaces ul.list .item a .name,
+.master-content .view-spaces ul.list .item div.desc,
+.master-content .view-spaces ul.list .item a{
+  color: var(--cor-principal);
+}
+
+body .logo-heading {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
 }

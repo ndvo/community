@@ -20,6 +20,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Gerenciar Coordenações Gerais');
+		this.get('browser').setTitle('Gerenciar Processos');
 	}
 });
