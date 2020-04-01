@@ -29,6 +29,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Departamentos de Coordenação-Geral');
+		this.get('browser').setTitle('Assuntos de Coordenação-Geral');
 	}
 });

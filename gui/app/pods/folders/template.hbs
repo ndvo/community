@@ -49,7 +49,7 @@
 			<Ui::UiSpacer @size="300" />
 
 			<div class="section">
-				<div class="title">Departamento</div>
+				<div class="title">Assunto</div>
 				{{#if labels}}
 					<div class="list">
 						{{#each labels as |label|}}
@@ -62,7 +62,7 @@
 						{{/each}}
 					</div>
 				{{else}}
-					<div class="empty">Sem Departamentos</div>
+					<div class="empty">Sem Assuntos</div>
 				{{/if}}
 			</div>
 		</div>
@@ -104,7 +104,7 @@
 							</div>
 
 							<div class="form-group">
-								<label>Departamento</label>
+								<label>Assunto</label>
 								<ul class="space-label-picker">
 									<li class="label none {{if (eq spaceLabel "") "selected"}}" {{action "onSetLabel" ""}}>Nenhum</li>
 									{{#each labels as |label|}}
