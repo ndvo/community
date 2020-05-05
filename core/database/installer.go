@@ -61,13 +61,41 @@ func InstallUpgrade(runtime *env.Runtime, existingDB bool) (err error) {
 		}
 	}
 
+	// Get custom SQL scripts for CurrentVersion.
+	// Absence of custom scripts or even custom directory structure does not matter
+	scriptsCustom, _ := LoadCustomScripts(currentVersion)
+
+	// Custom scripts must prepend the database version to their numeric names,
+	// i.e. the 3rd custom script applied to the database version 7 must be named
+	// db_70000003.sql, and it must be stored in a folder named 7 within the
+	// proper database scripts folder
+	currentVersionCustom := 0
+	if existingDB {
+		currentVersionCustom, err = CurrentVersionCustom(runtime)
+		if err != nil {
+			runtime.Log.Error("Couldn't determine the current version of custom editions to the database", err)
+			err = nil
+		}
+	}
+
+	dbCustomTypeScripts := CustomSpecificScripts(runtime, scriptsCustom)
+	if len(dbCustomTypeScripts) == 0 {
+		runtime.Log.Info(fmt.Sprintf("Database: no custom script found for database type %s", runtime.StoreProvider.Type()))
+	} else {
+		for _, s := range dbCustomTypeScripts {
+			if s.Version > currentVersionCustom || currentVersionCustom == 0 {
+				toProcess = append(toProcess, s)
+			}
+		}
+	}
+
 	runtime.Log.Info(fmt.Sprintf("Database: %d scripts to process", len(toProcess)))
 
 	// For MySQL type there was major new schema introduced in v24.
 	// We check for this release and bypass usual locking code
 	// because tables have changed.
 	legacyMigration := runtime.StoreProvider.Type() == env.StoreTypeMySQL &&
-		currentVersion > 0 && currentVersion < 25 && len(toProcess) >= 26 && toProcess[len(toProcess)-1].Version == 25
+	currentVersion > 0 && currentVersion < 25 && len(toProcess) >= 26 && toProcess[len(toProcess)-1].Version == 25
 
 	if legacyMigration {
 		// Bypass all DB locking/checking processes as these look for new schema
@@ -109,16 +137,28 @@ func runScripts(runtime *env.Runtime, scripts []Script) (err error) {
 
 		// Record the fact we have processed this database script version.
 		if runtime.StoreProvider.Type() != env.StoreTypeSQLServer {
-			_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgrade(script.Version))
+			if script.Version <= 99999 {
+				_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgrade(script.Version))
+			} else {
+				_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgradeCustom(script.Version))
+			}
 		} else {
-			_, err = runtime.Db.Exec(runtime.StoreProvider.QueryRecordVersionUpgrade(script.Version))
+			if  script.Version <= 99999 {
+				_, err = runtime.Db.Exec(runtime.StoreProvider.QueryRecordVersionUpgrade(script.Version))
+			} else {
+				_, err = runtime.Db.Exec(runtime.StoreProvider.QueryRecordVersionUpgradeCustom(script.Version))
+			}
 		}
 		if err != nil {
 			// For MySQL we try the legacy DB schema.
 			if runtime.StoreProvider.Type() == env.StoreTypeMySQL {
 				runtime.Log.Info(fmt.Sprintf("Database: attempting legacy fallback for SQL script %d", script.Version))
 
-				_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgradeLegacy(script.Version))
+				if script.Version <= 99999 {
+					_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgradeLegacy(script.Version))
+				} else {
+					_, err = tx.Exec(runtime.StoreProvider.QueryRecordVersionUpgradeLegacyCustom(script.Version))
+				}
 				if err != nil {
 					runtime.Log.Error(fmt.Sprintf("error recording execution of SQL script %d", script.Version), err)
 					if runtime.StoreProvider.Type() != env.StoreTypeSQLServer {
@@ -150,7 +190,7 @@ func executeSQL(tx *sqlx.Tx, runtime *env.Runtime, SQLfile []byte) error {
 	for _, stmt := range stmts {
 		// MariaDB has no specific JSON column type (but has JSON queries)
 		if runtime.StoreProvider.Type() == env.StoreTypeMySQL &&
-			runtime.StoreProvider.TypeVariant() == env.StoreTypeMariaDB {
+		runtime.StoreProvider.TypeVariant() == env.StoreTypeMariaDB {
 			stmt = strings.Replace(stmt, "` JSON", "` TEXT", -1)
 		}
 
@@ -209,6 +249,24 @@ func CurrentVersion(runtime *env.Runtime) (version int, err error) {
 	return extractVersionNumber(currentVersion), nil
 }
 
+// CurrentVersionCustom returns number that represents the current custom edition to the database version number.
+// For example 4000023 represents the 23rd iteration of the custom additions to the 4th version of the database.
+func CurrentVersionCustom(runtime *env.Runtime) (version int, err error) {
+	currentVersion := "0"
+
+	row := runtime.Db.QueryRow(runtime.StoreProvider.QueryGetDatabaseVersionCustom())
+	err = row.Scan(&currentVersion)
+	if err != nil {
+		// For MySQL we try the legacy DB checks.
+		if runtime.StoreProvider.Type() == env.StoreTypeMySQL {
+			row := runtime.Db.QueryRow(runtime.StoreProvider.QueryGetDatabaseVersionLegacyCustom())
+			err = row.Scan(&currentVersion)
+		}
+	}
+
+	return extractVersionNumber(currentVersion), nil
+}
+
 // Turns legacy "db_00021.sql" and new "21" format into version number 21.
 func extractVersionNumber(s string) int {
 	// Good practice in case of human tampering.
@@ -221,7 +279,10 @@ func extractVersionNumber(s string) int {
 	// Remove legacy version string formatting.
 	// We know just store the number.
 	s = strings.Replace(s, "db_000", "", 1)
+	s = strings.Replace(s, "db_", "", 1)
 	s = strings.Replace(s, ".sql", "", 1)
+	// Remove custom tag
+	s = strings.Replace(s, "_custom", "", 1)
 
 	i, err := strconv.Atoi(s)
 	if err != nil {

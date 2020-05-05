@@ -270,6 +270,14 @@ func (p MySQLProvider) QueryRecordVersionUpgrade(version int) string {
 	return "INSERT INTO dmz_config (c_key,c_config) " + "VALUES ('META','" + json + "') ON DUPLICATE KEY UPDATE c_config='" + json + "';"
 }
 
+// QueryRecordVersionUpgradeCustom returns database specific insert statement
+// that records the custom edit to database version number.
+func (p MySQLProvider) QueryRecordVersionUpgradeCustom(version int) string {
+	// Make record that holds new database version number.
+	json := fmt.Sprintf("{\"databaseCustom\": \"%d\"}", version)
+	return "INSERT INTO dmz_config (c_key,c_config) " + "VALUES ('META','" + json + "') ON DUPLICATE KEY UPDATE c_config='" + json + "';"
+}
+
 // QueryRecordVersionUpgradeLegacy returns database specific insert statement
 // that records the database version number.
 func (p MySQLProvider) QueryRecordVersionUpgradeLegacy(version int) string {
@@ -278,9 +286,22 @@ func (p MySQLProvider) QueryRecordVersionUpgradeLegacy(version int) string {
 	return "INSERT INTO `config` (`key`,`config`) " + "VALUES ('META','" + json + "') ON DUPLICATE KEY UPDATE `config`='" + json + "';"
 }
 
+// QueryRecordVersionUpgradeLegacyCustom returns database specific insert statement
+// that records the database version number.
+func (p MySQLProvider) QueryRecordVersionUpgradeLegacyCustom(version int) string {
+	// Make record that holds new database version number.
+	json := fmt.Sprintf("{\"databaseCustom\": \"%d\"}", version)
+	return "INSERT INTO `config` (`key`,`config`) " + "VALUES ('META','" + json + "') ON DUPLICATE KEY UPDATE `config`='" + json + "';"
+}
+
 // QueryGetDatabaseVersion returns the schema version number.
 func (p MySQLProvider) QueryGetDatabaseVersion() string {
 	return "SELECT JSON_EXTRACT(c_config,'$.database') FROM dmz_config WHERE c_key = 'META';"
+}
+
+// QueryGetDatabaseVersionCustom returns the custom editions to the schema version number.
+func (p MySQLProvider) QueryGetDatabaseVersionCustom() string {
+	return "SELECT JSON_EXTRACT(c_config,'$.databaseCustom') FROM dmz_config WHERE c_key = 'META';"
 }
 
 // QueryGetDatabaseVersionLegacy returns the schema version number before The Great Schema Migration (v25, MySQL).
@@ -288,10 +309,15 @@ func (p MySQLProvider) QueryGetDatabaseVersionLegacy() string {
 	return "SELECT JSON_EXTRACT(`config`,'$.database') FROM `config` WHERE `key` = 'META';"
 }
 
+// QueryGetDatabaseVersionLegacyCustom returns the custom editions to the schema version number before The Great Schema Migration (v25, MySQL).
+func (p MySQLProvider) QueryGetDatabaseVersionLegacyCustom() string {
+	return "SELECT JSON_EXTRACT(`config`,'$.databaseCustom') FROM `config` WHERE `key` = 'META';"
+}
+
 // QueryTableList returns a list tables in Documize database.
 func (p MySQLProvider) QueryTableList() string {
 	return `SELECT TABLE_NAME FROM information_schema.tables
-        WHERE TABLE_SCHEMA = '` + p.DatabaseName() + `' AND TABLE_TYPE='BASE TABLE'`
+	WHERE TABLE_SCHEMA = '` + p.DatabaseName() + `' AND TABLE_TYPE='BASE TABLE'`
 }
 
 // QueryDateInterval returns provider specific interval style

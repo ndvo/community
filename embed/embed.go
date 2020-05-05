@@ -12,7 +12,7 @@
 // Package embed contains the Documize static web data.
 package embed
 
-//go:generate go-bindata-assetfs -pkg embed bindata/...
+//go:generate go-bindata-assetfs -pkg embed bindata/... 
 
 import (
 	"net/http"
