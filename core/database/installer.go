@@ -222,6 +222,8 @@ func extractVersionNumber(s string) int {
 	// We know just store the number.
 	s = strings.Replace(s, "db_000", "", 1)
 	s = strings.Replace(s, ".sql", "", 1)
+  // Remove custom tag
+  s = strings.Replace(s, "_custom", "", 1)
 
 	i, err := strconv.Atoi(s)
 	if err != nil {

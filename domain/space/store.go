@@ -108,7 +108,7 @@ func (s Store) GetViewable(ctx domain.RequestContext) (sp []space.Space, err err
             AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
             )
 	    )
-	ORDER BY c_name`)
+	ORDER BY human_sort(c_name)`)
 
 	err = s.Runtime.Db.Select(&sp, q,
 		ctx.OrgID,
@@ -150,7 +150,7 @@ func (s Store) AdminList(ctx domain.RequestContext) (sp []space.Space, err error
         FROM dmz_space
         WHERE c_orgid=? AND (c_type=? OR c_type=?) AND c_refid NOT IN
         (SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_action='own')
-        ORDER BY name`)
+        ORDER BY human_sort(c_name)`)
 
 	err = s.Runtime.Db.Select(&sp, qry,
 		ctx.OrgID, space.ScopePublic, space.ScopeRestricted,

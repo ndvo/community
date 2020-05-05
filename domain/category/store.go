@@ -59,7 +59,7 @@ func (s Store) GetBySpace(ctx domain.RequestContext, spaceID string) (c []catego
                     FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
                     WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
 		    )
-        ORDER BY name`),
+        ORDER BY human_sort(c_name)`),
 		ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
 
 	if err == sql.ErrNoRows {
@@ -89,7 +89,7 @@ func (s Store) GetAllBySpace(ctx domain.RequestContext, spaceID string) (c []cat
                     FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
                     WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
 		    )
-        ORDER BY c_name`),
+        ORDER BY human_sort(c_name)`),
 		ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
 
 	if err == sql.ErrNoRows {
@@ -114,7 +114,7 @@ func (s Store) GetByOrg(ctx domain.RequestContext, userID string) (c []category.
 				SELECT p.c_refid FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
 					WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
 		))
-        ORDER BY c_name`),
+        ORDER BY human_sort(c_name)`),
 		ctx.OrgID, ctx.OrgID, ctx.OrgID, userID, ctx.OrgID, userID)
 
 	if err == sql.ErrNoRows {
