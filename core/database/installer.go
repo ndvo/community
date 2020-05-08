@@ -190,7 +190,7 @@ func executeSQL(tx *sqlx.Tx, runtime *env.Runtime, SQLfile []byte) error {
 	for _, stmt := range stmts {
 		// MariaDB has no specific JSON column type (but has JSON queries)
 		if runtime.StoreProvider.Type() == env.StoreTypeMySQL &&
-		runtime.StoreProvider.TypeVariant() == env.StoreTypeMariaDB {
+			runtime.StoreProvider.TypeVariant() == env.StoreTypeMariaDB {
 			stmt = strings.Replace(stmt, "` JSON", "` TEXT", -1)
 		}
 

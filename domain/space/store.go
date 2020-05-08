@@ -110,27 +110,27 @@ func (s Store) GetViewable(ctx domain.RequestContext) (sp []space.Space, err err
 	    )
 	    ORDER BY human_sort(c_name)`)
 
-	    err = s.Runtime.Db.Select(&sp, q,
-	    ctx.OrgID,
-	    ctx.OrgID,
-	    ctx.OrgID,
-	    ctx.UserID,
-	    ctx.OrgID,
-	    ctx.UserID)
+	err = s.Runtime.Db.Select(&sp, q,
+		ctx.OrgID,
+		ctx.OrgID,
+		ctx.OrgID,
+		ctx.UserID,
+		ctx.OrgID,
+		ctx.UserID)
 
-	    if err == sql.ErrNoRows {
-		    err = nil
-		    sp = []space.Space{}
-	    }
-	    if err != nil {
-		    err = errors.Wrap(err, fmt.Sprintf("failed space.GetViewable org %s", ctx.OrgID))
-	    }
+	if err == sql.ErrNoRows {
+		err = nil
+		sp = []space.Space{}
+	}
+	if err != nil {
+		err = errors.Wrap(err, fmt.Sprintf("failed space.GetViewable org %s", ctx.OrgID))
+	}
 
-	    return
-    }
+	return
+}
 
-    // AdminList returns all shared spaces and orphaned spaces that have no owner.
-    func (s Store) AdminList(ctx domain.RequestContext) (sp []space.Space, err error) {
+	// AdminList returns all shared spaces and orphaned spaces that have no owner.
+	func (s Store) AdminList(ctx domain.RequestContext) (sp []space.Space, err error) {
 	    qry := s.Bind(`
 	    SELECT id, c_refid AS refid,
 	    c_name AS name, c_orgid AS orgid, c_userid AS userid,
@@ -152,87 +152,87 @@ func (s Store) GetViewable(ctx domain.RequestContext) (sp []space.Space, err err
 	    (SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_action='own')
 	    ORDER BY human_sort(1.name)`)
 
-	    err = s.Runtime.Db.Select(&sp, qry,
-	    ctx.OrgID, space.ScopePublic, space.ScopeRestricted,
-	    ctx.OrgID, space.ScopePublic, space.ScopeRestricted,
-	    ctx.OrgID)
-	    if err == sql.ErrNoRows {
-		    err = nil
-		    sp = []space.Space{}
-	    }
-	    if err != nil {
-		    err = errors.Wrap(err, fmt.Sprintf("failed space.AdminList org %s", ctx.OrgID))
-	    }
+	err = s.Runtime.Db.Select(&sp, qry,
+		ctx.OrgID, space.ScopePublic, space.ScopeRestricted,
+		ctx.OrgID, space.ScopePublic, space.ScopeRestricted,
+		ctx.OrgID)
+	if err == sql.ErrNoRows {
+		err = nil
+		sp = []space.Space{}
+	}
+	if err != nil {
+		err = errors.Wrap(err, fmt.Sprintf("failed space.AdminList org %s", ctx.OrgID))
+	}
 
-	    return
-    }
+	return
+}
 
-    // Update saves space changes.
-    func (s Store) Update(ctx domain.RequestContext, sp space.Space) (err error) {
-	    sp.Revised = time.Now().UTC()
+// Update saves space changes.
+func (s Store) Update(ctx domain.RequestContext, sp space.Space) (err error) {
+	sp.Revised = time.Now().UTC()
 
-	    _, err = ctx.Transaction.NamedExec(`
+	_, err = ctx.Transaction.NamedExec(`
 	    UPDATE dmz_space
 	    SET c_name=:name, c_type=:type, c_lifecycle=:lifecycle, c_userid=:userid,
 	    c_likes=:likes, c_desc=:description, c_labelid=:labelid, c_icon=:icon,
 	    c_count_category=:countcategory, c_count_content=:countcontent,
 	    c_revised=:revised
 	    WHERE c_orgid=:orgid AND c_refid=:refid`, &sp)
-	    if err != nil {
-		    err = errors.Wrap(err, fmt.Sprintf("unable to execute update for space %s", sp.RefID))
-	    }
+	if err != nil {
+		err = errors.Wrap(err, fmt.Sprintf("unable to execute update for space %s", sp.RefID))
+	}
 
-	    return
-    }
+	return
+}
 
-    // Delete removes space from the store.
-    func (s Store) Delete(ctx domain.RequestContext, id string) (rows int64, err error) {
-	    return s.DeleteConstrained(ctx.Transaction, "dmz_space", ctx.OrgID, id)
-    }
+// Delete removes space from the store.
+func (s Store) Delete(ctx domain.RequestContext, id string) (rows int64, err error) {
+	return s.DeleteConstrained(ctx.Transaction, "dmz_space", ctx.OrgID, id)
+}
 
-    // SetStats updates the number of category/documents in space.
-    func (s Store) SetStats(ctx domain.RequestContext, spaceID string) (err error) {
-	    tx, err := s.Runtime.Db.Beginx()
-	    if err != nil {
-		    s.Runtime.Log.Error("transaction", err)
-		    return
-	    }
+// SetStats updates the number of category/documents in space.
+func (s Store) SetStats(ctx domain.RequestContext, spaceID string) (err error) {
+	tx, err := s.Runtime.Db.Beginx()
+	if err != nil {
+		s.Runtime.Log.Error("transaction", err)
+		return
+	}
 
-	    var docs, cats int
-	    f := s.IsFalse()
-	    row := s.Runtime.Db.QueryRow(s.Bind("SELECT COUNT(*) FROM dmz_doc WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle=1 AND c_template="+f),
-	    ctx.OrgID, spaceID)
-	    err = row.Scan(&docs)
-	    if err == sql.ErrNoRows {
-		    docs = 0
-	    }
-	    if err != nil {
-		    s.Runtime.Log.Error("SetStats", err)
-		    docs = 0
-	    }
+	var docs, cats int
+	f := s.IsFalse()
+	row := s.Runtime.Db.QueryRow(s.Bind("SELECT COUNT(*) FROM dmz_doc WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle=1 AND c_template="+f),
+		ctx.OrgID, spaceID)
+	err = row.Scan(&docs)
+	if err == sql.ErrNoRows {
+		docs = 0
+	}
+	if err != nil {
+		s.Runtime.Log.Error("SetStats", err)
+		docs = 0
+	}
 
-	    row = s.Runtime.Db.QueryRow(s.Bind("SELECT COUNT(*) FROM dmz_category WHERE c_orgid=? AND c_spaceid=?"),
-	    ctx.OrgID, spaceID)
-	    err = row.Scan(&cats)
-	    if err == sql.ErrNoRows {
-		    cats = 0
-	    }
-	    if err != nil {
-		    s.Runtime.Log.Error("SetStats", err)
-		    cats = 0
-	    }
+	row = s.Runtime.Db.QueryRow(s.Bind("SELECT COUNT(*) FROM dmz_category WHERE c_orgid=? AND c_spaceid=?"),
+		ctx.OrgID, spaceID)
+	err = row.Scan(&cats)
+	if err == sql.ErrNoRows {
+		cats = 0
+	}
+	if err != nil {
+		s.Runtime.Log.Error("SetStats", err)
+		cats = 0
+	}
 
-	    _, err = tx.Exec(s.Bind(`UPDATE dmz_space SET
-	    c_count_content=?, c_count_category=?, c_revised=?
-	    WHERE c_orgid=? AND c_refid=?`),
-	    docs, cats, time.Now().UTC(), ctx.OrgID, spaceID)
+	_, err = tx.Exec(s.Bind(`UPDATE dmz_space SET
+		c_count_content=?, c_count_category=?, c_revised=?
+		WHERE c_orgid=? AND c_refid=?`),
+		docs, cats, time.Now().UTC(), ctx.OrgID, spaceID)
 
-	    if err != nil {
-		    s.Runtime.Log.Error("SetStats", err)
-		    tx.Rollback()
-	    }
+	if err != nil {
+		s.Runtime.Log.Error("SetStats", err)
+		tx.Rollback()
+	}
 
-	    tx.Commit()
+	tx.Commit()
 
-	    return
-    }
+	return
+}
