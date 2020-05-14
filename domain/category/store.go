@@ -34,7 +34,7 @@ func (s Store) Add(ctx domain.RequestContext, c category.Category) (err error) {
 	c.Revised = time.Now().UTC()
 
 	_, err = ctx.Transaction.Exec(s.Bind("INSERT INTO dmz_category (c_refid, c_orgid, c_spaceid, c_name, c_default, c_created, c_revised) VALUES (?, ?, ?, ?, ?, ?, ?)"),
-		c.RefID, c.OrgID, c.SpaceID, c.Name, c.IsDefault, c.Created, c.Revised)
+	c.RefID, c.OrgID, c.SpaceID, c.Name, c.IsDefault, c.Created, c.Revised)
 
 	if err != nil {
 		err = errors.Wrap(err, "unable to execute insert category")
@@ -47,20 +47,20 @@ func (s Store) Add(ctx domain.RequestContext, c category.Category) (err error) {
 // Context is used to for user ID.
 func (s Store) GetBySpace(ctx domain.RequestContext, spaceID string) (c []category.Category, err error) {
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
-        FROM dmz_category
-		WHERE c_orgid=? AND c_spaceid=? AND c_refid IN
-            (
-                SELECT c_refid
-                    FROM dmz_permission
-                    WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='category'
-                UNION ALL
-                SELECT p.c_refid
-                    FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
-                    WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
-		    )
-        ORDER BY name`),
-		ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
+	FROM dmz_category
+	WHERE c_orgid=? AND c_spaceid=? AND c_refid IN
+	(
+		SELECT c_refid
+		FROM dmz_permission
+		WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='category'
+		UNION ALL
+		SELECT p.c_refid
+		FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
+		WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
+	)
+	ORDER BY human_sort(c_name)`),
+	ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -77,20 +77,20 @@ func (s Store) GetAllBySpace(ctx domain.RequestContext, spaceID string) (c []cat
 	c = []category.Category{}
 
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
-        FROM dmz_category
-        WHERE c_orgid=? AND c_spaceid=? AND c_spaceid IN
-            (
-                SELECT c_refid
-                    FROM dmz_permission
-                    WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
-                UNION ALL
-                SELECT p.c_refid
-                    FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
-                    WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
-		    )
-        ORDER BY c_name`),
-		ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
+	FROM dmz_category
+	WHERE c_orgid=? AND c_spaceid=? AND c_spaceid IN
+	(
+		SELECT c_refid
+		FROM dmz_permission
+		WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
+		UNION ALL
+		SELECT p.c_refid
+		FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
+		WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
+	)
+	ORDER BY human_sort(c_name)`),
+	ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -105,17 +105,17 @@ func (s Store) GetAllBySpace(ctx domain.RequestContext, spaceID string) (c []cat
 // GetByOrg returns all categories accessible by user for their org.
 func (s Store) GetByOrg(ctx domain.RequestContext, userID string) (c []category.Category, err error) {
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
-        FROM dmz_category
-        WHERE c_orgid=? AND c_refid IN
-            (SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_location='category' AND c_refid IN (
-                SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='category'
-                UNION ALL
-				SELECT p.c_refid FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
-					WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
-		))
-        ORDER BY c_name`),
-		ctx.OrgID, ctx.OrgID, ctx.OrgID, userID, ctx.OrgID, userID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
+	FROM dmz_category
+	WHERE c_orgid=? AND c_refid IN
+	(SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_location='category' AND c_refid IN (
+		SELECT c_refid FROM dmz_permission WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='category'
+		UNION ALL
+		SELECT p.c_refid FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
+		WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='category' AND (r.c_userid=? OR r.c_userid='0')
+	))
+	ORDER BY human_sort(c_name)`),
+	ctx.OrgID, ctx.OrgID, ctx.OrgID, userID, ctx.OrgID, userID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -142,10 +142,10 @@ func (s Store) Update(ctx domain.RequestContext, c category.Category) (err error
 // Get returns specified category
 func (s Store) Get(ctx domain.RequestContext, id string) (c category.Category, err error) {
 	err = s.Runtime.Db.Get(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
-        FROM dmz_category
-        WHERE c_orgid=? AND c_refid=?`),
-		ctx.OrgID, id)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
+	FROM dmz_category
+	WHERE c_orgid=? AND c_refid=?`),
+	ctx.OrgID, id)
 
 	if err != nil {
 		err = errors.Wrap(err, fmt.Sprintf("unable to get category %s", id))
@@ -165,7 +165,7 @@ func (s Store) AssociateDocument(ctx domain.RequestContext, m category.Member) (
 	m.Revised = time.Now().UTC()
 
 	_, err = ctx.Transaction.Exec(s.Bind("INSERT INTO dmz_category_member (c_refid, c_orgid, c_categoryid, c_spaceid, c_docid, c_created, c_revised) VALUES (?, ?, ?, ?, ?, ?, ?)"),
-		m.RefID, m.OrgID, m.CategoryID, m.SpaceID, m.DocumentID, m.Created, m.Revised)
+	m.RefID, m.OrgID, m.CategoryID, m.SpaceID, m.DocumentID, m.Created, m.Revised)
 
 	if err != nil {
 		err = errors.Wrap(err, "unable to execute insert categorymember")
@@ -177,7 +177,7 @@ func (s Store) AssociateDocument(ctx domain.RequestContext, m category.Member) (
 // DisassociateDocument removes document associatation from category.
 func (s Store) DisassociateDocument(ctx domain.RequestContext, categoryID, documentID string) (rows int64, err error) {
 	sql := fmt.Sprintf("DELETE FROM dmz_category_member WHERE c_orgid='%s' AND c_categoryid='%s' AND c_docid='%s'",
-		ctx.OrgID, categoryID, documentID)
+	ctx.OrgID, categoryID, documentID)
 
 	return s.DeleteWhere(ctx.Transaction, sql)
 }
@@ -185,7 +185,7 @@ func (s Store) DisassociateDocument(ctx domain.RequestContext, categoryID, docum
 // RemoveCategoryMembership removes all category associations from the store.
 func (s Store) RemoveCategoryMembership(ctx domain.RequestContext, categoryID string) (rows int64, err error) {
 	sql := fmt.Sprintf("DELETE FROM dmz_category_member WHERE c_orgid='%s' AND c_categoryid='%s'",
-		ctx.OrgID, categoryID)
+	ctx.OrgID, categoryID)
 
 	return s.DeleteWhere(ctx.Transaction, sql)
 }
@@ -193,7 +193,7 @@ func (s Store) RemoveCategoryMembership(ctx domain.RequestContext, categoryID st
 // RemoveSpaceCategoryMemberships removes all category associations from the store for the space.
 func (s Store) RemoveSpaceCategoryMemberships(ctx domain.RequestContext, spaceID string) (rows int64, err error) {
 	sql := fmt.Sprintf("DELETE FROM dmz_category_member WHERE c_orgid='%s' AND c_spaceid='%s'",
-		ctx.OrgID, spaceID)
+	ctx.OrgID, spaceID)
 
 	return s.DeleteWhere(ctx.Transaction, sql)
 }
@@ -201,7 +201,7 @@ func (s Store) RemoveSpaceCategoryMemberships(ctx domain.RequestContext, spaceID
 // RemoveDocumentCategories removes all document category associations from the store.
 func (s Store) RemoveDocumentCategories(ctx domain.RequestContext, documentID string) (rows int64, err error) {
 	sql := fmt.Sprintf("DELETE FROM dmz_category_member WHERE c_orgid='%s' AND c_docid='%s'",
-		ctx.OrgID, documentID)
+	ctx.OrgID, documentID)
 
 	return s.DeleteWhere(ctx.Transaction, sql)
 }
@@ -223,32 +223,32 @@ func (s Store) GetSpaceCategorySummary(ctx domain.RequestContext, spaceID string
 	c = []category.SummaryModel{}
 
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-		SELECT 'documents' AS grouptype, c_categoryid AS categoryid, COUNT(*) AS count
-			FROM dmz_category_member
-            WHERE c_orgid=? AND c_spaceid=?
-            AND c_docid IN (
-                SELECT c_refid
-                FROM dmz_doc
-                WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle!=2 AND c_template=`+s.IsFalse()+` AND c_groupid=''
-                UNION ALL
-                SELECT d.c_refid
-                    FROM (
-                        SELECT c_groupid, MIN(c_versionorder) AS latestversion
-                        FROM dmz_doc
-                        WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle!=2 AND c_groupid!='' AND c_template=`+s.IsFalse()+`
-                        GROUP BY c_groupid
-                    ) AS x INNER JOIN dmz_doc AS d ON d.c_groupid=x.c_groupid AND d.c_versionorder=x.latestversion
-                )
-            GROUP BY c_categoryid
+	SELECT 'documents' AS grouptype, c_categoryid AS categoryid, COUNT(*) AS count
+	FROM dmz_category_member
+	WHERE c_orgid=? AND c_spaceid=?
+	AND c_docid IN (
+		SELECT c_refid
+		FROM dmz_doc
+		WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle!=2 AND c_template=`+s.IsFalse()+` AND c_groupid=''
 		UNION ALL
-		SELECT 'users' AS grouptype, c_refid AS categoryid, count(*) AS count
-			FROM dmz_permission
-            WHERE c_orgid=? AND c_location='category' AND c_refid IN
-                (SELECT c_refid FROM dmz_category WHERE c_orgid=? AND c_spaceid=?)
-			GROUP BY c_refid`),
-		ctx.OrgID, spaceID,
-		ctx.OrgID, spaceID, ctx.OrgID, spaceID,
-		ctx.OrgID, ctx.OrgID, spaceID)
+		SELECT d.c_refid
+		FROM (
+			SELECT c_groupid, MIN(c_versionorder) AS latestversion
+			FROM dmz_doc
+			WHERE c_orgid=? AND c_spaceid=? AND c_lifecycle!=2 AND c_groupid!='' AND c_template=`+s.IsFalse()+`
+			GROUP BY c_groupid
+		) AS x INNER JOIN dmz_doc AS d ON d.c_groupid=x.c_groupid AND d.c_versionorder=x.latestversion
+	)
+	GROUP BY c_categoryid
+	UNION ALL
+	SELECT 'users' AS grouptype, c_refid AS categoryid, count(*) AS count
+	FROM dmz_permission
+	WHERE c_orgid=? AND c_location='category' AND c_refid IN
+	(SELECT c_refid FROM dmz_category WHERE c_orgid=? AND c_spaceid=?)
+	GROUP BY c_refid`),
+	ctx.OrgID, spaceID,
+	ctx.OrgID, spaceID, ctx.OrgID, spaceID,
+	ctx.OrgID, ctx.OrgID, spaceID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -263,10 +263,10 @@ func (s Store) GetSpaceCategorySummary(ctx domain.RequestContext, spaceID string
 // GetDocumentCategoryMembership returns all space categories associated with given document.
 func (s Store) GetDocumentCategoryMembership(ctx domain.RequestContext, documentID string) (c []category.Category, err error) {
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
-        FROM dmz_category
-        WHERE c_orgid=? AND c_refid IN (SELECT c_categoryid FROM dmz_category_member WHERE c_orgid=? AND c_docid=?)`),
-		ctx.OrgID, ctx.OrgID, documentID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_name AS name, c_default AS isdefault, c_created AS created, c_revised AS revised
+	FROM dmz_category
+	WHERE c_orgid=? AND c_refid IN (SELECT c_categoryid FROM dmz_category_member WHERE c_orgid=? AND c_docid=?)`),
+	ctx.OrgID, ctx.OrgID, documentID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -283,22 +283,22 @@ func (s Store) GetDocumentCategoryMembership(ctx domain.RequestContext, document
 // for specified user.
 func (s Store) GetSpaceCategoryMembership(ctx domain.RequestContext, spaceID string) (c []category.Member, err error) {
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_categoryid AS categoryid, c_docid AS documentid, c_created AS created, c_revised AS revised
-        FROM dmz_category_member
-        WHERE c_orgid=? AND c_spaceid=? AND c_spaceid IN
-            (
-                SELECT c_refid
-                    FROM dmz_permission
-                    WHERE c_orgid=? AND c_who='user'
-                    AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
-                UNION ALL
-                SELECT p.c_refid
-                    FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
-                    WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space'
-                    AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
-		    )
-        ORDER BY documentid`),
-		ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_categoryid AS categoryid, c_docid AS documentid, c_created AS created, c_revised AS revised
+	FROM dmz_category_member
+	WHERE c_orgid=? AND c_spaceid=? AND c_spaceid IN
+	(
+		SELECT c_refid
+		FROM dmz_permission
+		WHERE c_orgid=? AND c_who='user'
+		AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
+		UNION ALL
+		SELECT p.c_refid
+		FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
+		WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space'
+		AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
+	)
+	ORDER BY documentid`),
+	ctx.OrgID, spaceID, ctx.OrgID, ctx.UserID, ctx.OrgID, ctx.UserID)
 
 	if err == sql.ErrNoRows {
 		err = nil
@@ -313,20 +313,20 @@ func (s Store) GetSpaceCategoryMembership(ctx domain.RequestContext, spaceID str
 // GetOrgCategoryMembership returns category/document associations within organization.
 func (s Store) GetOrgCategoryMembership(ctx domain.RequestContext, userID string) (c []category.Member, err error) {
 	err = s.Runtime.Db.Select(&c, s.Bind(`
-        SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_categoryid AS categoryid, c_docid AS documentid, c_created AS created, c_revised AS revised
-        FROM dmz_category_member
-        WHERE c_orgid=? AND c_spaceid IN
-            (
-                SELECT c_refid
-                    FROM dmz_permission
-                        WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
-                UNION ALL
-                SELECT p.c_refid
-                    FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
-                    WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
-    		)
-        ORDER BY documentid`),
-		ctx.OrgID, ctx.OrgID, userID, ctx.OrgID, userID)
+	SELECT id, c_refid AS refid, c_orgid AS orgid, c_spaceid AS spaceid, c_categoryid AS categoryid, c_docid AS documentid, c_created AS created, c_revised AS revised
+	FROM dmz_category_member
+	WHERE c_orgid=? AND c_spaceid IN
+	(
+		SELECT c_refid
+		FROM dmz_permission
+		WHERE c_orgid=? AND c_who='user' AND (c_whoid=? OR c_whoid='0') AND c_location='space' AND c_action='view'
+		UNION ALL
+		SELECT p.c_refid
+		FROM dmz_permission p LEFT JOIN dmz_group_member r ON p.c_whoid=r.c_groupid
+		WHERE p.c_orgid=? AND p.c_who='role' AND p.c_location='space' AND p.c_action='view' AND (r.c_userid=? OR r.c_userid='0')
+	)
+	ORDER BY documentid`),
+	ctx.OrgID, ctx.OrgID, userID, ctx.OrgID, userID)
 
 	if err == sql.ErrNoRows {
 		err = nil

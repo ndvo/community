@@ -26,21 +26,21 @@ export default Controller.extend(Notifier, {
 		onAdd(label) {
 			this.get('labelSvc').add(label).then(() => {
 				this.load();
-				this.notifySuccess('Rótulo adicionado');
+				this.notifySuccess('Assunto adicionado');
 			});
 		},
 
 		onDelete(id) {
 			this.get('labelSvc').delete(id).then(() => {
 				this.load();
-				this.notifySuccess('Rótulo removido');
+				this.notifySuccess('Assunto removido');
 			});
 		},
 
 		onUpdate(label) {
 			this.get('labelSvc').update(label).then(() => {
 				this.load();
-				this.notifySuccess('Rótulo salvo');
+				this.notifySuccess('Assunto salvo');
 			});
 		}
 	}

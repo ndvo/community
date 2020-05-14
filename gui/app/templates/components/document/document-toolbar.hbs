@@ -23,10 +23,10 @@
 		{{#attach-popover class="ember-attacher-popper" hideOn="click clickout" showOn="click" isShown=false}}
 			<ul class="menu">
 				{{#if pinState.isPinned}}
-					<li class="item" {{action "onUnpin"}}>Remover bookmark</li>
+					<li class="item" {{action "onUnpin"}}>Desmarcar página</li>
 					<li class="divider"/>
 				{{else if session.authenticated}}
-					<li class="item" {{action "onPin"}}>Bookmark</li>
+					<li class="item" {{action "onPin"}}>Marcar página</li>
 					<li class="divider"/>
 				{{/if}}
 				<li class="item" {{action "onShowPrintModal"}}>Imprimir</li>
@@ -64,7 +64,7 @@
 	{{/if}}
 
 	{{#if permissions.documentEdit}}
-		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green tooltip="Renomear, Categorias, Etiquetas, Situação, Workflow" linkTo="document.settings"}}
+		{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green tooltip="Renomear, Palavra-chaves, Situação, Workflow" linkTo="document.settings"}}
 	{{/if}}
 {{/ui/ui-toolbar}}
 
@@ -141,7 +141,7 @@
 					<div class="form-group">
 						<label for="duplicate-name">Nome</label>
 						{{input id="duplicate-name" value=duplicateName type="email" class="form-control mousetrap" placeholder="Nome"}}
-						<small class="form-text text-muted">O conteúdo será duplicado neste espaço</small>
+						<small class="form-text text-muted">O conteúdo será duplicado nesta Processo</small>
 					</div>
 				</form>
 			</div>

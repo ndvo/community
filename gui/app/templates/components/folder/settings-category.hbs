@@ -1,13 +1,13 @@
 {{layout/logo-heading
-	title="Categorias"
-	desc="Atribuir categorias aos documentos e decidir quem pode visualizá-los"
+	title="Palavra-chaves"
+	desc="Atribuir Palavra-chaves aos documentos e decidir quem pode visualizá-los"
 	icon=constants.Icon.Category}}
 
 <div class="space-admin">
 	<div class="categories">
 		<form class="form" onsubmit={{action "onAdd"}}>
 			<div class="form-group">
-				{{focus-input id="new-category-name" type="text" class="form-control mousetrap" placeholder="Nome da categoria" value=newCategory}}
+				{{focus-input id="new-category-name" type="text" class="form-control mousetrap" placeholder="Nome da Palavra-chave" value=newCategory}}
 			</div>
 			{{ui/ui-button color=constants.Color.Green light=true
 				label=constants.Label.Add icon=constants.Icon.Category
@@ -29,7 +29,7 @@
 						and viewable by {{cat.users}} users/groups
 					</div>
 					{{#unless cat.access}}
-						<p class="color-red-600 bold-500">Você não tem permissão de visualização nesta categoria</p>
+						<p class="color-red-600 bold-500">Você não tem permissão de visualização nesta Palavra-chave</p>
 					{{/unless}}
 					{{#if cat.isDefault}}
 						<p class="color-yellow-600 bold-500">Default category for new content</p>
@@ -40,9 +40,9 @@
 						{{ui/ui-toolbar-icon icon=constants.Icon.Locked color=constants.Color.Gray
 							tooltip="Definir permissões de visualização" onClick=(action "onShowAccessPicker" cat.id)}}
 						{{ui/ui-toolbar-icon icon=constants.Icon.Edit color=constants.Color.Gray
-							tooltip="Editar categoria" onClick=(action "onShowEdit" cat.id)}}
+							tooltip="Editar Palavra-chave" onClick=(action "onShowEdit" cat.id)}}
 						{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red
-							tooltip="Apagar categoria" onClick=(action "onShowDelete" cat.id)}}
+							tooltip="Apagar Palavra-chave" onClick=(action "onShowDelete" cat.id)}}
 					{{/ui/ui-toolbar}}
 				</div>
 			</div>
@@ -53,10 +53,10 @@
 <div id="category-edit-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Editar categoria</div>
+			<div class="modal-header">Editar Palavra-chave</div>
 			<div class="modal-body">
 				<div class="form-group">
-					{{focus-input id="edit-category-name" type="text" class="form-control mousetrap" placeholder="Nome da categoria" value=editName}}
+					{{focus-input id="edit-category-name" type="text" class="form-control mousetrap" placeholder="Nome da Palavra-chave" value=editName}}
 				</div>
 				<div class="form-group">
 					<label>Default</label>
@@ -76,9 +76,9 @@
 <div id="category-delete-modal" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">Apagar categoria</div>
+			<div class="modal-header">Apagar Palavra-chave</div>
 			<div class="modal-body">
-				<p>Tem certeza de que quer apagar esta categoria?</p>
+				<p>Tem certeza de que quer apagar esta Palavra-chave?</p>
 			</div>
 			<div class="modal-footer">
 				{{ui/ui-button color=constants.Color.Gray light=true label=constants.Label.Close dismiss=true}}
@@ -89,8 +89,8 @@
 	</div>
 </div>
 
-{{#ui/ui-dialog title="Definir acessos da categoria" confirmCaption="Salvar" buttonColor=constants.Color.Green show=showCategoryAccess onAction=(action "onGrantAccess")}}
-	<p>Escolha quem pode ver documentos nesta categoria</p>
+{{#ui/ui-dialog title="Definir acessos da Palavra-chave" confirmCaption="Salvar" buttonColor=constants.Color.Green show=showCategoryAccess onAction=(action "onGrantAccess")}}
+	<p>Escolha quem pode ver documentos nesta Palavra-chave</p>
 	<div class="widget-list-picker">
 		<ul class="options">
 			{{#each categoryPermissions as |permission|}}

@@ -47,7 +47,7 @@ export default Component.extend({
 				relative_urls: false,
 				browser_spellcheck: true,
 				contextmenu: false,
-				statusbar: false,
+				statusbar: true,
 				inline: false,
 				paste_data_images: true,
 				images_upload_handler: function (blobInfo, success, failure) { // eslint-disable-line no-unused-vars
@@ -119,7 +119,8 @@ export default Component.extend({
 				menubar: false,
 				toolbar: [
 					'formatselect fontsizeselect | bold italic underline strikethrough superscript subscript blockquote | forecolor backcolor link unlink',
-					'outdent indent bullist numlist | alignleft aligncenter alignright alignjustify | table uploadimage image media codesample'
+					'outdent indent bullist numlist | alignleft aligncenter alignright alignjustify | table uploadimage image media codesample | hr insertdate selectall emotions pastetext | spellchecker visualchars paste searchreplace insertdatetime layer style template'
+
 				],
 				toolbar_sticky: true,
 				save_onsavecallback: function () {

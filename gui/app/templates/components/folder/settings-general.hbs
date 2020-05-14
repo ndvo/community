@@ -1,12 +1,12 @@
 {{layout/logo-heading
-	title="Metadados do Espaço"
-	desc="Definir visibilidade, ícone e rótulo do espaço"
+	title="Metadados da Processo"
+	desc="Definir visibilidade, ícone e Assunto"
 	icon=constants.Icon.Settings}}
 
 <form>
 	<div class="form-group">
 		<label>Nome</label>
-		{{focus-input id="space-name" type="text" value=spaceName class=(if hasNameError "form-control is-invalid" "form-control") placeholder="Nome do espaço" autocomplete="off"}}
+		{{focus-input id="space-name" type="text" value=spaceName class=(if hasNameError "form-control is-invalid" "form-control") placeholder="Nome da Processo" autocomplete="off"}}
 	</div>
 
 	<div class="form-group">
@@ -35,7 +35,7 @@
 	</div>
 
 	<div class="form-group">
-		<label>Rótulo</label>
+		<label>Assunto</label>
 		<ul class="space-label-picker">
 			<li class="label none {{if (eq spaceLabel "") "selected"}}" {{action "onSetLabel" ""}}>Nenhum</li>
 			{{#each labels as |label|}}

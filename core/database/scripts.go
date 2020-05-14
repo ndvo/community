@@ -14,7 +14,7 @@ package database
 import (
 	"fmt"
 	"sort"
-
+	"strings"
 	"github.com/documize/community/core/env"
 	"github.com/documize/community/server/web"
 )
@@ -24,6 +24,9 @@ type Scripts struct {
 	MySQL      []Script
 	PostgreSQL []Script
 	SQLServer  []Script
+	CustomMySQL      []Script
+	CustomPostgreSQL []Script
+	CustomSQLServer  []Script
 }
 
 // Script holds SQL script and it's associated version number.
@@ -55,6 +58,21 @@ func LoadScripts() (s Scripts, err error) {
 	return s, nil
 }
 
+// LoadCustom Scripts returns custom .SQL scripts for supported database providers.
+func LoadCustomScripts(currentVersion int) (s Scripts, err error) {
+	assetDir := "bindata/scripts"
+
+	// No problem is files are not found, even if directories do not exist.
+	// MySQL
+	s.CustomMySQL, _ = loadFiles(fmt.Sprintf("%s/mysql/%d", assetDir, currentVersion))
+	// PostgreSQL
+	s.CustomPostgreSQL, _ = loadFiles(fmt.Sprintf("%s/postgresql/%d", assetDir, currentVersion))
+	// PostgreSQL
+	s.CustomSQLServer, _ = loadFiles(fmt.Sprintf("%s/sqlserver/%d", assetDir, currentVersion))
+
+	return s, nil
+}
+
 // SpecificScripts returns SQL scripts for current databasse provider.
 func SpecificScripts(runtime *env.Runtime, all Scripts) (s []Script) {
 	switch runtime.StoreProvider.Type() {
@@ -69,6 +87,20 @@ func SpecificScripts(runtime *env.Runtime, all Scripts) (s []Script) {
 	return
 }
 
+// CustomSpecificScripts returns custom SQL scripts for current databasse provider.
+func CustomSpecificScripts(runtime *env.Runtime, all Scripts) (s []Script) {
+	switch runtime.StoreProvider.Type() {
+	case env.StoreTypeMySQL, env.StoreTypeMariaDB, env.StoreTypePercona:
+		return all.CustomMySQL
+	case env.StoreTypePostgreSQL:
+		return all.CustomPostgreSQL
+	case env.StoreTypeSQLServer:
+		return all.CustomSQLServer
+	}
+
+	return
+}
+
 // loadFiles returns all SQL scripts in specified folder as [][]byte.
 func loadFiles(path string) (b []Script, err error) {
 	buf := []byte{}
@@ -78,12 +110,14 @@ func loadFiles(path string) (b []Script, err error) {
 	}
 	sort.Strings(scripts)
 	for _, file := range scripts {
-		buf, err = web.Asset(fmt.Sprintf("%s/%s", path, file))
-		if err != nil {
-			return
-		}
+		if strings.HasSuffix(file, ".sql") {
+			buf, err = web.Asset(fmt.Sprintf("%s/%s", path, file))
+			if err != nil {
+				return
+			}
 
-		b = append(b, Script{Version: extractVersionNumber(file), Script: buf})
+			b = append(b, Script{Version: extractVersionNumber(file), Script: buf})
+		} 
 	}
 
 	return b, nil

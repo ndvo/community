@@ -13,13 +13,14 @@ require (
 	github.com/documize/html-diff v0.0.0-20160503140253-f61c192c7796
 	github.com/documize/slug v1.1.1
 	github.com/elazarl/go-bindata-assetfs v1.0.0
+	github.com/go-bindata/go-bindata v3.1.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/gorilla/handlers v1.4.0
 	github.com/gorilla/mux v1.6.2
 	github.com/jmoiron/sqlx v1.2.0
-	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
+	github.com/jteeuwen/go-bindata v3.0.7+incompatible
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/mb0/diff v0.0.0-20131118162322-d8d9a906c24d // indirect

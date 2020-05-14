@@ -22,11 +22,11 @@
 					</div>
 					<div class="item {{if (eq tab "category") "selected"}}" {{action "onTab" "category"}}>
 						<i class={{concat "dicon " constants.Icon.Category}} />
-						<div class="name">Categorias</div>
+						<div class="name">Palavra-chaves</div>
 					</div>
 					<div class="item {{if (eq tab "tag") "selected"}}" {{action "onTab" "tag"}}>
 						<i class={{concat "dicon " constants.Icon.Tag}} />
-						<div class="name">Etiquetas</div>
+						<div class="name">Palavra-chaves</div>
 					</div>
 					{{#if (eq appMeta.edition constants.Product.EnterpriseEdition)}}
 						{{#if model.permissions.documentApprove}}

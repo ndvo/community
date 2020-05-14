@@ -12,11 +12,11 @@
 // Package embed contains the Documize static web data.
 package embed
 
-//go:generate go-bindata-assetfs -pkg embed bindata/...
+//go:generate go-bindata-assetfs -pkg embed bindata/... 
 
 import (
 	"net/http"
-
+  "os"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 )
 
@@ -30,9 +30,13 @@ func (embedderT) AssetDir(dir string) ([]string, error) {
 	return AssetDir(dir)
 }
 
+
 // StaticAssetsFileSystem data encoded in the go:generate above.
 func (embedderT) StaticAssetsFileSystem() http.FileSystem {
-	return &assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "bindata/public"}
+  assetInfo := func (path string) (os.FileInfo, error) {
+    return os.Stat(path)
+  }
+	return &assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: assetInfo, Prefix: "bindata/public"}
 }
 
 var embedder embedderT

@@ -271,13 +271,13 @@ func (p SQLServerProvider) MakeConnectionString() string {
 // character set and collation from database provider.
 func (p SQLServerProvider) QueryMeta() string {
 	return fmt.Sprintf(`
-		SELECT 
-		CAST(SERVERPROPERTY('productversion') AS VARCHAR) AS version,
-		@@VERSION AS comment,
-		collation_name AS collation,
-		'' AS charset
-		FROM sys.databases
-		WHERE name='%s'`, p.DatabaseName())
+	SELECT 
+	CAST(SERVERPROPERTY('productversion') AS VARCHAR) AS version,
+	@@VERSION AS comment,
+	collation_name AS collation,
+	'' AS charset
+	FROM sys.databases
+	WHERE name='%s'`, p.DatabaseName())
 }
 
 // QueryRecordVersionUpgrade returns database specific insert statement
@@ -289,6 +289,15 @@ func (p SQLServerProvider) QueryRecordVersionUpgrade(version int) string {
 	return fmt.Sprintf(`UPDATE dmz_config SET c_config='%s' WHERE c_key='META'`, json)
 }
 
+// QueryRecordVersionUpgradeCustom returns database specific insert statement
+// that records the database version number.
+func (p SQLServerProvider) QueryRecordVersionUpgradeCustom(version int) string {
+	// Make record that holds new database version number.
+	json := fmt.Sprintf("{\"databaseCustom\": \"%d\"}", version)
+
+	return fmt.Sprintf(`UPDATE dmz_config SET c_config='%s' WHERE c_key='META'`, json)
+}
+
 // QueryRecordVersionUpgradeLegacy returns database specific insert statement
 // that records the database version number.
 func (p SQLServerProvider) QueryRecordVersionUpgradeLegacy(version int) string {
@@ -296,15 +305,33 @@ func (p SQLServerProvider) QueryRecordVersionUpgradeLegacy(version int) string {
 	return p.QueryRecordVersionUpgrade(version)
 }
 
+// QueryRecordVersionUpgradeLegacyCustom returns database specific insert statement
+// that records the database version number.
+func (p SQLServerProvider) QueryRecordVersionUpgradeLegacyCustom(version int) string {
+	// This provider has no legacy schema.
+	return p.QueryRecordVersionUpgradeCustom(version)
+}
+
 // QueryGetDatabaseVersion returns the schema version number.
 func (p SQLServerProvider) QueryGetDatabaseVersion() string {
 	return "SELECT JSON_VALUE(c_config, '$.database') FROM dmz_config WHERE c_key = 'META';"
+}
+
+// QueryGetDatabaseVersionCustom returns the schema version number.
+func (p SQLServerProvider) QueryGetDatabaseVersionCustom() string {
+	return "SELECT JSON_VALUE(c_config, '$.databaseCustom') FROM dmz_config WHERE c_key = 'META';"
 }
 
 // QueryGetDatabaseVersionLegacy returns the schema version number before The Great Schema Migration (v25, MySQL).
 func (p SQLServerProvider) QueryGetDatabaseVersionLegacy() string {
 	// This provider has no legacy schema.
 	return p.QueryGetDatabaseVersion()
+}
+
+// QueryGetDatabaseVersionLegacyCustom returns the schema version number before The Great Schema Migration (v25, MySQL).
+func (p SQLServerProvider) QueryGetDatabaseVersionLegacyCustom() string {
+	// This provider has no legacy schema.
+	return p.QueryGetDatabaseVersionCustom()
 }
 
 // QueryTableList returns a list tables in Documize database.
@@ -342,8 +369,8 @@ func (p SQLServerProvider) JSONGetValue(column, attribute string) string {
 func (p SQLServerProvider) VerfiyVersion(dbVersion string) (bool, string) {
 
 	if strings.HasPrefix(dbVersion, "13.") ||
-		strings.HasPrefix(dbVersion, "14.") ||
-		strings.HasPrefix(dbVersion, "15.") {
+	strings.HasPrefix(dbVersion, "14.") ||
+	strings.HasPrefix(dbVersion, "15.") {
 		return true, ""
 	}
 

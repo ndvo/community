@@ -215,7 +215,7 @@ func (p PostgreSQLProvider) QueryMeta() string {
 	// SELECT version() as vstring, current_setting('server_version_num') as vnumber, pg_encoding_to_char(encoding) AS charset FROM pg_database WHERE datname = 'documize';
 
 	return fmt.Sprintf(`SELECT cast(current_setting('server_version_num') AS TEXT) AS version, version() AS comment, pg_encoding_to_char(encoding) AS charset, '' AS collation
-        FROM pg_database WHERE datname = '%s'`, p.DatabaseName())
+	FROM pg_database WHERE datname = '%s'`, p.DatabaseName())
 }
 
 // QueryRecordVersionUpgrade returns database specific insert statement
@@ -225,7 +225,17 @@ func (p PostgreSQLProvider) QueryRecordVersionUpgrade(version int) string {
 	json := fmt.Sprintf("{\"database\": \"%d\"}", version)
 
 	return fmt.Sprintf(`INSERT INTO dmz_config (c_key,c_config) VALUES ('META','%s')
-        ON CONFLICT (c_key) DO UPDATE SET c_config='%s' WHERE dmz_config.c_key='META'`, json, json)
+	ON CONFLICT (c_key) DO UPDATE SET c_config='%s' WHERE dmz_config.c_key='META'`, json, json)
+}
+
+// QueryRecordVersionUpgradeCustom returns database specific insert statement
+// that records the database version number.
+func (p PostgreSQLProvider) QueryRecordVersionUpgradeCustom(version int) string {
+	// Make record that holds new database version number.
+	json := fmt.Sprintf("{\"databaseCustom\": \"%d\"}", version)
+
+	return fmt.Sprintf(`INSERT INTO dmz_config (c_key,c_config) VALUES ('META','%s')
+	ON CONFLICT (c_key) DO UPDATE SET c_config='%s' WHERE dmz_config.c_key='META'`, json, json)
 }
 
 // QueryRecordVersionUpgradeLegacy returns database specific insert statement
@@ -235,9 +245,21 @@ func (p PostgreSQLProvider) QueryRecordVersionUpgradeLegacy(version int) string 
 	return p.QueryRecordVersionUpgrade(version)
 }
 
+// QueryRecordVersionUpgradeLegacyCustom returns database specific insert statement
+// that records the database version number.
+func (p PostgreSQLProvider) QueryRecordVersionUpgradeLegacyCustom(version int) string {
+	// This provider has no legacy schema.
+	return p.QueryRecordVersionUpgradeCustom(version)
+}
+
 // QueryGetDatabaseVersion returns the schema version number.
 func (p PostgreSQLProvider) QueryGetDatabaseVersion() string {
 	return "SELECT c_config -> 'database' FROM dmz_config WHERE c_key = 'META';"
+}
+
+// QueryGetDatabaseVersionCustom returns the custom editions to the schema version number.
+func (p PostgreSQLProvider) QueryGetDatabaseVersionCustom() string {
+	return "SELECT c_config -> 'databaseCustom' FROM dmz_config WHERE c_key = 'META';"
 }
 
 // QueryGetDatabaseVersionLegacy returns the schema version number before The Great Schema Migration (v25, MySQL).
@@ -246,11 +268,17 @@ func (p PostgreSQLProvider) QueryGetDatabaseVersionLegacy() string {
 	return p.QueryGetDatabaseVersion()
 }
 
+// QueryGetDatabaseVersionLegacyCustom returns the schema version number before The Great Schema Migration (v25, MySQL).
+func (p PostgreSQLProvider) QueryGetDatabaseVersionLegacyCustom() string {
+	// This provider has no legacy schema.
+	return p.QueryGetDatabaseVersionCustom()
+}
+
 // QueryTableList returns a list tables in Documize database.
 func (p PostgreSQLProvider) QueryTableList() string {
 	return fmt.Sprintf(`select table_name
-        FROM information_schema.tables
-        WHERE table_type='BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema') AND table_name != 'spatial_ref_sys' AND table_catalog='%s'`, p.DatabaseName())
+	FROM information_schema.tables
+	WHERE table_type='BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema') AND table_name != 'spatial_ref_sys' AND table_catalog='%s'`, p.DatabaseName())
 }
 
 // QueryDateInterval returns provider specific interval style

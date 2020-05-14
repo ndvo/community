@@ -1,4 +1,5 @@
 #! /bin/bash
+shopt -s extglob
 
 # ember s apiHost=https://demo1.dev:5001
 # go run edition/community.go -port=5001 -forcesslport=5002 -cert selfcert/cert.pem -key selfcert/key.pem -salt=tsu3Acndky8cdTNx3
@@ -38,27 +39,31 @@ cp -r core/database/scripts/mysql/*.sql embed/bindata/scripts/mysql
 cp -r core/database/scripts/postgresql/*.sql embed/bindata/scripts/postgresql
 cp -r core/database/scripts/sqlserver/*.sql embed/bindata/scripts/sqlserver
 
+cp -r core/database/scripts/mysql/+([0-9])/ embed/bindata/scripts/mysql/ 
+cp -r core/database/scripts/postgresql/+([0-9])/ embed/bindata/scripts/postgresql/
+cp -r core/database/scripts/sqlserver/+([0-9])/ embed/bindata/scripts/sqlserver/
+
 rm -rf embed/bindata/onboard
 mkdir -p embed/bindata/onboard
 cp -r domain/onboard/*.json embed/bindata/onboard
 
 echo "Generating in-memory static assets..."
-# go get -u github.com/jteeuwen/go-bindata/...
-# go get -u github.com/elazarl/go-bindata-assetfs/...
+#go get -u github.com/jteeuwen/go-bindata/...
+#go get -u github.com/elazarl/go-bindata-assetfs/...
 cd embed
 go generate
 
 cd ..
 echo "Compiling for Linux..."
 env GOOS=linux GOARCH=amd64 go build -mod=vendor -trimpath -o bin/documize-community-linux-amd64 ./edition/community.go
-echo "Compiling for macOS..."
-env GOOS=darwin GOARCH=amd64 go build -mod=vendor -trimpath -o bin/documize-community-darwin-amd64 ./edition/community.go
-echo "Compiling for Windows..."
-env GOOS=windows GOARCH=amd64 go build -mod=vendor -trimpath -o bin/documize-community-windows-amd64.exe ./edition/community.go
-echo "Compiling for ARM..."
-env GOOS=linux GOARCH=arm go build -mod=vendor -trimpath -o bin/documize-community-linux-arm ./edition/community.go
-echo "Compiling for ARM64..."
-env GOOS=linux GOARCH=arm64 go build -mod=vendor -trimpath -o bin/documize-community-linux-arm64 ./edition/community.go
+#echo "Compiling for macOS..."
+#env GOOS=darwin GOARCH=amd64 go build -mod=vendor -trimpath -o bin/documize-community-darwin-amd64 ./edition/community.go
+#echo "Compiling for Windows..."
+#env GOOS=windows GOARCH=amd64 go build -mod=vendor -trimpath -o bin/documize-community-windows-amd64.exe ./edition/community.go
+#echo "Compiling for ARM..."
+#env GOOS=linux GOARCH=arm go build -mod=vendor -trimpath -o bin/documize-community-linux-arm ./edition/community.go
+#echo "Compiling for ARM64..."
+#env GOOS=linux GOARCH=arm64 go build -mod=vendor -trimpath -o bin/documize-community-linux-arm64 ./edition/community.go
 
 echo "Finished."
 

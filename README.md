@@ -1,22 +1,63 @@
+# SINSPU
+
+O Sistema Interno de Normas da SPU é construído a partir do Documize.
+
+- Utiliza-se uma versão customizada, traduzida para o português do Brasil
+- A partir desta versão, são implementadas customizações
+- Com novas versões do Documize ou da tradução faz-se o merge com o SINSPU
+
+## Ambiente
+
+O Documize está rodando na máquina 10.209.2.64
+
+Para acessar a máquina utilize o usuário **spu**
+
+`ssh spu@10.209.2.64`
+
+O documize está rodando como um serviço
+
+- Para iniciar o serviço use `sudo service documize start`
+- Para parar o serviço use `sudo service documize stop`
+- Para reiniciar o serviço use `sudo service documize restart`
+- O script que executa o serviço está na pasta /etc/init.d/documize.sh e seu 
+conteúdo está disponível em https://git.economia.gov.br/spu/sinspu/snippets/3
+
+## Deploy
+
+O build do go gera os arquivos binários para os sistemas operacionais Linux, 
+Windows e Mac.
+
+Atualmente o deploy está sendo feito com as seguintes etapas:
+1. copie o arquivo binário para o ambiente de alvo
+2. substitua o arquivo disponível em /opt/documize
+3. reinicie o serviço
+
+****ATENÇÃO**: dado o escopo do projeto, em que a princípio não devem existir
+alterações substanciais na ferramenta, não se utiliza qualquer mecanismo para
+manter as versões da estrutura de banco de dados. Caso as evoluções na 
+ferramenta se tornem substanciais, deve-se repensar o modelo de desenvolvimento
+usado até agora.**
+
+
+ ~ * ~ * ~ * ~ * ~ * ~
+
+
 ### Fork
 
-Esta é uma versão em Português do Brasil do Documize.
+Esta é uma customização da versão em Português do Brasil do Documize, para 
+atender a necessidades da SPU.
 
-Não há nenhuma funcionalidade adicional. O objetivo é possibilitar a avaliação
-e uso da ferramenta por falantes da língua portuguesa até que o suporte a
-múltiplos idiomas seja implementado no Documize.
-
-Contribuições para a tradução são bem-vindas.
-
-A tradução é feita diretamente no código-fonte e, por isso, os tradutores precisam ter noções de:
-- Go
-- Javascript
-- Ember.js
-
-This fork aims to provide a quick Brazilian portuguese translation of Documize while the official multilanguage support is not provided.
+O objetivo é tornar a ferramenta mais amigável e direta para gerir documentos
+internos produzidos e consumidos pela SPU.
 
 
-This effort is being done as part of an evaluation to choose the best suite to be used within SPU, a Brazilian public organization.
+As poucas funcionalidades adicionais são de baixa complexidade, em geral apenas
+na interface, de modo a não inviabilizar a mescla de atualizações feitas na
+ferramenta.
+
+
+Segue abaixo o README do Documize.
+
 
 ***
 

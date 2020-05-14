@@ -18,7 +18,7 @@ export default Component.extend({
 	editMode: false,
 	editPage: null,
 	editMeta: null,
-	expanded: true,
+	expanded: false,
 
 	didReceiveAttrs() {
 		this._super(...arguments);
@@ -34,7 +34,7 @@ export default Component.extend({
 		if (this.get('toEdit') === pageId && this.get('permissions.documentEdit')) this.send('onEdit');
 
 		// Work out if this section is expanded by default (state stored in browser local storage).
-		this.set('expanded', !_.includes(this.get('expandState'), pageId));
+		//this.set('expanded', !_.includes(this.get('expandState'), pageId));
 	},
 
 	workflow() {

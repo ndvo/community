@@ -12,7 +12,7 @@
 				{{/if}}
 				{{#if session.isAdmin}}
 					{{ui/ui-toolbar-icon icon=constants.Icon.Settings color=constants.Color.Green
-						tooltip="Configurações de espaço" linkTo="customize"}}
+						tooltip="Configurações de Processo" linkTo="customize"}}
 				{{/if}}
 			{{/ui/ui-toolbar}}
 		{{/if}}
@@ -49,7 +49,7 @@
 			<Ui::UiSpacer @size="300" />
 
 			<div class="section">
-				<div class="title">Rótulo</div>
+				<div class="title">Assunto</div>
 				{{#if labels}}
 					<div class="list">
 						{{#each labels as |label|}}
@@ -62,7 +62,7 @@
 						{{/each}}
 					</div>
 				{{else}}
-					<div class="empty">Sem rótulos</div>
+					<div class="empty">Sem Assuntos</div>
 				{{/if}}
 			</div>
 		</div>
@@ -76,18 +76,18 @@
 		<div class="modal" tabindex="-1" role="dialog" id="add-space-modal">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
-					<div class="modal-header">Novo espaço</div>
+					<div class="modal-header">Nova Processo</div>
 					<div class="modal-body">
 						<form onsubmit={{action "onAddSpace"}}>
 							<div class="form-group">
 								<label for="new-space-name">Nome</label>
-								{{input type="text" id="new-space-name" class="form-control mousetrap" placeholder="Nome do espaço" value=spaceName}}
+								{{input type="text" id="new-space-name" class="form-control mousetrap" placeholder="Nome da Processo" value=spaceName}}
 								<small class="form-text text-muted">Apenas caracteres e números</small>
 							</div>
 
 							<div class="form-group">
 								<label>Descrição</label>
-								{{focus-input id="space-desc" type="text" value=spaceDesc class="form-control" placeholder="Descrição de espaço" autocomplete="off"}}
+								{{focus-input id="space-desc" type="text" value=spaceDesc class="form-control" placeholder="Descrição de Processo" autocomplete="off"}}
 							</div>
 
 							<div class="form-group">
@@ -104,7 +104,7 @@
 							</div>
 
 							<div class="form-group">
-								<label>Rótulo</label>
+								<label>Assunto</label>
 								<ul class="space-label-picker">
 									<li class="label none {{if (eq spaceLabel "") "selected"}}" {{action "onSetLabel" ""}}>Nenhum</li>
 									{{#each labels as |label|}}
@@ -118,9 +118,9 @@
 							</div>
 
 							<div class="form-group">
-								<label for="clone-space-dropdown">Clonar espaço</label>
-								{{ui/ui-select id="clone-space-dropdown" content=spaces prompt="select space" action=(action "onCloneSpaceSelect") optionValuePath="id" optionLabelPath="name" selection=clonedSpace}}
-								<small id="emailHelp" class="form-text text-muted">Copiar modelos, permissões e documentos de um espaço existente</small>
+								<label for="clone-space-dropdown">Clonar Processo</label>
+								{{ui/ui-select id="clone-space-dropdown" content=spaces prompt="selecionar coordenação" action=(action "onCloneSpaceSelect") optionValuePath="id" optionLabelPath="name" selection=clonedSpace}}
+								<small id="emailHelp" class="form-text text-muted">Copiar modelos, permissões e documentos de um Processo existente</small>
 								<div class="margin-top-10" />
 								{{#if hasClone}}
 									{{#ui/ui-checkbox selected=copyTemplate}}Copiar modelos{{/ui/ui-checkbox}}

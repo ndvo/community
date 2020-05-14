@@ -72,6 +72,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 	},
 
 	activate() {
-		this.get('browser').setTitle('Espaços');
+		this.get('browser').setTitle('Processos');
 	}
 });

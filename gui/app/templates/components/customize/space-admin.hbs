@@ -11,17 +11,17 @@
 							<div class="name">
 								{{#if (eq space.spaceType constants.SpaceType.Public)}}
 									<i class={{concat "dicon " constants.Icon.World}}>
-										{{#attach-tooltip showDelay=1000}}Espaço público{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Processo público{{/attach-tooltip}}
 									</i>
 								{{/if}}
 								{{#if (eq space.spaceType constants.SpaceType.Protected)}}
 									<i class={{concat "dicon " constants.Icon.People}}>
-										{{#attach-tooltip showDelay=1000}}Espaço protegido{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Processo protegido{{/attach-tooltip}}
 									</i>
 								{{/if}}
 								{{#if (eq space.spaceType constants.SpaceType.Private)}}
 									<i class={{concat "dicon " constants.Icon.Person}}>
-										{{#attach-tooltip showDelay=1000}}Espaço pessoal{{/attach-tooltip}}
+										{{#attach-tooltip showDelay=1000}}Processo pessoal{{/attach-tooltip}}
 									</i>
 								{{/if}}
 								{{space.name}}
@@ -31,7 +31,7 @@
 						<Ui::UiSpacer @size="200" />
 						{{#ui/ui-toolbar dark=false light=true raised=true large=false bordered=true}}
 							{{ui/ui-toolbar-icon icon=constants.Icon.AddUser color=constants.Color.Green tooltip="Incluir a mim mesmo como dono" onClick=(action "onOwner" space.id)}}
-							{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Apagar espaço" onClick=(action "onShow" space.id)}}
+							{{ui/ui-toolbar-icon icon=constants.Icon.Delete color=constants.Color.Red tooltip="Apagar Processo" onClick=(action "onShow" space.id)}}
 						{{/ui/ui-toolbar}}
 					</div>
 				</li>
@@ -42,14 +42,14 @@
 	<div id="space-delete-modal" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">Remoção do espaço</div>
+				<div class="modal-header">Remoção da Processo</div>
 				<div class="modal-body">
 					<form onsubmit={{action "onDelete"}}>
-						<p>Tem certeza de que quer remover este espaço e todos os seus documentos?</p>
+						<p>Tem certeza de que quer remover esta Processo e todos os seus documentos?</p>
 						<div class="form-group">
-							<label for="delete-space-name">Por favor, digite o nome do espaço para confirmar</label>
-							{{input type="text" id="delete-space-name" class="form-control mousetrap" placeholder="Nome do espaço" value=deleteSpace.name}}
-							<small class="form-text text-muted">Isto irá remover todos os documentos e templates neste espaço!</small>
+							<label for="delete-space-name">Por favor, digite o nome da Processo para confirmar</label>
+							{{input type="text" id="delete-space-name" class="form-control mousetrap" placeholder="Nome da Processo" value=deleteSpace.name}}
+							<small class="form-text text-muted">Isto irá remover todos os documentos e templates nesta Processo!</small>
 						</div>
 					</form>
 				</div>
@@ -62,7 +62,7 @@
 		</div>
 	</div>
 {{else}}
-	<p>Não há qualquer espaços compartilhados para gerenciar</p>
+	<p>Não há qualquer Processos compartilhados para gerenciar</p>
 {{/if}}
 
 
